@@ -237,12 +237,13 @@ radius = 67.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_fgxly"]
 radius = 5.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_wgbdp"]
-radius = 8.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k7acu"]
+size = Vector2(9.25, 9.5)
 
 [node name="skeleton" type="CharacterBody2D" unique_id=930479232]
 collision_layer = 3
 script = ExtResource("1_v8sxu")
+attack_hit_delay = 0.78
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1387313087]
 sprite_frames = SubResource("SpriteFrames_l5lc7")
@@ -250,16 +251,19 @@ animation = &"walk"
 frame_progress = 0.14037625
 
 [node name="detection_area" type="Area2D" parent="." unique_id=1760747618]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="detection_area" unique_id=1824316444]
 visible = false
 shape = SubResource("CircleShape2D_l5lc7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1101976501]
+visible = false
 position = Vector2(0, 1)
 shape = SubResource("CircleShape2D_fgxly")
 
 [node name="enemy_hitbox" type="Area2D" parent="." unique_id=391920055]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_hitbox" unique_id=791625373]
-shape = SubResource("CircleShape2D_wgbdp")
+position = Vector2(13.375, 2.25)
+shape = SubResource("RectangleShape2D_k7acu")

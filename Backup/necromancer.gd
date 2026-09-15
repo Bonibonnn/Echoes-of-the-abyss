@@ -7,38 +7,22 @@ extends Combatant
 @export var melee_range := 48.0
 @export var magic_explosion_range := 70.0
 @export var melee_cooldown := 0.9
-@export var magic_cast_recovery := 1.8
-@export var magic_cooldown := 30.0
+@export var magic_cooldown := 1.8
 @export var magic_hit_delay := 0.45
 @export var hurt_duration := 0.3
 @export var death_duration := 1.0
-
-@export_category("Skeleton Summon")
-@export var skeleton_scene: PackedScene
-@export_range(0.0, 1.0) var summon_health_ratio := 0.5
-@export var summon_cast_time := 0.8
-@export var summon_animation: StringName = &"summon"
-@export var shield_tint := Color(0.55, 0.75, 1.0, 1.0)
 
 # Optional: assign a visual-only explosion scene that appears at the boss.
 @export var magic_explosion_scene: PackedScene
 
 @onready var detection_area: Area2D = get_node_or_null("detection_area")
-@onready var summon_point: Marker2D = get_node_or_null("summon_point")
 
 var player: Node2D
-var magic_cooldown_remaining := 0.0
-var summoned_skeleton: Node2D
-var has_summoned := false
-var is_shielded := false
-var normal_sprite_tint := Color.WHITE
 
 
 func _ready() -> void:
 	super()
 	add_to_group("enemy")
-	if animated_sprite != null:
-		normal_sprite_tint = animated_sprite.modulate
 
 	if detection_area == null:
 		push_error("Add an Area2D child named 'detection_area' to the necromancer.")
@@ -50,15 +34,8 @@ func _ready() -> void:
 		detection_area.body_exited.connect(_on_detection_area_body_exited)
 
 
-func _physics_process(delta: float) -> void:
-	magic_cooldown_remaining = maxf(0.0, magic_cooldown_remaining - delta)
-
+func _physics_process(_delta: float) -> void:
 	if is_dead:
-		return
-
-	if is_shielded:
-		velocity = Vector2.ZERO
-		move_and_slide()
 		return
 
 	if is_hurt or is_attacking:
@@ -71,22 +48,18 @@ func _physics_process(delta: float) -> void:
 		update_idle_or_walk_animation()
 		return
 
-	if should_summon_skeleton():
-		summon_skeleton()
-		return
-
 	set_facing_from_x(player.global_position.x - global_position.x)
 	var distance_to_player := global_position.distance_to(player.global_position)
 
 	if distance_to_player <= melee_range and can_hit_target(player):
-		if magic_is_ready() and randf() < 0.35:
+		if randf() < 0.35:
 			magic_attack()
 		else:
 			start_melee_attack("attack1", melee_damage, "player", melee_cooldown)
 		return
 
 	# Attack 2 is intentionally radial: it is an explosion around the boss.
-	if distance_to_player <= magic_explosion_range and magic_is_ready():
+	if distance_to_player <= magic_explosion_range:
 		magic_attack()
 		return
 
@@ -96,13 +69,9 @@ func _physics_process(delta: float) -> void:
 
 
 func magic_attack() -> void:
-	if not magic_is_ready():
-		return
-
 	var token := begin_attack("attack2")
 	if token < 0:
 		return
-	magic_cooldown_remaining = magic_cooldown
 
 	await get_tree().create_timer(magic_hit_delay).timeout
 	if not is_attack_token_active(token):
@@ -113,76 +82,8 @@ func magic_attack() -> void:
 		if player.global_position.distance_to(global_position) <= magic_explosion_range:
 			player.take_damage(magic_damage)
 
-	await get_tree().create_timer(maxf(0.0, magic_cast_recovery - magic_hit_delay)).timeout
+	await get_tree().create_timer(max(0.0, magic_cooldown - magic_hit_delay)).timeout
 	finish_attack(token)
-
-
-func magic_is_ready() -> bool:
-	return magic_cooldown_remaining <= 0.0
-
-
-func should_summon_skeleton() -> bool:
-	return not has_summoned and skeleton_scene != null and health <= max_health * summon_health_ratio
-
-
-func summon_skeleton() -> void:
-	var token := begin_attack(summon_animation)
-	if token < 0:
-		return
-
-	await get_tree().create_timer(summon_cast_time).timeout
-	if not is_attack_token_active(token):
-		return
-
-	var skeleton := skeleton_scene.instantiate() as Node2D
-	if skeleton == null:
-		finish_attack(token)
-		return
-
-	get_tree().current_scene.add_child(skeleton)
-	skeleton.global_position = summon_point.global_position if summon_point != null else global_position + Vector2(facing_direction * 32.0, 0.0)
-	summoned_skeleton = skeleton
-	has_summoned = true
-	set_summon_shield(true)
-
-	var combat_skeleton := skeleton as Combatant
-	if combat_skeleton != null:
-		combat_skeleton.died.connect(_on_summoned_skeleton_defeated.bind(skeleton))
-	skeleton.tree_exited.connect(_on_summoned_skeleton_removed.bind(skeleton))
-
-	finish_attack(token)
-
-
-func set_summon_shield(value: bool) -> void:
-	is_shielded = value
-	if animated_sprite == null:
-		return
-
-	if is_shielded:
-		animated_sprite.modulate = shield_tint
-		play_animation("idle")
-	else:
-		animated_sprite.modulate = normal_sprite_tint
-		play_animation("idle")
-
-
-func _on_summoned_skeleton_defeated(skeleton: Node2D) -> void:
-	if skeleton == summoned_skeleton:
-		summoned_skeleton = null
-		set_summon_shield(false)
-
-
-func _on_summoned_skeleton_removed(skeleton: Node2D) -> void:
-	if skeleton == summoned_skeleton:
-		summoned_skeleton = null
-		set_summon_shield(false)
-
-
-func take_damage(damage: int) -> void:
-	if is_shielded:
-		return
-
-	super(damage)
 
 
 func spawn_magic_explosion(target_position: Vector2) -> void:

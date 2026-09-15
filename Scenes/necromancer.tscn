@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://c56yc7x5dhsaa" path="res://art/Characters(100x100 split)/Necromancer/Necromancer/Necromancer_Hurt.png" id="4_v001x"]
 [ext_resource type="Texture2D" uid="uid://cjigifjswaen" path="res://art/Characters(100x100 split)/Necromancer/Necromancer/Necromancer_Idle.png" id="5_hh3is"]
 [ext_resource type="Texture2D" uid="uid://bpisxi0wbdjks" path="res://art/Characters(100x100 split)/Necromancer/Necromancer/Necromancer_Walk.png" id="6_mr6in"]
+[ext_resource type="Texture2D" uid="uid://dmcu4fost3gvm" path="res://art/Characters(100x100 split)/Necromancer/Necromancer/Necromancer_Summon.png" id="7_mjnvx"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4i56g"]
 atlas = ExtResource("1_wdw8x")
@@ -159,6 +160,46 @@ region = Rect2(400, 0, 100, 100)
 [sub_resource type="AtlasTexture" id="AtlasTexture_4j7to"]
 atlas = ExtResource("5_hh3is")
 region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v001x"]
+atlas = ExtResource("7_mjnvx")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hh3is"]
+atlas = ExtResource("7_mjnvx")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mr6in"]
+atlas = ExtResource("7_mjnvx")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pfr1h"]
+atlas = ExtResource("7_mjnvx")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d4163"]
+atlas = ExtResource("7_mjnvx")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lbl8a"]
+atlas = ExtResource("7_mjnvx")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_07iwa"]
+atlas = ExtResource("7_mjnvx")
+region = Rect2(600, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cdmcy"]
+atlas = ExtResource("7_mjnvx")
+region = Rect2(700, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_16cjg"]
+atlas = ExtResource("7_mjnvx")
+region = Rect2(800, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j8xjl"]
+atlas = ExtResource("7_mjnvx")
+region = Rect2(900, 0, 100, 100)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_sd7r7"]
 atlas = ExtResource("6_mr6in")
@@ -327,6 +368,41 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_v001x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hh3is")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mr6in")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pfr1h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d4163")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lbl8a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_07iwa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cdmcy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_16cjg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j8xjl")
+}],
+"loop": 1,
+"name": &"summon",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_sd7r7")
 }, {
 "duration": 1.0,
@@ -355,8 +431,8 @@ radius = 130.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_fgxly"]
 radius = 8.5440035
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_l5lc7"]
-radius = 17.029387
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k7acu"]
+size = Vector2(81, 46)
 
 [node name="necromancer" type="CharacterBody2D" unique_id=1113116547]
 script = ExtResource("1_xwdgr")
@@ -365,8 +441,9 @@ script = ExtResource("1_xwdgr")
 position = Vector2(4.7683716e-06, 2.861023e-06)
 scale = Vector2(1.62, 1.4999999)
 sprite_frames = SubResource("SpriteFrames_l5lc7")
-animation = &"attack2"
-frame_progress = 0.23398107
+animation = &"summon"
+autoplay = "idle"
+frame_progress = 0.30968046
 
 [node name="detection_area" type="Area2D" parent="." unique_id=110274770]
 
@@ -375,9 +452,11 @@ visible = false
 shape = SubResource("CircleShape2D_wgbdp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=329584894]
+visible = false
 shape = SubResource("CircleShape2D_fgxly")
 
 [node name="enemy_hitbox" type="Area2D" parent="." unique_id=941889530]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_hitbox" unique_id=1042619868]
-shape = SubResource("CircleShape2D_l5lc7")
+position = Vector2(46, 32)
+shape = SubResource("RectangleShape2D_k7acu")

@@ -232,8 +232,8 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_5a7ea"]
 radius = 5.0990195
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_l5lc7"]
-radius = 10.198039
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1f0kj"]
+size = Vector2(12, 24)
 
 [node name="player" type="CharacterBody2D" unique_id=969721258]
 y_sort_enabled = true
@@ -244,9 +244,11 @@ max_health = 100
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1295611163]
 sprite_frames = SubResource("SpriteFrames_l5lc7")
 animation = &"attack"
-frame_progress = 0.19889377
+frame = 3
+frame_progress = 0.35998362
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=456498564]
+visible = false
 y_sort_enabled = true
 position = Vector2(-1, 2)
 shape = SubResource("CircleShape2D_5a7ea")
@@ -254,6 +256,7 @@ shape = SubResource("CircleShape2D_5a7ea")
 [node name="player_hitbox" type="Area2D" parent="." unique_id=488977721]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="player_hitbox" unique_id=1910081268]
-shape = SubResource("CircleShape2D_l5lc7")
+position = Vector2(15, -4)
+shape = SubResource("RectangleShape2D_1f0kj")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=497359421]
