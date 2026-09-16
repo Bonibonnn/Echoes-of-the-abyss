@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://bfgh2q7pwppja"]
+
+[ext_resource type="Texture2D" uid="uid://d3cov77oc3c4e" path="res://41c1f9c9-d7ce-4c7d-9c54-62a2186c0358.png" id="1_jehty"]
+[ext_resource type="FontFile" uid="uid://cwj53u7tkvsge" path="res://GrapeSoda.ttf" id="2_a66yo"]
+[ext_resource type="Texture2D" uid="uid://cs8kdpngbqjdy" path="res://02811508-872a-4de3-928e-3466dcc9cd67.png" id="3_nstox"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n7w73"]
+texture = ExtResource("1_jehty")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nstox"]
+texture = ExtResource("3_nstox")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q2be1"]
+texture = ExtResource("3_nstox")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ht42v"]
+
+[node name="SelectCharacter" type="Control" unique_id=386156478]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="." unique_id=1193291760]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_n7w73")
+
+[node name="Label" type="Label" parent="." unique_id=1020332499]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -267.0
+offset_top = 102.0
+offset_right = 263.0
+offset_bottom = 182.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_a66yo")
+theme_override_font_sizes/font_size = 80
+text = "Select Character"
+
+[node name="Button" type="Button" parent="." unique_id=1611352323]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -77.0
+offset_top = -81.5
+offset_right = 77.0
+offset_bottom = 81.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_nstox")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_q2be1")
+theme_override_styles/hover = SubResource("StyleBoxTexture_ht42v")
+expand_icon = true

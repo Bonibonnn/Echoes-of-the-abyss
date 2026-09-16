@@ -10,16 +10,15 @@ config_version=5
 
 [application]
 
-config/name="Echoes of the Abyss"
-run/main_scene="uid://0l32rbvcep5j"
+config/name="Echoes of th abyss"
+run/main_scene="res://main_menu.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
-config/icon="res://Terrain/icon.svg"
+config/icon="res://icon.svg"
 
 [display]
 
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
-window/stretch/scale=4.0
 
 [physics]
 
@@ -27,5 +26,4 @@ window/stretch/scale=4.0
 
 [rendering]
 
-textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
