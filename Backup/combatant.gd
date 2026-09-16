@@ -1,6 +1,8 @@
 class_name Combatant
 extends CharacterBody2D
 
+signal died
+
 # Shared melee combat for the player and every enemy.
 # Preferred node setup:
 # CharacterBody2D
@@ -102,7 +104,7 @@ func start_melee_attack(
 	if token < 0:
 		return
 
-	var requested_hit_delay := attack_hit_delay if hit_delay < 0.0 else hit_delay
+	var requested_hit_delay: float = attack_hit_delay if hit_delay < 0.0 else hit_delay
 	var safe_hit_delay: float = minf(requested_hit_delay, attack_duration)
 	await get_tree().create_timer(safe_hit_delay).timeout
 	if not is_attack_token_active(token):
@@ -178,6 +180,7 @@ func die() -> void:
 	if attack_hitbox != null:
 		attack_hitbox.monitoring = false
 	play_animation("death")
+	died.emit()
 	await get_tree().create_timer(get_death_duration()).timeout
 	queue_free()
 
@@ -193,7 +196,7 @@ func set_one_shot_animations() -> void:
 	if animated_sprite == null:
 		return
 
-	for animation_name in ["attack", "attack1", "attack2", "hurt", "death"]:
+	for animation_name in ["attack", "attack1", "attack2", "summon", "hurt", "death"]:
 		for available_name in animated_sprite.sprite_frames.get_animation_names():
 			if String(available_name).to_lower() == animation_name:
 				animated_sprite.sprite_frames.set_animation_loop(available_name, false)

@@ -1,7 +1,6 @@
 [gd_scene format=4 uid="uid://0l32rbvcep5j"]
 
 [ext_resource type="Texture2D" uid="uid://coy050b0rjmhd" path="res://Terrain/Island_24x24.png" id="1_5a7ea"]
-[ext_resource type="PackedScene" uid="uid://4o1uhbipphl7" path="res://Scenes/necromancer.tscn" id="1_o06y3"]
 [ext_resource type="Texture2D" uid="uid://y2cm0ejjay3b" path="res://Terrain/decor.png" id="2_8j60k"]
 [ext_resource type="PackedScene" uid="uid://d30nugf2k2pr1" path="res://Scenes/player.tscn" id="3_fo5ed"]
 [ext_resource type="PackedScene" uid="uid://6imp8q0vekre" path="res://Scenes/skeleton.tscn" id="4_8j60k"]
@@ -173,10 +172,6 @@ size = Vector2(29.25, 57)
 
 [node name="world" type="Node2D" unique_id=1812078328]
 y_sort_enabled = true
-
-[node name="necromancer" parent="." unique_id=1113116547 instance=ExtResource("1_o06y3")]
-position = Vector2(134, 153)
-attack_hit_delay = 3.0
 
 [node name="dirt" type="TileMapLayer" parent="." unique_id=348084894]
 use_parent_material = true

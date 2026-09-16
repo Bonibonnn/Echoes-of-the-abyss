@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://cjigifjswaen" path="res://art/Characters(100x100 split)/Necromancer/Necromancer/Necromancer_Idle.png" id="5_hh3is"]
 [ext_resource type="Texture2D" uid="uid://bpisxi0wbdjks" path="res://art/Characters(100x100 split)/Necromancer/Necromancer/Necromancer_Walk.png" id="6_mr6in"]
 [ext_resource type="Texture2D" uid="uid://dmcu4fost3gvm" path="res://art/Characters(100x100 split)/Necromancer/Necromancer/Necromancer_Summon.png" id="7_mjnvx"]
+[ext_resource type="Texture2D" uid="uid://c4psa5nuiayfa" path="res://art/Characters(100x100 split)/Necromancer/Necromancer/Necromancer_Sumon_Effect.png" id="9_v001x"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4i56g"]
 atlas = ExtResource("1_wdw8x")
@@ -431,8 +432,65 @@ radius = 130.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_fgxly"]
 radius = 8.5440035
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_uu08m"]
+atlas = ExtResource("9_v001x")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wxl2q"]
+atlas = ExtResource("9_v001x")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nqxhi"]
+atlas = ExtResource("9_v001x")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q05xt"]
+atlas = ExtResource("9_v001x")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0wq81"]
+atlas = ExtResource("9_v001x")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h257j"]
+atlas = ExtResource("9_v001x")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pvpgx"]
+atlas = ExtResource("9_v001x")
+region = Rect2(600, 0, 100, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wgbdp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uu08m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wxl2q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nqxhi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q05xt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0wq81")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h257j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pvpgx")
+}],
+"loop": 1,
+"name": &"summon",
+"speed": 5.0
+}]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k7acu"]
-size = Vector2(81, 46)
+size = Vector2(57.5, 46)
 
 [node name="necromancer" type="CharacterBody2D" unique_id=1113116547]
 script = ExtResource("1_xwdgr")
@@ -443,7 +501,8 @@ scale = Vector2(1.62, 1.4999999)
 sprite_frames = SubResource("SpriteFrames_l5lc7")
 animation = &"summon"
 autoplay = "idle"
-frame_progress = 0.30968046
+frame = 1
+frame_progress = 0.89330566
 
 [node name="detection_area" type="Area2D" parent="." unique_id=110274770]
 
@@ -457,6 +516,15 @@ shape = SubResource("CircleShape2D_fgxly")
 
 [node name="enemy_hitbox" type="Area2D" parent="." unique_id=941889530]
 
+[node name="summon_point" type="Marker2D" parent="enemy_hitbox" unique_id=291957968]
+position = Vector2(43, 0)
+
+[node name="animation_effect" type="AnimatedSprite2D" parent="enemy_hitbox/summon_point" unique_id=691655171]
+position = Vector2(0, 1)
+sprite_frames = SubResource("SpriteFrames_wgbdp")
+animation = &"summon"
+offset = Vector2(-3.2, 0)
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_hitbox" unique_id=1042619868]
-position = Vector2(46, 32)
+position = Vector2(52.25, -2)
 shape = SubResource("RectangleShape2D_k7acu")

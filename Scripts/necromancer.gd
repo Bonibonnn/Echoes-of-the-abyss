@@ -19,12 +19,14 @@ extends Combatant
 @export var summon_cast_time := 0.8
 @export var summon_animation: StringName = &"summon"
 @export var shield_tint := Color(0.55, 0.75, 1.0, 1.0)
+@export var summon_effect_animation: StringName = &"summon"
 
 # Optional: assign a visual-only explosion scene that appears at the boss.
 @export var magic_explosion_scene: PackedScene
 
 @onready var detection_area: Area2D = get_node_or_null("detection_area")
 @onready var summon_point: Marker2D = get_node_or_null("summon_point")
+@onready var summon_effect: AnimatedSprite2D = get_node_or_null("summon_point/summon_effect")
 
 var player: Node2D
 var magic_cooldown_remaining := 0.0
@@ -39,6 +41,10 @@ func _ready() -> void:
 	add_to_group("enemy")
 	if animated_sprite != null:
 		normal_sprite_tint = animated_sprite.modulate
+	if summon_effect != null:
+		summon_effect.hide()
+	if skeleton_scene == null:
+		push_warning("Assign skeleton.tscn to the Necromancer's Skeleton Scene field.")
 
 	if detection_area == null:
 		push_error("Add an Area2D child named 'detection_area' to the necromancer.")
@@ -130,12 +136,21 @@ func summon_skeleton() -> void:
 	if token < 0:
 		return
 
+	# The boss becomes protected as soon as the summon cast starts, so player
+	# attacks cannot cancel the cast before the skeleton appears.
+	set_summon_shield(true, false)
+	play_summon_effect()
+
 	await get_tree().create_timer(summon_cast_time).timeout
 	if not is_attack_token_active(token):
+		set_summon_shield(false)
+		stop_summon_effect()
 		return
 
 	var skeleton := skeleton_scene.instantiate() as Node2D
 	if skeleton == null:
+		set_summon_shield(false)
+		stop_summon_effect()
 		finish_attack(token)
 		return
 
@@ -150,20 +165,43 @@ func summon_skeleton() -> void:
 		combat_skeleton.died.connect(_on_summoned_skeleton_defeated.bind(skeleton))
 	skeleton.tree_exited.connect(_on_summoned_skeleton_removed.bind(skeleton))
 
+	stop_summon_effect()
 	finish_attack(token)
 
 
-func set_summon_shield(value: bool) -> void:
+func play_summon_effect() -> void:
+	if summon_effect == null:
+		return
+
+	if summon_effect.sprite_frames == null or not summon_effect.sprite_frames.has_animation(summon_effect_animation):
+		push_warning("Add a '%s' animation to summon_point/summon_effect." % String(summon_effect_animation))
+		return
+
+	summon_effect.show()
+	summon_effect.play(summon_effect_animation)
+
+
+func stop_summon_effect() -> void:
+	if summon_effect == null:
+		return
+
+	summon_effect.stop()
+	summon_effect.hide()
+
+
+func set_summon_shield(value: bool, play_idle_animation := true) -> void:
 	is_shielded = value
 	if animated_sprite == null:
 		return
 
 	if is_shielded:
 		animated_sprite.modulate = shield_tint
-		play_animation("idle")
+		if play_idle_animation:
+			play_animation("idle")
 	else:
 		animated_sprite.modulate = normal_sprite_tint
-		play_animation("idle")
+		if play_idle_animation:
+			play_animation("idle")
 
 
 func _on_summoned_skeleton_defeated(skeleton: Node2D) -> void:
