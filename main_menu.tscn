@@ -1,11 +1,11 @@
 [gd_scene format=4 uid="uid://rnpcxbolsfev"]
 
-[ext_resource type="Script" path="res://main_menu.gd" id="1_nlkkf"]
-[ext_resource type="FontFile" path="res://GrapeSoda.ttf" id="2_fu7sn"]
-[ext_resource type="Texture2D" path="res://2b5254da-55d5-40ce-909b-3f3fa134a1ab.png" id="2_jix8l"]
-[ext_resource type="Texture2D" path="res://Background.png" id="2_nlkkf"]
-[ext_resource type="Texture2D" path="res://Logo.png" id="3_qe12f"]
-[ext_resource type="Texture2D" path="res://Button2.png" id="6_8qtwp"]
+[ext_resource type="Script" uid="uid://ocsqya0ruglq" path="res://art/UI/main_menu.gd" id="1_nlkkf"]
+[ext_resource type="FontFile" uid="uid://cwj53u7tkvsge" path="res://art/UI/GrapeSoda.ttf" id="2_fu7sn"]
+[ext_resource type="Texture2D" uid="uid://bvttc3mds5aul" path="res://art/UI/2b5254da-55d5-40ce-909b-3f3fa134a1ab.png" id="2_jix8l"]
+[ext_resource type="Texture2D" uid="uid://bqctptlp8poou" path="res://art/UI/Background.png" id="2_nlkkf"]
+[ext_resource type="Texture2D" uid="uid://dwv38slyb8ke5" path="res://art/UI/Logo.png" id="3_qe12f"]
+[ext_resource type="Texture2D" uid="uid://da1cup7pxytf3" path="res://art/UI/Button2.png" id="6_8qtwp"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n7w73"]
 texture = ExtResource("2_nlkkf")

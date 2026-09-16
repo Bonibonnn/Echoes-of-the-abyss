@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://ddggtp8vxvh6s"]
 
-[ext_resource type="Texture2D" path="res://Background.png" id="1_nstox"]
-[ext_resource type="FontFile" path="res://GrapeSoda.ttf" id="2_a66yo"]
-[ext_resource type="Texture2D" path="res://Knight Button.png" id="3_q2be1"]
+[ext_resource type="Texture2D" uid="uid://bqctptlp8poou" path="res://art/UI/Background.png" id="1_nstox"]
+[ext_resource type="FontFile" uid="uid://cwj53u7tkvsge" path="res://art/UI/GrapeSoda.ttf" id="2_a66yo"]
+[ext_resource type="Texture2D" uid="uid://ded3rhp171f7p" path="res://art/UI/Knight Button.png" id="3_q2be1"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n7w73"]
 texture = ExtResource("1_nstox")
