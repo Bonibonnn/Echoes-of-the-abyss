@@ -1,17 +1,17 @@
 [gd_scene format=3 uid="uid://bfgh2q7pwppja"]
 
-[ext_resource type="Texture2D" uid="uid://d3cov77oc3c4e" path="res://41c1f9c9-d7ce-4c7d-9c54-62a2186c0358.png" id="1_jehty"]
+[ext_resource type="Texture2D" uid="uid://bqctptlp8poou" path="res://Background.png" id="1_nstox"]
 [ext_resource type="FontFile" uid="uid://cwj53u7tkvsge" path="res://GrapeSoda.ttf" id="2_a66yo"]
-[ext_resource type="Texture2D" uid="uid://cs8kdpngbqjdy" path="res://02811508-872a-4de3-928e-3466dcc9cd67.png" id="3_nstox"]
+[ext_resource type="Texture2D" uid="uid://ded3rhp171f7p" path="res://Knight Button.png" id="3_q2be1"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n7w73"]
-texture = ExtResource("1_jehty")
+texture = ExtResource("1_nstox")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nstox"]
-texture = ExtResource("3_nstox")
+texture = ExtResource("3_q2be1")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q2be1"]
-texture = ExtResource("3_nstox")
+texture = ExtResource("3_q2be1")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ht42v"]
 
