@@ -1,8 +1,11 @@
 [gd_scene format=3 uid="uid://ddggtp8vxvh6s"]
 
+[ext_resource type="Script" uid="uid://84prhwbx2542" path="res://Scripts/select_character.gd" id="1_ht42v"]
 [ext_resource type="Texture2D" uid="uid://bqctptlp8poou" path="res://art/UI/Background.png" id="1_nstox"]
+[ext_resource type="PackedScene" uid="uid://0l32rbvcep5j" path="res://Scenes/world.tscn" id="2_8ruiq"]
 [ext_resource type="FontFile" uid="uid://cwj53u7tkvsge" path="res://art/UI/GrapeSoda.ttf" id="2_a66yo"]
 [ext_resource type="Texture2D" uid="uid://ded3rhp171f7p" path="res://art/UI/Knight Button.png" id="3_q2be1"]
+[ext_resource type="PackedScene" uid="uid://d30nugf2k2pr1" path="res://Scenes/player.tscn" id="3_qemuc"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n7w73"]
 texture = ExtResource("1_nstox")
@@ -22,6 +25,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_ht42v")
+world_scene = ExtResource("2_8ruiq")
+knight_scene = ExtResource("3_qemuc")
 
 [node name="Panel" type="Panel" parent="." unique_id=1193291760]
 layout_mode = 1
@@ -46,7 +52,7 @@ theme_override_fonts/font = ExtResource("2_a66yo")
 theme_override_font_sizes/font_size = 80
 text = "Select Character"
 
-[node name="Button" type="Button" parent="." unique_id=1611352323]
+[node name="knight_button" type="Button" parent="." unique_id=1611352323]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

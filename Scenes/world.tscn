@@ -2,7 +2,6 @@
 
 [ext_resource type="Texture2D" uid="uid://coy050b0rjmhd" path="res://Terrain/Island_24x24.png" id="1_5a7ea"]
 [ext_resource type="Texture2D" uid="uid://y2cm0ejjay3b" path="res://Terrain/decor.png" id="2_8j60k"]
-[ext_resource type="PackedScene" uid="uid://d30nugf2k2pr1" path="res://Scenes/player.tscn" id="3_fo5ed"]
 [ext_resource type="PackedScene" uid="uid://6imp8q0vekre" path="res://Scenes/skeleton.tscn" id="4_8j60k"]
 [ext_resource type="Script" uid="uid://dc8l0c4vuxuuu" path="res://Scripts/skeleton_spawner.gd" id="6_5ukr8"]
 [ext_resource type="Script" uid="uid://bf4qirgm8dxok" path="res://Scripts/dungeon_door.gd" id="7_k7acu"]
@@ -191,9 +190,6 @@ position = Vector2(-25, -31)
 tile_map_data = PackedByteArray("AAAEABIAAQADAAMAAAAIABAAAQADAAMAAAAMABMAAQADAAMAAAAPABEAAQADAAMAAAAUABEAAQADAAMAAAAbABEAAQADAAMAAAAcAAcAAQADAAMAAAAkABIAAQADAAMAAAAsABIAAQADAAMAAAAuABUAAQADAAMAAAAvABcAAQADAAMAAAAzAA4AAQADAAMAAAA7AA8AAQADAAMAAABDAA8AAQADAAMAAAA3ABAAAQADAAMAAAA5ABMAAQADAAMAAAA9ABMAAQADAAMAAABBABIAAQADAAMAAAA2AB4AAQADAAMAAABCACEAAQADAAMAAAA8ABwAAQADAAMAAAA7ACAAAQADAAMAAABFABwAAQADAAMAAABLACAAAQADAAMAAABSACAAAQADAAMAAABHACIAAQADAAMAAABLAA8AAQADAAMAAABSABAAAQADAAMAAABKABMAAQADAAMAAABRABQAAQADAAMAAAAmAA0AAQADAAIAAAAXABMAAQABAAIAAAAgABQAAQABAAIAAABGABIAAQABAAIAAABLABsAAQABAAIAAAAxABsAAQABAAIAAAAyABgAAQABAAIAAAASAAkAAQABAAIAAAAjAAgAAQABAAIAAAA=")
 tile_set = SubResource("TileSet_fo5ed")
 
-[node name="player" parent="." unique_id=969721258 instance=ExtResource("3_fo5ed")]
-position = Vector2(9, 160)
-
 [node name="collision" type="StaticBody2D" parent="." unique_id=1705958284]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="collision" unique_id=109192830]
@@ -229,3 +225,6 @@ destination_scene = "uid://bm6hwpvfnhuwr"
 position = Vector2(1422.625, 343)
 shape = SubResource("RectangleShape2D_wgbdp")
 debug_color = Color(0.33436316, 0.36119938, 0.97549075, 0.41960785)
+
+[node name="player_spawn" type="Marker2D" parent="." unique_id=268676745]
+position = Vector2(30, 162)
