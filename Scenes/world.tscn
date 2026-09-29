@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://y2cm0ejjay3b" path="res://Terrain/decor.png" id="2_8j60k"]
 [ext_resource type="PackedScene" uid="uid://6imp8q0vekre" path="res://Scenes/skeleton.tscn" id="4_8j60k"]
 [ext_resource type="Script" uid="uid://dc8l0c4vuxuuu" path="res://Scripts/skeleton_spawner.gd" id="6_5ukr8"]
+[ext_resource type="PackedScene" uid="uid://4o1uhbipphl7" path="res://Scenes/necromancer.tscn" id="6_o06y3"]
 [ext_resource type="Script" uid="uid://bf4qirgm8dxok" path="res://Scripts/dungeon_door.gd" id="7_k7acu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5a7ea"]
@@ -171,6 +172,9 @@ size = Vector2(29.25, 57)
 
 [node name="world" type="Node2D" unique_id=1812078328]
 y_sort_enabled = true
+
+[node name="necromancer" parent="." unique_id=1113116547 instance=ExtResource("6_o06y3")]
+position = Vector2(177, 153)
 
 [node name="dirt" type="TileMapLayer" parent="." unique_id=348084894]
 use_parent_material = true

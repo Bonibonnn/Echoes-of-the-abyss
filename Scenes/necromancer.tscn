@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bpisxi0wbdjks" path="res://art/Characters(100x100 split)/Necromancer/Necromancer/Necromancer_Walk.png" id="6_mr6in"]
 [ext_resource type="Texture2D" uid="uid://dmcu4fost3gvm" path="res://art/Characters(100x100 split)/Necromancer/Necromancer/Necromancer_Summon.png" id="7_mjnvx"]
 [ext_resource type="Texture2D" uid="uid://c4psa5nuiayfa" path="res://art/Characters(100x100 split)/Necromancer/Necromancer/Necromancer_Sumon_Effect.png" id="9_v001x"]
+[ext_resource type="PackedScene" uid="uid://6imp8q0vekre" path="res://Scenes/skeleton.tscn" id="10_skeleton"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4i56g"]
 atlas = ExtResource("1_wdw8x")
@@ -490,10 +491,11 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k7acu"]
-size = Vector2(57.5, 46)
+size = Vector2(26, 32)
 
 [node name="necromancer" type="CharacterBody2D" unique_id=1113116547]
 script = ExtResource("1_xwdgr")
+skeleton_scene = ExtResource("10_skeleton")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1510927603]
 position = Vector2(4.7683716e-06, 2.861023e-06)
@@ -526,5 +528,5 @@ animation = &"summon"
 offset = Vector2(-3.2, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_hitbox" unique_id=1042619868]
-position = Vector2(52.25, -2)
+position = Vector2(25, -2)
 shape = SubResource("RectangleShape2D_k7acu")

@@ -1,0 +1,321 @@
+class_name Combatant
+extends CharacterBody2D
+
+signal died
+
+# Shared top-down combat for the player and every melee enemy.
+# It supports attack_hitbox, player_hitbox, or enemy_hitbox.
+
+@export_category("Attack Hitbox")
+@export_range(0.0, 5.0, 0.01) var attack_hit_delay := 0.18
+@export var legacy_hitbox_offset := Vector2(24.0, 0.0)
+
+const ONE_SHOT_ANIMATIONS := [&"attack", &"attack1", &"attack2", &"summon", &"hurt", &"death"]
+
+@onready var animated_sprite := get_node_or_null(^"AnimatedSprite2D") as AnimatedSprite2D
+@onready var attack_pivot := get_node_or_null(^"attack_pivot") as Node2D
+@onready var attack_hitbox := _find_attack_hitbox()
+
+var health := 1
+var facing_direction := 1
+var is_attacking := false
+var is_hurt := false
+var is_dead := false
+
+var _attack_token := 0
+var _pivot_scale := Vector2.ONE
+var _hitbox_position := Vector2.ZERO
+var _hitbox_scale := Vector2.ONE
+var _hitbox_has_forward_shape := false
+
+
+func _ready() -> void:
+	# Makes CharacterBody2D behave correctly for a top-down RPG.
+	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
+	health = get_max_health()
+	set_one_shot_animations()
+	_cache_attack_transforms()
+
+	if attack_hitbox == null:
+		if requires_attack_hitbox():
+			push_warning("Add an Area2D named attack_hitbox, player_hitbox, or enemy_hitbox.")
+		return
+
+	attack_hitbox.monitoring = true
+	sync_attack_hitbox()
+
+
+func get_max_health() -> int:
+	return 1
+
+
+func get_hurt_duration() -> float:
+	return 0.3
+
+
+func get_death_duration() -> float:
+	return 0.8
+
+
+func requires_attack_hitbox() -> bool:
+	return true
+
+
+func is_busy() -> bool:
+	return is_dead or is_hurt or is_attacking
+
+
+# Flips the sprite and its forward attack hitbox.
+func set_facing_from_x(horizontal_direction: float) -> void:
+	if is_zero_approx(horizontal_direction) or is_attacking:
+		return
+
+	facing_direction = 1 if horizontal_direction > 0.0 else -1
+
+	if animated_sprite != null:
+		animated_sprite.flip_h = facing_direction < 0
+
+	sync_attack_hitbox()
+
+
+func sync_attack_hitbox() -> void:
+	if attack_pivot != null:
+		attack_pivot.scale = Vector2(absf(_pivot_scale.x) * facing_direction, _pivot_scale.y)
+		return
+
+	if attack_hitbox == null:
+		return
+
+	# Mirrors collision shapes that are already positioned in front.
+	if _hitbox_has_forward_shape:
+		attack_hitbox.position = _hitbox_position
+		attack_hitbox.scale = Vector2(absf(_hitbox_scale.x) * facing_direction, _hitbox_scale.y)
+	else:
+		attack_hitbox.position = _hitbox_position + Vector2(
+			absf(legacy_hitbox_offset.x) * facing_direction,
+			legacy_hitbox_offset.y
+		)
+		attack_hitbox.scale = _hitbox_scale
+
+
+func can_hit_target(target: Node2D) -> bool:
+	return attack_hitbox != null and _is_target_in_front(target) and attack_hitbox.overlaps_body(target)
+
+
+func start_melee_attack(
+	animation_name: StringName,
+	damage: int,
+	target_group: StringName,
+	attack_cooldown: float,
+	hit_delay: float = -1.0
+) -> void:
+	var token := begin_attack(animation_name)
+	if token < 0:
+		return
+
+	# Do not cut off the attack animation early.
+	var attack_duration := maxf(attack_cooldown, get_animation_duration(animation_name))
+	var requested_delay := attack_hit_delay if hit_delay < 0.0 else hit_delay
+	var safe_hit_delay := minf(maxf(0.0, requested_delay), attack_duration)
+
+	await wait_for_gameplay_time(safe_hit_delay).timeout
+
+	if not is_attack_token_active(token):
+		return
+
+	deal_melee_damage(damage, target_group)
+
+	await wait_for_gameplay_time(attack_duration - safe_hit_delay).timeout
+	finish_attack(token)
+
+
+func begin_attack(animation_name: StringName) -> int:
+	if is_busy():
+		return -1
+
+	is_attacking = true
+	_attack_token += 1
+	velocity = Vector2.ZERO
+
+	# Restarts a finished attack animation every new swing.
+	play_animation(animation_name, true)
+
+	return _attack_token
+
+
+func is_attack_token_active(token: int) -> bool:
+	return token == _attack_token and is_attacking and not is_hurt and not is_dead
+
+
+func finish_attack(token: int) -> void:
+	if token == _attack_token and not is_dead:
+		is_attacking = false
+		update_idle_or_walk_animation()
+
+
+func deal_melee_damage(damage: int, target_group: StringName) -> void:
+	if attack_hitbox == null or damage <= 0:
+		return
+
+	for body in attack_hitbox.get_overlapping_bodies():
+		if body is Node2D and body.is_in_group(target_group) and _is_target_in_front(body) and body.has_method(&"take_damage"):
+			body.call(&"take_damage", damage)
+
+
+func take_damage(damage: int) -> void:
+	# Attacking does not make a character invulnerable.
+	if is_dead or is_hurt or damage <= 0:
+		return
+
+	health = maxi(0, health - damage)
+
+	if health == 0:
+		die()
+		return
+
+	# Cancels the current attack so the character cannot freeze after hurt.
+	_attack_token += 1
+	is_attacking = false
+	is_hurt = true
+	velocity = Vector2.ZERO
+
+	play_animation(&"hurt", true)
+
+	await wait_for_gameplay_time(
+		maxf(get_hurt_duration(), get_animation_duration(&"hurt"))
+	).timeout
+
+	if not is_dead:
+		is_hurt = false
+		update_idle_or_walk_animation()
+
+
+func die() -> void:
+	if is_dead:
+		return
+
+	is_dead = true
+	_attack_token += 1
+	is_attacking = false
+	velocity = Vector2.ZERO
+	collision_layer = 0
+	collision_mask = 0
+
+	if attack_hitbox != null:
+		attack_hitbox.set_deferred(&"monitoring", false)
+
+	play_animation(&"death", true)
+	died.emit()
+
+	await wait_for_gameplay_time(
+		maxf(get_death_duration(), get_animation_duration(&"death"))
+	).timeout
+
+	queue_free()
+
+
+func update_idle_or_walk_animation() -> void:
+	play_animation(&"idle" if velocity.is_zero_approx() else &"walk")
+
+
+func wait_for_gameplay_time(seconds: float) -> SceneTreeTimer:
+	return get_tree().create_timer(maxf(0.0, seconds), false, true)
+
+
+func get_animation_duration(animation_name: StringName) -> float:
+	if animated_sprite == null or animated_sprite.sprite_frames == null:
+		return 0.0
+
+	var actual_name := _find_animation_name(animation_name)
+
+	if actual_name == &"":
+		return 0.0
+
+	var speed := animated_sprite.sprite_frames.get_animation_speed(actual_name)
+
+	return float(animated_sprite.sprite_frames.get_frame_count(actual_name)) / speed if speed > 0.0 else 0.0
+
+
+func set_one_shot_animations() -> void:
+	if animated_sprite == null or animated_sprite.sprite_frames == null:
+		return
+
+	for animation_name in ONE_SHOT_ANIMATIONS:
+		var actual_name := _find_animation_name(animation_name)
+
+		if actual_name != &"":
+			# Godot 4.7 way to stop one-shot animations from looping.
+			animated_sprite.sprite_frames.set_animation_loop_mode(
+				actual_name,
+				SpriteFrames.LOOP_NONE
+			)
+
+
+func play_animation(animation_name: StringName, restart := false) -> void:
+	if animated_sprite == null:
+		return
+
+	var actual_name := _find_animation_name(animation_name)
+
+	if actual_name == &"":
+		return
+
+	if restart or animated_sprite.animation != actual_name:
+		animated_sprite.play(actual_name)
+
+		if restart:
+			animated_sprite.frame = 0
+			animated_sprite.frame_progress = 0.0
+
+
+func _cache_attack_transforms() -> void:
+	if attack_pivot != null:
+		_pivot_scale = attack_pivot.scale
+
+	if attack_hitbox != null:
+		_hitbox_position = attack_hitbox.position
+		_hitbox_scale = attack_hitbox.scale
+		_hitbox_has_forward_shape = _has_forward_collision_shape()
+
+
+func _has_forward_collision_shape() -> bool:
+	if attack_hitbox == null:
+		return false
+
+	for child in attack_hitbox.get_children():
+		if child is CollisionShape2D and not child.disabled and not is_zero_approx(child.position.x):
+			return true
+
+	return false
+
+
+func _is_target_in_front(target: Node2D) -> bool:
+	return (target.global_position.x - global_position.x) * facing_direction >= 0.0
+
+
+func _find_animation_name(requested_name: StringName) -> StringName:
+	if animated_sprite == null or animated_sprite.sprite_frames == null:
+		return &""
+
+	var requested_lower := String(requested_name).to_lower()
+
+	for available_name in animated_sprite.sprite_frames.get_animation_names():
+		if String(available_name).to_lower() == requested_lower:
+			return available_name
+
+	return &""
+
+
+func _find_attack_hitbox() -> Area2D:
+	for node_path in [
+		^"attack_pivot/attack_hitbox",
+		^"attack_hitbox",
+		^"player_hitbox",
+		^"enemy_hitbox"
+	]:
+		var hitbox := get_node_or_null(node_path) as Area2D
+
+		if hitbox != null:
+			return hitbox
+
+	return null

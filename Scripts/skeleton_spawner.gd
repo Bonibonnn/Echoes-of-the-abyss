@@ -8,16 +8,18 @@ var spawn_points: Array[Marker2D] = []
 
 
 func _ready() -> void:
+	# Every Marker2D whose name starts with spawn_point becomes one spawn location.
 	for node in find_children("*", "Marker2D", true, false):
 		if node is Marker2D and node.name.to_lower().begins_with("spawn_point"):
 			spawn_points.append(node)
 
+	monitoring = true
 	if not body_entered.is_connected(_on_body_entered):
 		body_entered.connect(_on_body_entered)
 
 
 func _on_body_entered(body: Node2D) -> void:
-	if body.is_in_group("player") or body.name.to_lower() == "player":
+	if body.is_in_group(&"player"):
 		spawn_skeletons()
 
 
@@ -40,5 +42,10 @@ func spawn_skeleton_at(spawn_position: Vector2) -> void:
 		push_error("Skeleton Scene must have a Node2D root.")
 		return
 
-	get_tree().current_scene.add_child(skeleton)
+	# Spawn beside this area so it works in any map scene, not just the current root.
+	var spawn_parent := get_parent()
+	if spawn_parent == null:
+		return
+
+	spawn_parent.add_child(skeleton)
 	skeleton.global_position = spawn_position
