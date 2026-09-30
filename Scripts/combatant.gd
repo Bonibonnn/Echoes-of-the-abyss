@@ -4,13 +4,19 @@ extends CharacterBody2D
 signal died
 
 # Shared top-down combat for the player and every melee enemy.
-# It supports attack_hitbox, player_hitbox, or enemy_hitbox.
+# It supports either a modern attack_pivot/attack_hitbox setup or the existing
+# player_hitbox/enemy_hitbox nodes in this project.
 
 @export_category("Attack Hitbox")
 @export_range(0.0, 5.0, 0.01) var attack_hit_delay := 0.18
 @export var legacy_hitbox_offset := Vector2(24.0, 0.0)
 
-const ONE_SHOT_ANIMATIONS := [&"attack", &"attack1", &"attack2", &"summon", &"hurt", &"death"]
+@export_category("Damage Protection")
+# This is separate from the hurt animation length. It stops several enemies
+# from damaging the same target on the same frame, without blocking a real combo.
+@export_range(0.0, 2.0, 0.01) var damage_invulnerability_time := 0.12
+
+const ONE_SHOT_ANIMATIONS := [&"attack", &"attack1", &"attack2", &"skill1", &"block", &"summon", &"hurt", &"death"]
 
 @onready var animated_sprite := get_node_or_null(^"AnimatedSprite2D") as AnimatedSprite2D
 @onready var attack_pivot := get_node_or_null(^"attack_pivot") as Node2D
@@ -21,8 +27,10 @@ var facing_direction := 1
 var is_attacking := false
 var is_hurt := false
 var is_dead := false
+var is_damage_invulnerable := false
 
 var _attack_token := 0
+var _damage_invulnerability_token := 0
 var _pivot_scale := Vector2.ONE
 var _hitbox_position := Vector2.ZERO
 var _hitbox_scale := Vector2.ONE
@@ -30,7 +38,7 @@ var _hitbox_has_forward_shape := false
 
 
 func _ready() -> void:
-	# Makes CharacterBody2D behave correctly for a top-down RPG.
+	# FLOATING prevents platformer floor behaviour in a top-down RPG.
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 	health = get_max_health()
 	set_one_shot_animations()
@@ -45,6 +53,7 @@ func _ready() -> void:
 	sync_attack_hitbox()
 
 
+# Child scripts override these values with their exported settings.
 func get_max_health() -> int:
 	return 1
 
@@ -65,16 +74,14 @@ func is_busy() -> bool:
 	return is_dead or is_hurt or is_attacking
 
 
-# Flips the sprite and its forward attack hitbox.
+# Changes the left/right sprite direction and mirrors the forward hitbox.
 func set_facing_from_x(horizontal_direction: float) -> void:
 	if is_zero_approx(horizontal_direction) or is_attacking:
 		return
 
 	facing_direction = 1 if horizontal_direction > 0.0 else -1
-
 	if animated_sprite != null:
 		animated_sprite.flip_h = facing_direction < 0
-
 	sync_attack_hitbox()
 
 
@@ -86,15 +93,13 @@ func sync_attack_hitbox() -> void:
 	if attack_hitbox == null:
 		return
 
-	# Mirrors collision shapes that are already positioned in front.
+	# Existing scenes already offset their CollisionShape2D forward. Mirror that
+	# shape instead of adding a second offset, which caused hits behind/too far.
 	if _hitbox_has_forward_shape:
 		attack_hitbox.position = _hitbox_position
 		attack_hitbox.scale = Vector2(absf(_hitbox_scale.x) * facing_direction, _hitbox_scale.y)
 	else:
-		attack_hitbox.position = _hitbox_position + Vector2(
-			absf(legacy_hitbox_offset.x) * facing_direction,
-			legacy_hitbox_offset.y
-		)
+		attack_hitbox.position = _hitbox_position + Vector2(absf(legacy_hitbox_offset.x) * facing_direction, legacy_hitbox_offset.y)
 		attack_hitbox.scale = _hitbox_scale
 
 
@@ -102,6 +107,8 @@ func can_hit_target(target: Node2D) -> bool:
 	return attack_hitbox != null and _is_target_in_front(target) and attack_hitbox.overlaps_body(target)
 
 
+# Starts one swing. The animation length is respected even when an older scene
+# has a shorter cooldown value, so attacks and hurt/death animations do not cut off.
 func start_melee_attack(
 	animation_name: StringName,
 	damage: int,
@@ -113,18 +120,15 @@ func start_melee_attack(
 	if token < 0:
 		return
 
-	# Do not cut off the attack animation early.
 	var attack_duration := maxf(attack_cooldown, get_animation_duration(animation_name))
 	var requested_delay := attack_hit_delay if hit_delay < 0.0 else hit_delay
 	var safe_hit_delay := minf(maxf(0.0, requested_delay), attack_duration)
 
 	await wait_for_gameplay_time(safe_hit_delay).timeout
-
 	if not is_attack_token_active(token):
 		return
 
 	deal_melee_damage(damage, target_group)
-
 	await wait_for_gameplay_time(attack_duration - safe_hit_delay).timeout
 	finish_attack(token)
 
@@ -136,10 +140,8 @@ func begin_attack(animation_name: StringName) -> int:
 	is_attacking = true
 	_attack_token += 1
 	velocity = Vector2.ZERO
-
-	# Restarts a finished attack animation every new swing.
+	# Restart a finished one-shot animation every time a new attack begins.
 	play_animation(animation_name, true)
-
 	return _attack_token
 
 
@@ -150,9 +152,11 @@ func is_attack_token_active(token: int) -> bool:
 func finish_attack(token: int) -> void:
 	if token == _attack_token and not is_dead:
 		is_attacking = false
+		# Leave the final attack frame immediately instead of looking frozen.
 		update_idle_or_walk_animation()
 
 
+# Only applies damage during the chosen contact frame and inside the front hitbox.
 func deal_melee_damage(damage: int, target_group: StringName) -> void:
 	if attack_hitbox == null or damage <= 0:
 		return
@@ -163,31 +167,42 @@ func deal_melee_damage(damage: int, target_group: StringName) -> void:
 
 
 func take_damage(damage: int) -> void:
-	# Attacking does not make a character invulnerable.
-	if is_dead or is_hurt or damage <= 0:
+	# Hurt is a visual/action state. This brief timer is the actual protection
+	# against several attacks landing on the very same instant.
+	if is_dead or is_damage_invulnerable or damage <= 0:
 		return
 
 	health = maxi(0, health - damage)
-
 	if health == 0:
 		die()
 		return
 
-	# Cancels the current attack so the character cannot freeze after hurt.
+	_start_damage_invulnerability()
+
+	# A later combo hit can damage a target during its hurt animation, but it does
+	# not restart that animation or interrupt the target a second time.
+	if is_hurt:
+		return
+
+	# A hit cancels the old attack token, so an interrupted swing cannot damage later.
 	_attack_token += 1
 	is_attacking = false
 	is_hurt = true
 	velocity = Vector2.ZERO
-
 	play_animation(&"hurt", true)
-
-	await wait_for_gameplay_time(
-		maxf(get_hurt_duration(), get_animation_duration(&"hurt"))
-	).timeout
-
+	await wait_for_gameplay_time(maxf(get_hurt_duration(), get_animation_duration(&"hurt"))).timeout
 	if not is_dead:
 		is_hurt = false
 		update_idle_or_walk_animation()
+
+
+func _start_damage_invulnerability() -> void:
+	_damage_invulnerability_token += 1
+	var token := _damage_invulnerability_token
+	is_damage_invulnerable = true
+	await wait_for_gameplay_time(damage_invulnerability_time).timeout
+	if token == _damage_invulnerability_token:
+		is_damage_invulnerable = false
 
 
 func die() -> void:
@@ -200,17 +215,11 @@ func die() -> void:
 	velocity = Vector2.ZERO
 	collision_layer = 0
 	collision_mask = 0
-
 	if attack_hitbox != null:
 		attack_hitbox.set_deferred(&"monitoring", false)
-
 	play_animation(&"death", true)
 	died.emit()
-
-	await wait_for_gameplay_time(
-		maxf(get_death_duration(), get_animation_duration(&"death"))
-	).timeout
-
+	await wait_for_gameplay_time(maxf(get_death_duration(), get_animation_duration(&"death"))).timeout
 	queue_free()
 
 
@@ -218,6 +227,7 @@ func update_idle_or_walk_animation() -> void:
 	play_animation(&"idle" if velocity.is_zero_approx() else &"walk")
 
 
+# Uses physics-time timers so combat pauses cleanly with the game.
 func wait_for_gameplay_time(seconds: float) -> SceneTreeTimer:
 	return get_tree().create_timer(maxf(0.0, seconds), false, true)
 
@@ -227,12 +237,10 @@ func get_animation_duration(animation_name: StringName) -> float:
 		return 0.0
 
 	var actual_name := _find_animation_name(animation_name)
-
 	if actual_name == &"":
 		return 0.0
 
 	var speed := animated_sprite.sprite_frames.get_animation_speed(actual_name)
-
 	return float(animated_sprite.sprite_frames.get_frame_count(actual_name)) / speed if speed > 0.0 else 0.0
 
 
@@ -242,13 +250,9 @@ func set_one_shot_animations() -> void:
 
 	for animation_name in ONE_SHOT_ANIMATIONS:
 		var actual_name := _find_animation_name(animation_name)
-
 		if actual_name != &"":
-			# Godot 4.7 way to stop one-shot animations from looping.
-			animated_sprite.sprite_frames.set_animation_loop_mode(
-				actual_name,
-				SpriteFrames.LOOP_NONE
-			)
+			# Godot 4.7 replacement for the deprecated set_animation_loop().
+			animated_sprite.sprite_frames.set_animation_loop_mode(actual_name, SpriteFrames.LOOP_NONE)
 
 
 func play_animation(animation_name: StringName, restart := false) -> void:
@@ -256,13 +260,11 @@ func play_animation(animation_name: StringName, restart := false) -> void:
 		return
 
 	var actual_name := _find_animation_name(animation_name)
-
 	if actual_name == &"":
 		return
 
 	if restart or animated_sprite.animation != actual_name:
 		animated_sprite.play(actual_name)
-
 		if restart:
 			animated_sprite.frame = 0
 			animated_sprite.frame_progress = 0.0
@@ -271,7 +273,6 @@ func play_animation(animation_name: StringName, restart := false) -> void:
 func _cache_attack_transforms() -> void:
 	if attack_pivot != null:
 		_pivot_scale = attack_pivot.scale
-
 	if attack_hitbox != null:
 		_hitbox_position = attack_hitbox.position
 		_hitbox_scale = attack_hitbox.scale
@@ -285,7 +286,6 @@ func _has_forward_collision_shape() -> bool:
 	for child in attack_hitbox.get_children():
 		if child is CollisionShape2D and not child.disabled and not is_zero_approx(child.position.x):
 			return true
-
 	return false
 
 
@@ -298,24 +298,15 @@ func _find_animation_name(requested_name: StringName) -> StringName:
 		return &""
 
 	var requested_lower := String(requested_name).to_lower()
-
 	for available_name in animated_sprite.sprite_frames.get_animation_names():
 		if String(available_name).to_lower() == requested_lower:
 			return available_name
-
 	return &""
 
 
 func _find_attack_hitbox() -> Area2D:
-	for node_path in [
-		^"attack_pivot/attack_hitbox",
-		^"attack_hitbox",
-		^"player_hitbox",
-		^"enemy_hitbox"
-	]:
+	for node_path in [^"attack_pivot/attack_hitbox", ^"attack_hitbox", ^"player_hitbox", ^"enemy_hitbox"]:
 		var hitbox := get_node_or_null(node_path) as Area2D
-
 		if hitbox != null:
 			return hitbox
-
 	return null
