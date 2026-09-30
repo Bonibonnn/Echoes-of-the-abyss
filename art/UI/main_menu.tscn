@@ -4,14 +4,31 @@
 [ext_resource type="FontFile" uid="uid://cwj53u7tkvsge" path="res://GrapeSoda.ttf" id="2_fu7sn"]
 [ext_resource type="Texture2D" uid="uid://bqctptlp8poou" path="res://Background.png" id="2_nlkkf"]
 [ext_resource type="Texture2D" uid="uid://dwv38slyb8ke5" path="res://Logo.png" id="3_qe12f"]
-[ext_resource type="Texture2D" uid="uid://cas1fqdg7wwrh" path="res://Buttons.png" id="5_nlkkf"]
+[ext_resource type="Texture2D" uid="uid://bcum1hmboyktg" path="res://Start Button.png" id="5_qe12f"]
 [ext_resource type="Texture2D" uid="uid://da1cup7pxytf3" path="res://Button2.png" id="6_8qtwp"]
+[ext_resource type="Texture2D" uid="uid://bbd6i56oxvgkg" path="res://Press start button.png" id="6_qe12f"]
+[ext_resource type="Texture2D" uid="uid://b5746um8tpiev" path="res://Pressed option button.png" id="8_8qtwp"]
+[ext_resource type="Texture2D" uid="uid://yuo1fus0p3cy" path="res://Pressed quit button.png" id="9_dy7ct"]
+[ext_resource type="Texture2D" uid="uid://cqc4rpb7ysmme" path="res://Pressed Multiplayer Button.png" id="10_0k4wn"]
+[ext_resource type="Texture2D" uid="uid://swisk6ju608d" path="res://Multiplayer Button.png" id="10_0o4t1"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n7w73"]
 texture = ExtResource("2_nlkkf")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vgqb0"]
 texture = ExtResource("3_qe12f")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kj3pn"]
+texture = ExtResource("5_qe12f")
+region_rect = Rect2(77, 301, 1294, 480)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qe12f"]
+texture = ExtResource("5_qe12f")
+region_rect = Rect2(77, 301, 1294, 480)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0k4wn"]
+texture = ExtResource("6_qe12f")
+region_rect = Rect2(54, 289, 1341, 533)
 
 [sub_resource type="Image" id="Image_frq1j"]
 data = {
@@ -868,24 +885,37 @@ Button/styles/hover = SubResource("StyleBoxFlat_8qtwp")
 Button/styles/normal = SubResource("StyleBoxTexture_0o4t1")
 Button/styles/pressed = SubResource("StyleBoxFlat_0k4wn")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kj3pn"]
-texture = ExtResource("5_nlkkf")
-region_rect = Rect2(80, 81, 656, 195)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j5v2v"]
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nixot"]
 texture = ExtResource("6_8qtwp")
 region_rect = Rect2(154, 158, 1222, 343)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nlkkf"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iotk1"]
+texture = ExtResource("6_8qtwp")
 region_rect = Rect2(154, 158, 1222, 343)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cm266"]
+texture = ExtResource("8_8qtwp")
+region_rect = Rect2(111, 104, 1796, 605)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j5v2v"]
+texture = ExtResource("10_0o4t1")
+region_rect = Rect2(41, 84, 2088, 554)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w44g7"]
+texture = ExtResource("10_0o4t1")
+region_rect = Rect2(41, 84, 2088, 554)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8u0te"]
+texture = ExtResource("10_0k4wn")
+region_rect = Rect2(32, 101, 2105, 536)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mb6pw"]
 texture = ExtResource("6_8qtwp")
 region_rect = Rect2(154, 551, 1224, 340)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w44g7"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_g8g3n"]
+texture = ExtResource("9_dy7ct")
+region_rect = Rect2(202, 129, 1767, 513)
 
 [node name="MainMenu" type="Control" unique_id=1632817570]
 layout_mode = 3
@@ -913,39 +943,38 @@ offset_right = 787.0
 offset_bottom = 293.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_vgqb0")
 
-[node name="Button" type="Button" parent="." unique_id=2093531918]
+[node name="Start" type="Button" parent="." unique_id=2093531918]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -110.0
-offset_top = -9.0
-offset_right = 113.0
-offset_bottom = 66.0
+offset_left = -332.0
+offset_top = 1.0
+offset_right = -46.0
+offset_bottom = 102.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = SubResource("Theme_j5v2v")
 theme_override_colors/font_color = Color(0.8879926, 0.88799256, 0.8879925, 1)
 theme_override_fonts/font = ExtResource("2_fu7sn")
 theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxTexture_kj3pn")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_kj3pn")
-theme_override_styles/hover = SubResource("StyleBoxTexture_j5v2v")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_qe12f")
+theme_override_styles/hover = SubResource("StyleBoxTexture_0k4wn")
 action_mode = 0
 
-[node name="Button2" type="Button" parent="." unique_id=742793812]
+[node name="Options" type="Button" parent="." unique_id=742793812]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -111.0
-offset_top = -255.0
-offset_right = 113.0
-offset_bottom = -173.0
+offset_left = 45.0
+offset_top = -320.0
+offset_right = 325.0
+offset_bottom = -223.0
 grow_horizontal = 2
 grow_vertical = 0
 theme = SubResource("Theme_j5v2v")
@@ -953,20 +982,41 @@ theme_override_colors/font_color = Color(0.0035191544, 0.0035191746, 0.003519157
 theme_override_fonts/font = ExtResource("2_fu7sn")
 theme_override_font_sizes/font_size = 50
 theme_override_styles/normal = SubResource("StyleBoxTexture_nixot")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_nixot")
-theme_override_styles/hover = SubResource("StyleBoxTexture_nlkkf")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_iotk1")
+theme_override_styles/hover = SubResource("StyleBoxTexture_cm266")
 
-[node name="Button3" type="Button" parent="." unique_id=1223080712]
+[node name="Mutiplayer" type="Button" parent="." unique_id=1402318444]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -331.0
+offset_top = -199.0
+offset_right = -46.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = SubResource("Theme_j5v2v")
+theme_override_colors/font_color = Color(0.0035191544, 0.0035191746, 0.0035191574, 1)
+theme_override_fonts/font = ExtResource("2_fu7sn")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("StyleBoxTexture_j5v2v")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_w44g7")
+theme_override_styles/hover = SubResource("StyleBoxTexture_8u0te")
+
+[node name="Quit" type="Button" parent="." unique_id=1223080712]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -112.0
-offset_top = 157.0
-offset_right = 116.0
-offset_bottom = 230.0
+offset_left = 43.0
+offset_top = 122.0
+offset_right = 331.0
+offset_bottom = 220.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_j5v2v")
@@ -975,8 +1025,9 @@ theme_override_fonts/font = ExtResource("2_fu7sn")
 theme_override_font_sizes/font_size = 50
 theme_override_styles/normal = SubResource("StyleBoxTexture_mb6pw")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_mb6pw")
-theme_override_styles/hover = SubResource("StyleBoxTexture_w44g7")
+theme_override_styles/hover = SubResource("StyleBoxTexture_g8g3n")
 
-[connection signal="pressed" from="Button" to="." method="_on_start_pressed"]
-[connection signal="pressed" from="Button2" to="." method="_on_options_pressed"]
-[connection signal="pressed" from="Button3" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="Mutiplayer" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]

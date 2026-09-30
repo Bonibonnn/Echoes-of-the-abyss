@@ -2,18 +2,47 @@
 
 [ext_resource type="Texture2D" uid="uid://bqctptlp8poou" path="res://Background.png" id="1_nstox"]
 [ext_resource type="FontFile" uid="uid://cwj53u7tkvsge" path="res://GrapeSoda.ttf" id="2_a66yo"]
-[ext_resource type="Texture2D" uid="uid://ded3rhp171f7p" path="res://Knight Button.png" id="3_q2be1"]
+[ext_resource type="Texture2D" uid="uid://cc8o02bxhdsy2" path="res://Better Knight Button.png" id="3_ht42v"]
+[ext_resource type="Texture2D" uid="uid://dp4ftl6yl7kck" path="res://Pressed Knight Button.png" id="4_8ruiq"]
+[ext_resource type="Texture2D" uid="uid://lvmdvjda8k24" path="res://Archer Button.png" id="4_q2be1"]
+[ext_resource type="Texture2D" uid="uid://dcb16ii81virg" path="res://Wizard Button.png" id="5_q6i8b"]
+[ext_resource type="Texture2D" uid="uid://dlmtc85mg0mtf" path="res://Priest Button.png" id="6_ht42v"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n7w73"]
 texture = ExtResource("1_nstox")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nstox"]
-texture = ExtResource("3_q2be1")
+texture = ExtResource("3_ht42v")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8ruiq"]
+texture = ExtResource("3_ht42v")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qemuc"]
+texture = ExtResource("4_8ruiq")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q6i8b"]
+texture = ExtResource("4_q2be1")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q2be1"]
-texture = ExtResource("3_q2be1")
+texture = ExtResource("4_q2be1")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wo2gd"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2xeq5"]
+texture = ExtResource("5_q6i8b")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s582q"]
+texture = ExtResource("5_q6i8b")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ht42v"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t75yo"]
+texture = ExtResource("6_ht42v")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_o2qlu"]
+texture = ExtResource("6_ht42v")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jk08i"]
 
 [node name="SelectCharacter" type="Control" unique_id=386156478]
 layout_mode = 3
@@ -46,20 +75,74 @@ theme_override_fonts/font = ExtResource("2_a66yo")
 theme_override_font_sizes/font_size = 80
 text = "Select Character"
 
-[node name="Button" type="Button" parent="." unique_id=1611352323]
+[node name="Knight Button" type="Button" parent="." unique_id=1611352323]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
+anchors_preset = -1
+anchor_left = 0.2
 anchor_top = 0.5
-anchor_right = 0.5
+anchor_right = 0.2
 anchor_bottom = 0.5
-offset_left = -77.0
-offset_top = -81.5
-offset_right = 77.0
-offset_bottom = 81.5
+offset_left = -117.40001
+offset_top = -72.0
+offset_right = 36.59999
+offset_bottom = 91.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/normal = SubResource("StyleBoxTexture_nstox")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_8ruiq")
+theme_override_styles/hover = SubResource("StyleBoxTexture_qemuc")
+expand_icon = true
+
+[node name="Archer Button" type="Button" parent="." unique_id=214264234]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.21900001
+anchor_top = 0.51900005
+anchor_right = 0.21900001
+anchor_bottom = 0.51900005
+offset_left = 113.71199
+offset_top = -83.31204
+offset_right = 267.71198
+offset_bottom = 79.68796
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_q6i8b")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_q2be1")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wo2gd")
+expand_icon = true
+
+[node name="Wizard Button" type="Button" parent="." unique_id=1481742949]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.21900001
+anchor_top = 0.51900005
+anchor_right = 0.21900001
+anchor_bottom = 0.51900005
+offset_left = 386.71198
+offset_top = -84.31204
+offset_right = 540.712
+offset_bottom = 78.68796
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_2xeq5")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_s582q")
 theme_override_styles/hover = SubResource("StyleBoxTexture_ht42v")
+expand_icon = true
+
+[node name="Priest Button" type="Button" parent="." unique_id=1794833797]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.21900001
+anchor_top = 0.51900005
+anchor_right = 0.21900001
+anchor_bottom = 0.51900005
+offset_left = 641.712
+offset_top = -81.31204
+offset_right = 782.712
+offset_bottom = 69.68796
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_t75yo")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_o2qlu")
+theme_override_styles/hover = SubResource("StyleBoxTexture_jk08i")
 expand_icon = true
