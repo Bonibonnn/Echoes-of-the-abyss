@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://y2cm0ejjay3b" path="res://Terrain/decor.png" id="2_8j60k"]
 [ext_resource type="PackedScene" uid="uid://6imp8q0vekre" path="res://Scenes/skeleton.tscn" id="4_8j60k"]
 [ext_resource type="Script" uid="uid://dc8l0c4vuxuuu" path="res://Scripts/skeleton_spawner.gd" id="6_5ukr8"]
-[ext_resource type="PackedScene" uid="uid://6xsccvo1v3rx" path="res://Scenes/archer.tscn" id="6_o06y3"]
+[ext_resource type="PackedScene" uid="uid://cu4gc37r6ddl3" path="res://Scenes/priest.tscn" id="6_o06y3"]
 [ext_resource type="Script" uid="uid://bf4qirgm8dxok" path="res://Scripts/dungeon_door.gd" id="7_k7acu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5a7ea"]
@@ -196,6 +196,7 @@ tile_map_data = PackedByteArray("AAAEABIAAQADAAMAAAAIABAAAQADAAMAAAAMABMAAQADAAM
 tile_set = SubResource("TileSet_fo5ed")
 
 [node name="collision" type="StaticBody2D" parent="." unique_id=1705958284]
+visible = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="collision" unique_id=109192830]
 polygon = PackedVector2Array(-3, -2, 215, 0, 434, 0, 582, -1, 714, -3, 716, 125, 866, 125, 1026, 125, 1149, 125, 1278, 125, 1468, 127, 1433, 202, 1394, 323, 1437, 322, 1435, 363, 1391, 362, 1434, 436, 1531, 476, 1532, 546, 1357, 550, 1358, 566, 1074, 564, 1075, 549, 939, 548, 706, 549, 705, 389, 543, 390, 289, 389, -12, 393, -12, 278, -12, 62, -12, -31, -85, 125, -97, 381, 65, 468, 248, 495, 470, 611, 760, 721, 1136, 686, 1507, 665, 1719, 656, 1654, 420, 1617, 200, 1515, 26, 1175, 28, 922, -41, 752, -136, 596, -111, 355, -107, 133, -134, 63, -113, -55, -93, -13, -47, 9, -37, 0, -1)
@@ -239,5 +240,5 @@ stream = SubResource("AudioStreamMP3_5ukr8")
 volume_db = -4.0
 autoplay = true
 
-[node name="Archer" parent="." unique_id=1131808682 instance=ExtResource("6_o06y3")]
-position = Vector2(73, 153)
+[node name="priest" parent="." unique_id=1766003359 instance=ExtResource("6_o06y3")]
+position = Vector2(74, 171)

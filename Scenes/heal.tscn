@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://b26yjaa64komo"]
+
+[ext_resource type="Texture2D" uid="uid://8jsqe7h4glgh" path="res://art/Characters(100x100 split)/Priest/Priest/Priest_Heal_effect.png" id="1_2bthj"]
+[ext_resource type="Script" uid="uid://crr2t0d6k36qs" path="res://Scripts/heal_effect.gd" id="1_vfgpi"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vfgpi"]
+atlas = ExtResource("1_2bthj")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_weqha"]
+atlas = ExtResource("1_2bthj")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6d0i5"]
+atlas = ExtResource("1_2bthj")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o5vdy"]
+atlas = ExtResource("1_2bthj")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_l5lc7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vfgpi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_weqha")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6d0i5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o5vdy")
+}],
+"loop": 1,
+"name": &"effect",
+"speed": 5.0
+}]
+
+[node name="heal_effect" type="Area2D" unique_id=775563565]
+script = ExtResource("1_vfgpi")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1813823584]
+sprite_frames = SubResource("SpriteFrames_l5lc7")
+animation = &"effect"
+frame = 1
+frame_progress = 0.2739536
