@@ -6,6 +6,7 @@
 [ext_resource type="FontFile" uid="uid://cwj53u7tkvsge" path="res://art/UI/GrapeSoda.ttf" id="2_a66yo"]
 [ext_resource type="Texture2D" uid="uid://ded3rhp171f7p" path="res://art/UI/Knight Button.png" id="3_q2be1"]
 [ext_resource type="PackedScene" uid="uid://d30nugf2k2pr1" path="res://Scenes/player.tscn" id="3_qemuc"]
+[ext_resource type="AudioStream" uid="uid://brhuof5rpul6j" path="res://Music/UI Music/789772__dan2008__calm-menu-music-loopable-lo-fi.wav" id="7_8ruiq"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n7w73"]
 texture = ExtResource("1_nstox")
@@ -69,3 +70,7 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_nstox")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_q2be1")
 theme_override_styles/hover = SubResource("StyleBoxTexture_ht42v")
 expand_icon = true
+
+[node name="UI_music" type="AudioStreamPlayer" parent="." unique_id=1768345351]
+stream = ExtResource("7_8ruiq")
+autoplay = true

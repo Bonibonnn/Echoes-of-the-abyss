@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://crdw5ycf6kr3c"
+path="res://.godot/imported/Video Dungeon Boss.mp3-d3ae0d03d59481d95c05a6ea430353de.mp3str"
+
+[deps]
+
+source_file="res://Music/BGM musc/Video Dungeon Boss.mp3"
+dest_files=["res://.godot/imported/Video Dungeon Boss.mp3-d3ae0d03d59481d95c05a6ea430353de.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

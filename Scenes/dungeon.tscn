@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cufx7h0ij662a" path="res://Terrain/Skeleton dungeon/Animated_object/Details.png" id="4_iqbxe"]
 [ext_resource type="Texture2D" uid="uid://cyowevm3iy4oa" path="res://Terrain/Skeleton dungeon/Animated_object/Animation2.png" id="4_l3tba"]
 [ext_resource type="Texture2D" uid="uid://ddclfwpvhwpla" path="res://Terrain/Skeleton dungeon/Animated_object/Objects.png" id="5_5v1xs"]
+[ext_resource type="AudioStream" uid="uid://crdw5ycf6kr3c" path="res://Music/BGM musc/Video Dungeon Boss.mp3" id="7_dcl0p"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_l3tba"]
 texture = ExtResource("1_dakn4")
@@ -4782,3 +4783,6 @@ debug_color = Color(0.13651973, 0.5812271, 0.76997995, 0.41960785)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="border2" unique_id=277351093]
 polygon = PackedVector2Array(-7, 341, 21, 344, 71, 350, 158, 345, 263, 348, 300, 348, 303, 373, 306, 392, 360, 397, 380, 398, 385, 434, 402, 435, 398, 481, 414, 476, 413, 512, 427, 509, 429, 546, 445, 553, 462, 547, 464, 513, 477, 509, 481, 492, 611, 491, 734, 490, 735, 481, 748, 487, 748, 526, 748, 557, 758, 572, 781, 572, 820, 572, 830, 571, 832, 538, 831, 530, 849, 528, 865, 545, 904, 567, 947, 574, 1007, 573, 1047, 545, 1058, 515, 1078, 485, 1076, 417, 1056, 381, 1083, 350, 1076, 291, 986, 279, 844, 296, 776, 298, 718, 299, 719, 357, 732, 392, 734, 416, 720, 401, 707, 364, 703, 323, 702, 289, 740, 292, 787, 290, 862, 287, 917, 277, 962, 272, 994, 273, 1039, 276, 1076, 286, 1088, 307, 1088, 328, 1089, 348, 1076, 371, 1066, 384, 1076, 406, 1084, 422, 1083, 445, 1084, 489, 1065, 515, 1056, 542, 1022, 575, 991, 583, 936, 581, 899, 573, 866, 558, 846, 543, 838, 555, 838, 576, 811, 581, 757, 579, 740, 570, 736, 540, 741, 501, 738, 492, 722, 500, 660, 500, 585, 498, 519, 495, 488, 506, 479, 519, 469, 533, 465, 559, 436, 565, 414, 535, 418, 521, 405, 518, 409, 489, 387, 486, 397, 444, 373, 434, 375, 403, 304, 399, 289, 358, 167, 354, 57, 358, 8, 352)
+
+[node name="dungeon" type="AudioStreamPlayer" parent="." unique_id=52006272]
+stream = ExtResource("7_dcl0p")

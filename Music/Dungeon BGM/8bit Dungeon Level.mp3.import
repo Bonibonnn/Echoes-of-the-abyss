@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dkfv42dusp571"
+path="res://.godot/imported/8bit Dungeon Level.mp3-a449c07c089f7efc3edd2d700b37651f.mp3str"
+
+[deps]
+
+source_file="res://Music/Dungeon BGM/8bit Dungeon Level.mp3"
+dest_files=["res://.godot/imported/8bit Dungeon Level.mp3-a449c07c089f7efc3edd2d700b37651f.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
