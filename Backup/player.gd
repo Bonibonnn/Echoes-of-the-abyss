@@ -22,11 +22,11 @@ func _physics_process(_delta: float) -> void:
 		move_and_slide()
 		return
 
-	if Input.is_action_just_pressed("ui_accept"):
+	if Input.is_action_just_pressed("attack"):
 		start_melee_attack("attack", attack_damage, "enemy", attack_cooldown)
 		return
 
-	var direction := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	set_facing_from_x(direction.x)
 	velocity = direction * speed
 	move_and_slide()

@@ -1,11 +1,12 @@
 [gd_scene format=4 uid="uid://rnpcxbolsfev"]
 
-[ext_resource type="Script" path="res://main_menu.gd" id="1_nlkkf"]
-[ext_resource type="FontFile" path="res://GrapeSoda.ttf" id="2_fu7sn"]
-[ext_resource type="Texture2D" path="res://2b5254da-55d5-40ce-909b-3f3fa134a1ab.png" id="2_jix8l"]
-[ext_resource type="Texture2D" path="res://Background.png" id="2_nlkkf"]
-[ext_resource type="Texture2D" path="res://Logo.png" id="3_qe12f"]
-[ext_resource type="Texture2D" path="res://Button2.png" id="6_8qtwp"]
+[ext_resource type="Script" uid="uid://ocsqya0ruglq" path="res://art/UI/main_menu.gd" id="1_nlkkf"]
+[ext_resource type="FontFile" uid="uid://cwj53u7tkvsge" path="res://art/UI/GrapeSoda.ttf" id="2_fu7sn"]
+[ext_resource type="Texture2D" uid="uid://bvttc3mds5aul" path="res://art/UI/2b5254da-55d5-40ce-909b-3f3fa134a1ab.png" id="2_jix8l"]
+[ext_resource type="Texture2D" uid="uid://bqctptlp8poou" path="res://art/UI/Background.png" id="2_nlkkf"]
+[ext_resource type="Texture2D" uid="uid://dwv38slyb8ke5" path="res://art/UI/Logo.png" id="3_qe12f"]
+[ext_resource type="Texture2D" uid="uid://da1cup7pxytf3" path="res://art/UI/Button2.png" id="6_8qtwp"]
+[ext_resource type="AudioStream" uid="uid://brhuof5rpul6j" path="res://Music/UI Music/789772__dan2008__calm-menu-music-loopable-lo-fi.wav" id="7_qe12f"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n7w73"]
 texture = ExtResource("2_nlkkf")
@@ -976,6 +977,10 @@ theme_override_font_sizes/font_size = 50
 theme_override_styles/normal = SubResource("StyleBoxTexture_mb6pw")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_mb6pw")
 theme_override_styles/hover = SubResource("StyleBoxTexture_w44g7")
+
+[node name="UI_music" type="AudioStreamPlayer" parent="." unique_id=1420440899]
+stream = ExtResource("7_qe12f")
+autoplay = true
 
 [connection signal="pressed" from="Button" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="Button2" to="." method="_on_options_pressed"]

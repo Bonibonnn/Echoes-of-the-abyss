@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://b63jfy8yhh6y"
+path="res://.godot/imported/868719__benparamoreaudio__weaponswing_1.wav-6f424d03308fcc2de0b0d8b8cc82c151.sample"
+
+[deps]
+
+source_file="res://Music/Weapon Attack/868719__benparamoreaudio__weaponswing_1.wav"
+dest_files=["res://.godot/imported/868719__benparamoreaudio__weaponswing_1.wav-6f424d03308fcc2de0b0d8b8cc82c151.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

@@ -8,19 +8,20 @@ extends Combatant
 @export var hurt_duration := 0.3
 @export var death_duration := 0.8
 
-@onready var detection_area: Area2D = get_node_or_null("detection_area")
+@onready var detection_area := get_node_or_null(^"detection_area") as Area2D
 
 var player: Node2D
 
 
 func _ready() -> void:
 	super()
-	add_to_group("enemy")
+	add_to_group(&"enemy")
 
 	if detection_area == null:
-		push_error("Add an Area2D child named 'detection_area' to the enemy.")
+		push_error("Add an Area2D child named detection_area to the enemy.")
 		return
 
+	# The signals remember the player while they are inside the chase range.
 	if not detection_area.body_entered.is_connected(_on_detection_area_body_entered):
 		detection_area.body_entered.connect(_on_detection_area_body_entered)
 	if not detection_area.body_exited.is_connected(_on_detection_area_body_exited):
@@ -31,18 +32,19 @@ func _physics_process(_delta: float) -> void:
 	if is_dead:
 		return
 
-	if is_hurt or is_attacking:
+	if is_busy():
 		velocity = Vector2.ZERO
 		move_and_slide()
 		return
 
 	if is_instance_valid(player):
-		set_facing_from_x(player.global_position.x - global_position.x)
-		if global_position.distance_to(player.global_position) <= attack_range and can_hit_target(player):
-			start_melee_attack("attack", attack_damage, "player", attack_cooldown)
+		var to_player := player.global_position - global_position
+		set_facing_from_x(to_player.x)
+		if to_player.length_squared() <= attack_range * attack_range and can_hit_target(player):
+			start_melee_attack(&"attack", attack_damage, &"player", attack_cooldown)
 			return
 
-		velocity = global_position.direction_to(player.global_position) * chase_speed
+		velocity = to_player.normalized() * chase_speed
 	else:
 		velocity = Vector2.ZERO
 
@@ -63,7 +65,7 @@ func get_death_duration() -> float:
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
-	if body.is_in_group("player") or body.name.to_lower() == "player":
+	if body.is_in_group(&"player"):
 		player = body
 
 

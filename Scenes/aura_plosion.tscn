@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://dma6p78ik727d"]
+
+[ext_resource type="Texture2D" uid="uid://cjnxlktulhnjv" path="res://art/Characters(100x100 split)/Priest/Priest/Priest_Attack_effect.png" id="1_hq686"]
+[ext_resource type="Script" uid="uid://bhq8bmbtljw58" path="res://Scripts/auraplosion.gd" id="1_ilkn1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ilkn1"]
+atlas = ExtResource("1_hq686")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uc0jr"]
+atlas = ExtResource("1_hq686")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1adyg"]
+atlas = ExtResource("1_hq686")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fni8p"]
+atlas = ExtResource("1_hq686")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bcaw6"]
+atlas = ExtResource("1_hq686")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_l5lc7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ilkn1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uc0jr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1adyg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fni8p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bcaw6")
+}],
+"loop": 1,
+"name": &"effect",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wgbdp"]
+radius = 9.0
+
+[node name="auraplosion" type="Area2D" unique_id=1714657684]
+script = ExtResource("1_ilkn1")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2018988253]
+sprite_frames = SubResource("SpriteFrames_l5lc7")
+animation = &"effect"
+frame = 4
+frame_progress = 0.60171026
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1811472502]
+shape = SubResource("CircleShape2D_wgbdp")

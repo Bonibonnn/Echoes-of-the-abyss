@@ -1,0 +1,98 @@
+[gd_scene format=3 uid="uid://b4ksfrawiyl6h"]
+
+[ext_resource type="Script" uid="uid://dl25q453c6tg2" path="res://Scripts/freeze.gd" id="1_4xfvc"]
+[ext_resource type="Texture2D" uid="uid://brb447eg12ygo" path="res://art/Characters(100x100 split)/Wizard/Wizard/Wizard_Attack01_Effect.png" id="1_5x08h"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4xfvc"]
+atlas = ExtResource("1_5x08h")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pvgw4"]
+atlas = ExtResource("1_5x08h")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ekn7v"]
+atlas = ExtResource("1_5x08h")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fpj2d"]
+atlas = ExtResource("1_5x08h")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aius4"]
+atlas = ExtResource("1_5x08h")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8utsy"]
+atlas = ExtResource("1_5x08h")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p7wx0"]
+atlas = ExtResource("1_5x08h")
+region = Rect2(600, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ebi6x"]
+atlas = ExtResource("1_5x08h")
+region = Rect2(700, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7l2gl"]
+atlas = ExtResource("1_5x08h")
+region = Rect2(800, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cdga2"]
+atlas = ExtResource("1_5x08h")
+region = Rect2(900, 0, 100, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_l5lc7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4xfvc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pvgw4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ekn7v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fpj2d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aius4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8utsy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p7wx0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ebi6x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7l2gl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cdga2")
+}],
+"loop": 1,
+"name": &"freeze",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wgbdp"]
+radius = 11.0
+
+[node name="freeze" type="Area2D" unique_id=340601410]
+script = ExtResource("1_4xfvc")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=851730435]
+sprite_frames = SubResource("SpriteFrames_l5lc7")
+animation = &"freeze"
+frame = 3
+frame_progress = 0.5873429
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=706777833]
+position = Vector2(2, 2)
+shape = SubResource("CircleShape2D_wgbdp")

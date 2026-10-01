@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b5sotgrd8snyd"
+path="res://.godot/imported/shidenbeatsmusic-birds39-forest-20772.mp3-d70d0991f0a64f63a2d93cb8a9510ca6.mp3str"
+
+[deps]
+
+source_file="res://Music/BGM musc/shidenbeatsmusic-birds39-forest-20772.mp3"
+dest_files=["res://.godot/imported/shidenbeatsmusic-birds39-forest-20772.mp3-d70d0991f0a64f63a2d93cb8a9510ca6.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

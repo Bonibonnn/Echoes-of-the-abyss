@@ -263,7 +263,9 @@ position = Vector2(0, 1)
 shape = SubResource("CircleShape2D_fgxly")
 
 [node name="enemy_hitbox" type="Area2D" parent="." unique_id=391920055]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_hitbox" unique_id=791625373]
+visible = false
 position = Vector2(13.375, 2.25)
 shape = SubResource("RectangleShape2D_k7acu")
