@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://b26yjaa64komo" path="res://Scenes/heal.tscn" id="3_g77hk"]
 [ext_resource type="Texture2D" uid="uid://b30oxjw5taera" path="res://art/Characters(100x100 split)/Priest/Priest/Priest_Idle.png" id="3_hmjbt"]
 [ext_resource type="Texture2D" uid="uid://cj64pv3bpgi7w" path="res://art/Characters(100x100 split)/Priest/Priest/Priest_Walk.png" id="4_df5yf"]
+[ext_resource type="Texture2D" uid="uid://drkfheiqb6fpf" path="res://art/Characters(100x100 split)/Priest/Priest/Priest_Heal.png" id="7_g77hk"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_evrpn"]
 atlas = ExtResource("1_hmjbt")
@@ -97,6 +98,30 @@ region = Rect2(200, 0, 100, 100)
 [sub_resource type="AtlasTexture" id="AtlasTexture_dptbp"]
 atlas = ExtResource("1_1eymc")
 region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nh6cw"]
+atlas = ExtResource("7_g77hk")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hxfl2"]
+atlas = ExtResource("7_g77hk")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dr8m6"]
+atlas = ExtResource("7_g77hk")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bqiic"]
+atlas = ExtResource("7_g77hk")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ff2w"]
+atlas = ExtResource("7_g77hk")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8ftxg"]
+atlas = ExtResource("7_g77hk")
+region = Rect2(500, 0, 100, 100)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3w0p7"]
 atlas = ExtResource("2_hua4n")
@@ -253,7 +278,25 @@ animations = [{
 "name": &"death",
 "speed": 5.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nh6cw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hxfl2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dr8m6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bqiic")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1ff2w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8ftxg")
+}],
 "loop": 1,
 "name": &"heal",
 "speed": 5.0
@@ -340,10 +383,14 @@ radius = 6.0
 script = ExtResource("1_df5yf")
 auraplosion_scene = ExtResource("2_alcim")
 heal_scene = ExtResource("3_g77hk")
+close_attack_release_time = 1.0
+ranged_attack_release_time = 1.0
+heal_release_time = 1.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1245952918]
 sprite_frames = SubResource("SpriteFrames_l5lc7")
-animation = &"attack1"
+animation = &"heal"
+frame_progress = 0.82690203
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2112649076]
 position = Vector2(1, 3)

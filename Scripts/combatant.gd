@@ -16,7 +16,11 @@ signal died
 # from damaging the same target on the same frame, without blocking a real combo.
 @export_range(0.0, 2.0, 0.01) var damage_invulnerability_time := 0.12
 
-const ONE_SHOT_ANIMATIONS := [&"attack", &"attack1", &"attack2", &"skill1", &"block", &"summon", &"hurt", &"death"]
+const ONE_SHOT_ANIMATIONS := [
+	&"attack", &"attack1", &"attack2",
+	&"skill1", &"skill2", &"fireball",
+	&"block", &"heal", &"summon", &"hurt", &"death"
+]
 
 @onready var animated_sprite := get_node_or_null(^"AnimatedSprite2D") as AnimatedSprite2D
 @onready var attack_pivot := get_node_or_null(^"attack_pivot") as Node2D
@@ -28,13 +32,20 @@ var is_attacking := false
 var is_hurt := false
 var is_dead := false
 var is_damage_invulnerable := false
+var is_frozen := false
+var is_burning := false
 
 var _attack_token := 0
 var _damage_invulnerability_token := 0
+var _freeze_token := 0
+var _burn_token := 0
 var _pivot_scale := Vector2.ONE
 var _hitbox_position := Vector2.ZERO
 var _hitbox_scale := Vector2.ONE
 var _hitbox_has_forward_shape := false
+var _normal_sprite_self_modulate := Color.WHITE
+var _freeze_tint := Color(0.12, 0.22, 0.55, 1.0)
+var _burn_tint := Color(1.0, 0.38, 0.06, 1.0)
 
 
 func _ready() -> void:
@@ -43,6 +54,10 @@ func _ready() -> void:
 	health = get_max_health()
 	set_one_shot_animations()
 	_cache_attack_transforms()
+	if animated_sprite != null:
+		# self_modulate lets status colours layer over character-specific modulate
+		# effects such as the Necromancer shield and the Priest's blue skill.
+		_normal_sprite_self_modulate = animated_sprite.self_modulate
 
 	if attack_hitbox == null:
 		if requires_attack_hitbox():
@@ -71,7 +86,7 @@ func requires_attack_hitbox() -> bool:
 
 
 func is_busy() -> bool:
-	return is_dead or is_hurt or is_attacking
+	return is_dead or is_hurt or is_attacking or is_frozen
 
 
 # Changes the left/right sprite direction and mirrors the forward hitbox.
@@ -203,6 +218,82 @@ func _start_damage_invulnerability() -> void:
 	await wait_for_gameplay_time(damage_invulnerability_time).timeout
 	if token == _damage_invulnerability_token:
 		is_damage_invulnerable = false
+
+
+# Stops movement and attacks for the duration. Reapplying freeze refreshes it.
+func apply_freeze(
+	duration: float,
+	tint: Color = Color(0.12, 0.22, 0.55, 1.0)
+) -> void:
+	if is_dead or duration <= 0.0:
+		return
+
+	_freeze_token += 1
+	var token := _freeze_token
+	_freeze_tint = tint
+	is_frozen = true
+
+	# Cancel an in-progress delayed hit so a frozen enemy cannot strike later.
+	_attack_token += 1
+	is_attacking = false
+	velocity = Vector2.ZERO
+	_refresh_status_tint()
+
+	await wait_for_gameplay_time(duration).timeout
+	if token != _freeze_token or is_dead:
+		return
+
+	is_frozen = false
+	_refresh_status_tint()
+	if not is_hurt:
+		update_idle_or_walk_animation()
+
+
+# Deals damage at intervals. Reapplying burn refreshes its duration rather than
+# creating extra overlapping damage loops.
+func apply_burn(
+	duration: float,
+	tick_damage := 1,
+	tick_interval := 1.0,
+	tint: Color = Color(1.0, 0.38, 0.06, 1.0)
+) -> void:
+	if is_dead or duration <= 0.0 or tick_damage <= 0 or tick_interval <= 0.0:
+		return
+
+	_burn_token += 1
+	var token := _burn_token
+	_burn_tint = tint
+	is_burning = true
+	_refresh_status_tint()
+
+	var remaining_time := duration
+	while remaining_time > 0.0:
+		var wait_time := minf(tick_interval, remaining_time)
+		await wait_for_gameplay_time(wait_time).timeout
+		if token != _burn_token or is_dead:
+			return
+
+		remaining_time -= wait_time
+		take_damage(tick_damage)
+		if is_dead:
+			return
+
+	if token == _burn_token:
+		is_burning = false
+		_refresh_status_tint()
+
+
+# Freeze colour has priority. When it ends, an active burn becomes orange again.
+func _refresh_status_tint() -> void:
+	if animated_sprite == null:
+		return
+
+	if is_frozen:
+		animated_sprite.self_modulate = _freeze_tint
+	elif is_burning:
+		animated_sprite.self_modulate = _burn_tint
+	else:
+		animated_sprite.self_modulate = _normal_sprite_self_modulate
 
 
 func die() -> void:

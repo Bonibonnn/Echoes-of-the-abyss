@@ -349,6 +349,8 @@ radius = 5.0990195
 [node name="Archer" type="CharacterBody2D" unique_id=1131808682]
 script = ExtResource("1_qp52x")
 arrow_scene = ExtResource("8_qp52x")
+basic_arrow_release_time = 1.2
+heavy_arrow_release_time = 1.92
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1205069775]
 sprite_frames = SubResource("SpriteFrames_l5lc7")

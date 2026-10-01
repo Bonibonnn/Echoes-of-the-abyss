@@ -1,4 +1,5 @@
 extends Area2D
+# It is an animated visual effect only; priest.gd restores the Priest's health.
 
 # Leave empty to play the scene's currently selected animation.
 @export var animation_name: StringName = &""

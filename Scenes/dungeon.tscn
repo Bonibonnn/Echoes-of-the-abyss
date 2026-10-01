@@ -4786,3 +4786,5 @@ polygon = PackedVector2Array(-7, 341, 21, 344, 71, 350, 158, 345, 263, 348, 300,
 
 [node name="dungeon" type="AudioStreamPlayer" parent="." unique_id=52006272]
 stream = ExtResource("7_dcl0p")
+volume_db = -6.0
+autoplay = true
