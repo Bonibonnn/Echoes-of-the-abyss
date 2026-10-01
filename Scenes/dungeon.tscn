@@ -1,7 +1,6 @@
 [gd_scene format=4 uid="uid://bm6hwpvfnhuwr"]
 
 [ext_resource type="Texture2D" uid="uid://35wdmjltlmat" path="res://Terrain/Skeleton dungeon/Animated_object/Ground_rocks.png" id="1_dakn4"]
-[ext_resource type="PackedScene" uid="uid://d30nugf2k2pr1" path="res://Scenes/player.tscn" id="1_lt7kh"]
 [ext_resource type="Texture2D" uid="uid://2yw2hnb2aa71" path="res://Terrain/Skeleton dungeon/Skeleton Tiles/Ground_rocks.png" id="2_lt7kh"]
 [ext_resource type="Texture2D" uid="uid://cufx7h0ij662a" path="res://Terrain/Skeleton dungeon/Animated_object/Details.png" id="4_iqbxe"]
 [ext_resource type="Texture2D" uid="uid://cyowevm3iy4oa" path="res://Terrain/Skeleton dungeon/Animated_object/Animation2.png" id="4_l3tba"]
@@ -4598,9 +4597,6 @@ radius = 10.049875
 
 [node name="dungeon" type="Node2D" unique_id=1568520789]
 position = Vector2(0, 2)
-
-[node name="player" parent="." unique_id=969721258 instance=ExtResource("1_lt7kh")]
-position = Vector2(30, 329)
 
 [node name="dungeon_ground" type="TileMapLayer" parent="." unique_id=1664955031]
 z_index = -1

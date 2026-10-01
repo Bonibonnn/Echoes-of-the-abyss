@@ -1,5 +1,16 @@
 extends Combatant
 
+# Priest player controller for Godot 4.7.
+#
+# Priest scene setup:
+# priest (CharacterBody2D with this script)
+# ├── AnimatedSprite2D
+# └── CollisionShape2D
+#
+# Drag your two separate Area2D scenes into the Inspector slots:
+# - auraplosion (range).tscn -> Auraplosion Scene (Attack 2 visual)
+# - heal.tscn                 -> Heal Scene (Q visual)
+
 @export_category("Movement")
 @export var speed := 115.0
 
@@ -72,7 +83,7 @@ func requires_attack_hitbox() -> bool:
 	return false
 
 
-func _unhandled_input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
 	if is_busy():
 		return
 
@@ -197,7 +208,7 @@ func start_heal() -> void:
 	if not is_attack_token_active(token):
 		return
 
-	health = mini(max_health, health + heal_amount)
+	set_health(health + heal_amount)
 	spawn_heal_effect()
 
 	await wait_for_gameplay_time(cast_duration - release_time).timeout

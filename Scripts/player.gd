@@ -20,13 +20,15 @@ extends Combatant
 @export_range(0.0, 10.0, 0.01) var attack2_hit_time := 0.18
 
 @export_category("Skill 1 - Heavy Strike")
-# Q: a slow, heavy attack. The animation is named skill1.
+# Q: a slow, heavy attack. Its animation stays named "skill".
+@export var skill_animation: StringName = &"skill"
 @export var skill1_damage := 4
 @export_range(0.1, 10.0, 0.01) var skill1_cast_time := 1.2
 @export_range(0.0, 10.0, 0.01) var skill1_hit_time := 0.75
 
 @export_category("Block Skill")
 # E: cancels one incoming damage event, then cannot be used for two seconds.
+@export var block_animation: StringName = &"block"
 @export_range(0.05, 5.0, 0.01) var block_duration := 0.45
 @export_range(0.1, 60.0, 0.1) var block_cooldown := 2.0
 
@@ -45,8 +47,8 @@ func _ready() -> void:
 	add_to_group(&"player")
 
 
-# _unhandled_input ignores keyboard and mouse presses already used by UI controls.
-func _unhandled_input(event: InputEvent) -> void:
+# _input receives gameplay controls before a non-interactive HUD can consume them.
+func _input(event: InputEvent) -> void:
 	if is_busy():
 		return
 
@@ -91,15 +93,14 @@ func _physics_process(delta: float) -> void:
 
 # Q: the Knight cannot be interrupted, but can still lose health while casting.
 func start_skill1() -> void:
-	var token := begin_attack(&"skill1")
+	var token := begin_attack(skill_animation)
 	if token < 0:
 		return
 
-	var animation_duration := get_animation_duration(&"skill1")
+	var animation_duration := get_animation_duration(skill_animation)
 	if animation_duration <= 0.0:
-		push_warning("The Knight needs a non-empty animation named skill1.")
-		finish_attack(token)
-		return
+		# The heavy strike still works while its artwork is being set up.
+		push_warning("Knight Q has no animation named \"%s\"; the skill will still work." % skill_animation)
 
 	# The cast lasts at least this long, even if the sprite animation is shorter.
 	var cast_duration := maxf(skill1_cast_time, animation_duration)
@@ -123,15 +124,14 @@ func start_block() -> void:
 	if block_cooldown_left > 0.0:
 		return
 
-	var token := begin_attack(&"block")
+	var token := begin_attack(block_animation)
 	if token < 0:
 		return
 
-	var animation_duration := get_animation_duration(&"block")
+	var animation_duration := get_animation_duration(block_animation)
 	if animation_duration <= 0.0:
-		push_warning("The Knight needs a non-empty animation named block.")
-		finish_attack(token)
-		return
+		# Blocking remains functional even while its artwork is being set up.
+		push_warning("Knight E has no animation named \"%s\"; the block will still work." % block_animation)
 
 	is_blocking = true
 	# The block remains active for at least this long, even with a short animation.
@@ -193,7 +193,7 @@ func take_damage(damage: int) -> void:
 		if is_damage_invulnerable:
 			return
 
-		health = maxi(0, health - damage)
+		set_health(health - damage)
 		if health == 0:
 			is_casting_skill1 = false
 			die()

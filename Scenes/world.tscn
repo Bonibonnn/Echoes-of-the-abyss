@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://y2cm0ejjay3b" path="res://Terrain/decor.png" id="2_8j60k"]
 [ext_resource type="PackedScene" uid="uid://6imp8q0vekre" path="res://Scenes/skeleton.tscn" id="4_8j60k"]
 [ext_resource type="Script" uid="uid://dc8l0c4vuxuuu" path="res://Scripts/skeleton_spawner.gd" id="6_5ukr8"]
-[ext_resource type="PackedScene" uid="uid://cu4gc37r6ddl3" path="res://Scenes/priest.tscn" id="6_o06y3"]
+[ext_resource type="PackedScene" uid="uid://box5ux654515w" path="res://Scenes/healthbar.tscn" id="7_5v1tr"]
 [ext_resource type="Script" uid="uid://bf4qirgm8dxok" path="res://Scripts/dungeon_door.gd" id="7_k7acu"]
 [ext_resource type="Texture2D" uid="uid://bkcp5yv1jp0e1" path="res://art/Pixel Art Animated Portal/sprite-sheet.png" id="7_o06y3"]
 
@@ -304,10 +304,6 @@ sprite_frames = SubResource("SpriteFrames_l5lc7")
 animation = &"portal"
 autoplay = "portal"
 
-[node name="priest" parent="." unique_id=1766003359 instance=ExtResource("6_o06y3")]
-position = Vector2(100, 165)
-close_attack_release_time = 1.0
-ranged_attack_release_time = 1.0
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2102277698]
 
-[node name="skeleton" parent="." unique_id=930479232 instance=ExtResource("4_8j60k")]
-position = Vector2(227, 163)
+[node name="healthbar" parent="CanvasLayer" unique_id=1361943585 instance=ExtResource("7_5v1tr")]

@@ -5,6 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://7i3gom6qbdxf" path="res://art/Characters(100x100 split)/Wizard/Wizard/Wizard_Attack01(With magic effects).png" id="1_jtp6b"]
 [ext_resource type="Texture2D" uid="uid://clb4ivg8b3nvp" path="res://art/Characters(100x100 split)/Wizard/Wizard/Wizard_Attack02(With magic effects).png" id="2_7elky"]
 [ext_resource type="Texture2D" uid="uid://cjsirp3eofos4" path="res://art/Characters(100x100 split)/Wizard/Wizard/Wizard_Hurt.png" id="2_254od"]
+[ext_resource type="PackedScene" uid="uid://b4ksfrawiyl6h" path="res://Scenes/freeze.tscn" id="2_rh4uj"]
+[ext_resource type="PackedScene" uid="uid://gnqoxga8qx1b" path="res://Scenes/fireball.tscn" id="3_4qsol"]
 [ext_resource type="Texture2D" uid="uid://c1j2gms81m4mh" path="res://art/Characters(100x100 split)/Wizard/Wizard/Wizard_Idle.png" id="3_qippj"]
 [ext_resource type="Texture2D" uid="uid://cg5cjuqlpqcqe" path="res://art/Characters(100x100 split)/Wizard/Wizard/Wizard_Walk.png" id="4_tf4tv"]
 [ext_resource type="Texture2D" uid="uid://cg76vbjckjeum" path="res://art/Characters(100x100 split)/Wizard/Wizard/Wizard_Attack01.png" id="6_ag7jq"]
@@ -520,6 +522,8 @@ radius = 7.28011
 
 [node name="mage" type="CharacterBody2D" unique_id=1695064001]
 script = ExtResource("1_7elky")
+freeze_area_scene = ExtResource("2_rh4uj")
+fireball_scene = ExtResource("3_4qsol")
 close_freeze_radius = 30.0
 close_freeze_release_time = 1.0
 fire_explosion_radius = 30.0

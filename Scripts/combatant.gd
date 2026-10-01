@@ -2,6 +2,7 @@ class_name Combatant
 extends CharacterBody2D
 
 signal died
+signal health_changed(current_health: int, maximum_health: int)
 
 # Shared top-down combat for the player and every melee enemy.
 # It supports either a modern attack_pivot/attack_hitbox setup or the existing
@@ -18,7 +19,7 @@ signal died
 
 const ONE_SHOT_ANIMATIONS := [
 	&"attack", &"attack1", &"attack2",
-	&"skill1", &"skill2", &"fireball",
+	&"skill", &"skill1", &"skill2", &"fireball",
 	&"block", &"heal", &"summon", &"hurt", &"death"
 ]
 
@@ -51,7 +52,7 @@ var _burn_tint := Color(1.0, 0.38, 0.06, 1.0)
 func _ready() -> void:
 	# FLOATING prevents platformer floor behaviour in a top-down RPG.
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
-	health = get_max_health()
+	set_health(get_max_health())
 	set_one_shot_animations()
 	_cache_attack_transforms()
 	if animated_sprite != null:
@@ -71,6 +72,13 @@ func _ready() -> void:
 # Child scripts override these values with their exported settings.
 func get_max_health() -> int:
 	return 1
+
+
+# Sets health safely and tells the health bar to redraw.
+# Player, Priest, and future characters can all use this shared helper.
+func set_health(new_health: int) -> void:
+	health = clampi(new_health, 0, get_max_health())
+	health_changed.emit(health, get_max_health())
 
 
 func get_hurt_duration() -> float:
@@ -187,7 +195,7 @@ func take_damage(damage: int) -> void:
 	if is_dead or is_damage_invulnerable or damage <= 0:
 		return
 
-	health = maxi(0, health - damage)
+	set_health(health - damage)
 	if health == 0:
 		die()
 		return
@@ -401,3 +409,15 @@ func _find_attack_hitbox() -> Area2D:
 		if hitbox != null:
 			return hitbox
 	return null
+
+# Restores health without going above the character's maximum health.
+func restore_health(amount: int) -> void:
+	if is_dead or amount <= 0:
+		return
+
+	var new_health := mini(get_max_health(), health + amount)
+	if new_health == health:
+		return
+
+	health = new_health
+	health_changed.emit(health, get_max_health())

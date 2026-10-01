@@ -1,5 +1,10 @@
 extends Combatant
 
+# Scene setup expected by this script:
+# archer (CharacterBody2D)
+# ├── AnimatedSprite2D
+# └── CollisionShape2D
+#
 # Your arrow is a separate arrow.tscn scene. Its root must be an Area2D
 # with arrow.gd attached, plus a Sprite2D and CollisionShape2D as children.
 
@@ -68,7 +73,7 @@ func requires_attack_hitbox() -> bool:
 	return false
 
 
-func _unhandled_input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
 	if is_busy() or is_dashing:
 		return
 
@@ -223,6 +228,10 @@ func fire_arrow(damage: int, arrow_scale: float = 1.0) -> void:
 	var arrow := arrow_scene.instantiate() as Area2D
 	if arrow == null:
 		push_warning("Arrow Scene must have an Area2D as its root node.")
+		return
+	if not arrow.has_method(&"launch"):
+		push_error("The root Area2D of arrow.tscn needs Scripts/arrow.gd attached.")
+		arrow.queue_free()
 		return
 
 	scene_root.add_child(arrow)

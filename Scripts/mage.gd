@@ -1,5 +1,16 @@
 extends Combatant
 
+# Mage player controller for Godot 4.7.
+#
+# Mage scene setup:
+# mage (CharacterBody2D with this script)
+# ├── AnimatedSprite2D
+# └── CollisionShape2D
+#
+# Assign your separate Area2D scenes in the Inspector:
+# - Freeze Area Scene: the Q area spell.
+# - Fireball Scene: the E projectile spell.
+
 @export_category("Movement")
 @export var speed := 120.0
 
@@ -36,11 +47,10 @@ extends Combatant
 
 @export_category("Skill 2 - Fireball")
 # E: plays this Mage animation, then launches a fireball forward.
-# Change skill2 to fireball if that is your animation's real name.
+# Default name is skill2; change this in the Inspector if yours is named fireball.
 @export var fireball_cast_animation: StringName = &"skill2"
 @export var fireball_impact_damage := 2
 @export_range(0.1, 60.0, 0.1) var fireball_cooldown := 4.0
-# Time when the projectile leaves the Mage's hand.
 @export_range(0.0, 5.0, 0.01) var fireball_release_time := 0.25
 
 @export_category("Burn Debuff")
@@ -78,7 +88,7 @@ func requires_attack_hitbox() -> bool:
 	return false
 
 
-func _unhandled_input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
 	if is_busy():
 		return
 
@@ -209,10 +219,7 @@ func start_fireball() -> void:
 		return
 
 	fireball_cooldown_left = fireball_cooldown
-	var cast_duration := maxf(
-		get_animation_duration(fireball_cast_animation),
-		fireball_release_time
-	)
+	var cast_duration := maxf(get_animation_duration(fireball_cast_animation), fireball_release_time)
 	var release_time := clampf(fireball_release_time, 0.0, cast_duration)
 
 	await wait_for_gameplay_time(release_time).timeout
@@ -225,15 +232,14 @@ func start_fireball() -> void:
 	finish_attack(token)
 
 
-# Creates the projectile at the correct moment in the cast animation.
+# Creates the moving fireball after its cast animation reaches the release frame.
 func spawn_fireball() -> void:
 	var fireball := fireball_scene.instantiate() as Area2D
 	if fireball == null:
 		push_error("Fireball Scene must have an Area2D as its root node.")
 		return
-
 	if not fireball.has_method(&"launch"):
-		push_error("Attach mage_fireball.gd to the root Area2D of the fireball scene.")
+		push_error("Attach Scripts/mage_fireball.gd to the root Area2D of the fireball scene.")
 		fireball.queue_free()
 		return
 
@@ -243,12 +249,10 @@ func spawn_fireball() -> void:
 		return
 
 	scene_root.add_child(fireball)
-
 	fireball.global_position = global_position + Vector2(
 		fireball_spawn_offset.x * facing_direction,
 		fireball_spawn_offset.y
 	)
-
 	fireball.call(
 		&"launch",
 		Vector2(facing_direction, 0.0),
