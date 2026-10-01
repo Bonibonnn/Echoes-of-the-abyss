@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cc8o02bxhdsy2"
-path="res://.godot/imported/Better Knight Button.png-b593d9fa0e7e18eaffc51de45f5692d4.ctex"
+path="res://.godot/imported/Better Knight Button.png-4eb8e964c601a0d3777cd269dfdc95d6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Better Knight Button.png"
-dest_files=["res://.godot/imported/Better Knight Button.png-b593d9fa0e7e18eaffc51de45f5692d4.ctex"]
+source_file="res://art/UI/Better Knight Button.png"
+dest_files=["res://.godot/imported/Better Knight Button.png-4eb8e964c601a0d3777cd269dfdc95d6.ctex"]
 
 [params]
 

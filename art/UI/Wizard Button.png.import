@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dcb16ii81virg"
-path="res://.godot/imported/Wizard Button.png-83382b1a39d3ae106dca58a919beb5a2.ctex"
+path="res://.godot/imported/Wizard Button.png-497f9d60a7cd74bb41c81ee4301a504a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Wizard Button.png"
-dest_files=["res://.godot/imported/Wizard Button.png-83382b1a39d3ae106dca58a919beb5a2.ctex"]
+source_file="res://art/UI/Wizard Button.png"
+dest_files=["res://.godot/imported/Wizard Button.png-497f9d60a7cd74bb41c81ee4301a504a.ctex"]
 
 [params]
 

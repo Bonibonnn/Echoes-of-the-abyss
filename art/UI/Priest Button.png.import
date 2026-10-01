@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dlmtc85mg0mtf"
-path="res://.godot/imported/Priest Button.png-dd0d590b8892c0ee6bff1292009908f1.ctex"
+path="res://.godot/imported/Priest Button.png-7f1225df783846ac3a88c1a93f3d8bf1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Priest Button.png"
-dest_files=["res://.godot/imported/Priest Button.png-dd0d590b8892c0ee6bff1292009908f1.ctex"]
+source_file="res://art/UI/Priest Button.png"
+dest_files=["res://.godot/imported/Priest Button.png-7f1225df783846ac3a88c1a93f3d8bf1.ctex"]
 
 [params]
 

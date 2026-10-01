@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://lvmdvjda8k24"
-path="res://.godot/imported/Archer Button.png-c23939dafb8aeeef22624fbf9caa7b6c.ctex"
+path="res://.godot/imported/Archer Button.png-4112b615f852fd4febe142df80b95ef7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Archer Button.png"
-dest_files=["res://.godot/imported/Archer Button.png-c23939dafb8aeeef22624fbf9caa7b6c.ctex"]
+source_file="res://art/UI/Archer Button.png"
+dest_files=["res://.godot/imported/Archer Button.png-4112b615f852fd4febe142df80b95ef7.ctex"]
 
 [params]
 
