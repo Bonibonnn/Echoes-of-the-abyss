@@ -1,12 +1,14 @@
-[gd_scene format=3 uid="uid://bfgh2q7pwppja"]
+[gd_scene format=3 uid="uid://tvpo5wxgnwvf"]
 
-[ext_resource type="Texture2D" uid="uid://bqctptlp8poou" path="res://Background.png" id="1_nstox"]
-[ext_resource type="FontFile" uid="uid://cwj53u7tkvsge" path="res://GrapeSoda.ttf" id="2_a66yo"]
-[ext_resource type="Texture2D" uid="uid://cc8o02bxhdsy2" path="res://Better Knight Button.png" id="3_ht42v"]
-[ext_resource type="Texture2D" uid="uid://dp4ftl6yl7kck" path="res://Pressed Knight Button.png" id="4_8ruiq"]
-[ext_resource type="Texture2D" uid="uid://lvmdvjda8k24" path="res://Archer Button.png" id="4_q2be1"]
-[ext_resource type="Texture2D" uid="uid://dcb16ii81virg" path="res://Wizard Button.png" id="5_q6i8b"]
-[ext_resource type="Texture2D" uid="uid://dlmtc85mg0mtf" path="res://Priest Button.png" id="6_ht42v"]
+[ext_resource type="Texture2D" uid="uid://bqctptlp8poou" path="res://art/UI/Background.png" id="1_nstox"]
+[ext_resource type="FontFile" uid="uid://cwj53u7tkvsge" path="res://art/UI/GrapeSoda.ttf" id="2_a66yo"]
+[ext_resource type="Texture2D" uid="uid://cc8o02bxhdsy2" path="res://art/UI/Better Knight Button.png" id="3_ht42v"]
+[ext_resource type="Texture2D" uid="uid://dp4ftl6yl7kck" path="res://art/UI/Pressed Knight Button.png" id="4_8ruiq"]
+[ext_resource type="Texture2D" uid="uid://lvmdvjda8k24" path="res://art/UI/Archer Button.png" id="4_q2be1"]
+[ext_resource type="Texture2D" uid="uid://dcb16ii81virg" path="res://art/UI/Wizard Button.png" id="5_q6i8b"]
+[ext_resource type="Texture2D" uid="uid://dlmtc85mg0mtf" path="res://art/UI/Priest Button.png" id="6_ht42v"]
+[ext_resource type="Script" uid="uid://84prhwbx2542" path="res://Scripts/select_character.gd" id="7_select"]
+[ext_resource type="AudioStream" uid="uid://brhuof5rpul6j" path="res://Music/UI Music/789772__dan2008__calm-menu-music-loopable-lo-fi.wav" id="9_k0krs"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n7w73"]
 texture = ExtResource("1_nstox")
@@ -51,6 +53,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("7_select")
 
 [node name="Panel" type="Panel" parent="." unique_id=1193291760]
 layout_mode = 1
@@ -146,3 +149,8 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_t75yo")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_o2qlu")
 theme_override_styles/hover = SubResource("StyleBoxTexture_jk08i")
 expand_icon = true
+
+[node name="UI music" type="AudioStreamPlayer" parent="." unique_id=1407034086]
+stream = ExtResource("9_k0krs")
+volume_db = -4.0
+autoplay = true

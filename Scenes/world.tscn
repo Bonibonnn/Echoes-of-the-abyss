@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://box5ux654515w" path="res://Scenes/healthbar.tscn" id="7_5v1tr"]
 [ext_resource type="Script" uid="uid://bf4qirgm8dxok" path="res://Scripts/dungeon_door.gd" id="7_k7acu"]
 [ext_resource type="Texture2D" uid="uid://bkcp5yv1jp0e1" path="res://art/Pixel Art Animated Portal/sprite-sheet.png" id="7_o06y3"]
-[ext_resource type="PackedScene" uid="uid://si2jakbfvkkr" path="res://Scenes/mage.tscn" id="8_k7acu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5a7ea"]
 texture = ExtResource("1_5a7ea")
@@ -308,6 +307,3 @@ autoplay = "portal"
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2102277698]
 
 [node name="healthbar" parent="CanvasLayer" unique_id=1361943585 instance=ExtResource("7_5v1tr")]
-
-[node name="mage" parent="." unique_id=1695064001 instance=ExtResource("8_k7acu")]
-position = Vector2(75, 164)
