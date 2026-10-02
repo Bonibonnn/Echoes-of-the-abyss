@@ -18,7 +18,7 @@ signal health_changed(current_health: int, maximum_health: int)
 @export_range(0.0, 2.0, 0.01) var damage_invulnerability_time := 0.12
 
 const ONE_SHOT_ANIMATIONS := [
-	&"attack", &"attack1", &"attack2",
+	&"attack", &"attack1", &"attack2", &"attack3",
 	&"skill", &"skill1", &"skill2", &"fireball",
 	&"block", &"heal", &"summon", &"hurt", &"death"
 ]

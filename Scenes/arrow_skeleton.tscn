@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://cba6vi2nluqm7"]
+
+[ext_resource type="Texture2D" uid="uid://d11gle62w81k2" path="res://art/Characters(100x100 split)/Skeleton Archer/Arrow(projectile)/Arrow03(100x100).png" id="1_4s400"]
+[ext_resource type="Script" path="res://Scripts/arrow_skeleton.gd" id="2_arrow_skeleton"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_l5lc7"]
+radius = 8.0
+
+[node name="arrow_skeleton" type="Area2D" unique_id=1528009550]
+script = ExtResource("2_arrow_skeleton")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=568082130]
+texture = ExtResource("1_4s400")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1207483815]
+shape = SubResource("CircleShape2D_l5lc7")
