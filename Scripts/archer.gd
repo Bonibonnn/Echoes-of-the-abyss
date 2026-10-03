@@ -43,6 +43,8 @@ extends Combatant
 @export_range(0.1, 30.0, 0.1) var strength_duration := 6.0
 @export_range(0.1, 60.0, 0.1) var strength_cooldown := 8.0
 @export_range(1.0, 3.0, 0.05) var strengthened_arrow_scale := 1.2
+# The Archer uses this colour while E is ready to empower a basic arrow.
+@export var strengthened_character_tint := Color(1.0, 0.25, 0.25, 1.0)
 
 @export_category("Hurt and Death")
 @export var hurt_duration := 0.3
@@ -58,10 +60,14 @@ var is_dashing := false
 var is_strengthened := false
 var strength_time_left := 0.0
 var strength_cooldown_left := 0.0
+# Saved so the Archer returns to its original art colour after E ends.
+var _normal_sprite_modulate := Color.WHITE
 
 
 func _ready() -> void:
 	super()
+	if animated_sprite != null:
+		_normal_sprite_modulate = animated_sprite.modulate
 	add_to_group(&"player")
 
 	if arrow_scene == null:
@@ -104,6 +110,7 @@ func _physics_process(delta: float) -> void:
 		strength_time_left -= delta
 		if strength_time_left <= 0.0:
 			is_strengthened = false
+			set_strengthened_visual(false)
 
 	if is_dead:
 		return
@@ -164,6 +171,7 @@ func start_basic_attack() -> void:
 		arrow_scale = strengthened_arrow_scale
 		is_strengthened = false
 		strength_time_left = 0.0
+		set_strengthened_visual(false)
 
 	fire_arrow(damage, arrow_scale)
 
@@ -218,6 +226,15 @@ func start_strengthen() -> void:
 	is_strengthened = true
 	strength_time_left = strength_duration
 	strength_cooldown_left = strength_cooldown
+	set_strengthened_visual(true)
+
+
+# Uses modulate, which is separate from Combatant's freeze/burn self_modulate.
+func set_strengthened_visual(enabled: bool) -> void:
+	if animated_sprite == null:
+		return
+
+	animated_sprite.modulate = strengthened_character_tint if enabled else _normal_sprite_modulate
 
 
 # Creates a fresh copy of the separate arrow.tscn scene and launches it.
