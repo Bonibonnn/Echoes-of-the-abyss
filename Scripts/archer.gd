@@ -108,6 +108,11 @@ func _physics_process(delta: float) -> void:
 	if is_dead:
 		return
 
+	# Dashing is handled before is_busy(), so stun must stop it explicitly.
+	if is_stunned:
+		is_dashing = false
+		dash_time_left = 0.0
+
 	if is_dashing:
 		dash_time_left -= delta
 		velocity = dash_direction * dash_speed

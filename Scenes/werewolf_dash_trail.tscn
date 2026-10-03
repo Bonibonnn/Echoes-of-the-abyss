@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://Scripts/werewolf_dash_trail.gd" id="1_trail"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_trail"]
+size = Vector2(8, 18)
+
+[node name="werewolf_dash_trail" type="Area2D"]
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+script = ExtResource("1_trail")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_trail")
+
+[node name="Line2D" type="Line2D" parent="."]
+width = 8.0
+default_color = Color(1, 0.25, 0.2, 0.7)
