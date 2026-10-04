@@ -1,0 +1,138 @@
+[gd_scene format=3 uid="uid://caooum5myget4"]
+
+[ext_resource type="Script" uid="uid://dtof7gb36ma4q" path="res://Scripts/lan_knight_test.gd" id="1_lan_knight_test"]
+[ext_resource type="PackedScene" path="res://Scenes/network_knight_player.tscn" id="2_network_knight"]
+[ext_resource type="PackedScene" path="res://Scenes/network_training_dummy.tscn" id="3_training_dummy"]
+[ext_resource type="PackedScene" path="res://Scenes/network_damage_zone.tscn" id="4_damage_zone"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_horizontal_wall"]
+size = Vector2(964, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vertical_wall"]
+size = Vector2(24, 700)
+
+[node name="lan_knight_test" type="Node2D" unique_id=235439688 groups=["lan_knight_test"]]
+script = ExtResource("1_lan_knight_test")
+network_player_scene = ExtResource("2_network_knight")
+
+[node name="test_background" type="Polygon2D" parent="." unique_id=670730947]
+position = Vector2(391, -72)
+color = Color(0.04, 0.11, 0.16, 1)
+polygon = PackedVector2Array(-1000, -1000, 2000, -1000, 2000, 2000, -1000, 2000)
+
+[node name="arena_border" type="Line2D" parent="." unique_id=1361414389]
+points = PackedVector2Array(60, 225, 1000, 225, 1000, 900, 60, 900)
+closed = true
+width = 5.0
+default_color = Color(0.15, 0.55, 0.72, 1)
+
+[node name="top_wall" type="StaticBody2D" parent="." unique_id=278307224]
+position = Vector2(530, 225)
+
+[node name="collision_shape" type="CollisionShape2D" parent="top_wall" unique_id=1759460251]
+shape = SubResource("RectangleShape2D_horizontal_wall")
+
+[node name="bottom_wall" type="StaticBody2D" parent="." unique_id=663006306]
+position = Vector2(530, 900)
+
+[node name="collision_shape" type="CollisionShape2D" parent="bottom_wall" unique_id=1863321989]
+shape = SubResource("RectangleShape2D_horizontal_wall")
+
+[node name="left_wall" type="StaticBody2D" parent="." unique_id=892475784]
+position = Vector2(60, 562.5)
+
+[node name="collision_shape" type="CollisionShape2D" parent="left_wall" unique_id=231580561]
+shape = SubResource("RectangleShape2D_vertical_wall")
+
+[node name="right_wall" type="StaticBody2D" parent="." unique_id=146052731]
+position = Vector2(1000, 562.5)
+
+[node name="collision_shape" type="CollisionShape2D" parent="right_wall" unique_id=883750304]
+shape = SubResource("RectangleShape2D_vertical_wall")
+
+[node name="training_dummy" parent="." unique_id=1816651084 instance=ExtResource("3_training_dummy")]
+position = Vector2(530, 560)
+
+[node name="damage_zone" parent="." unique_id=1187036136 instance=ExtResource("4_damage_zone")]
+position = Vector2(800, 690)
+
+[node name="players" type="Node2D" parent="." unique_id=150999633]
+
+[node name="interface" type="CanvasLayer" parent="." unique_id=2087906153]
+
+[node name="panel" type="ColorRect" parent="interface" unique_id=1960934586]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 600.0
+offset_bottom = 190.0
+mouse_filter = 2
+color = Color(0.03, 0.06, 0.11, 0.9)
+
+[node name="title" type="Label" parent="interface/panel" unique_id=2125133124]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 560.0
+offset_bottom = 40.0
+theme_override_colors/font_color = Color(0.4, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "LAN Knight Test — Host Movement"
+
+[node name="ip_title" type="Label" parent="interface/panel" unique_id=1188491377]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 54.0
+offset_right = 110.0
+offset_bottom = 80.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Host IP:"
+
+[node name="ip_address" type="LineEdit" parent="interface/panel" unique_id=318406514]
+layout_mode = 0
+offset_left = 88.0
+offset_top = 48.0
+offset_right = 350.0
+offset_bottom = 80.0
+text = "127.0.0.1"
+placeholder_text = "Example: 192.168.1.25"
+
+[node name="host_button" type="Button" parent="interface/panel" unique_id=1387293839]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 94.0
+offset_right = 160.0
+offset_bottom = 130.0
+text = "Host"
+
+[node name="join_button" type="Button" parent="interface/panel" unique_id=2019034168]
+layout_mode = 0
+offset_left = 176.0
+offset_top = 94.0
+offset_right = 320.0
+offset_bottom = 130.0
+text = "Join"
+
+[node name="leave_button" type="Button" parent="interface/panel" unique_id=258567271]
+layout_mode = 0
+offset_left = 336.0
+offset_top = 94.0
+offset_right = 480.0
+offset_bottom = 130.0
+text = "Leave"
+
+[node name="status_label" type="Label" parent="interface/panel" unique_id=1484362111]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 140.0
+offset_right = 560.0
+offset_bottom = 164.0
+theme_override_colors/font_color = Color(0.86, 0.9, 0.96, 1)
+text = "Choose Host, or enter the host IP and choose Join."
+
+[node name="instructions" type="Label" parent="interface" unique_id=2038693926]
+offset_left = 20.0
+offset_top = 205.0
+offset_right = 1020.0
+offset_bottom = 232.0
+theme_override_colors/font_color = Color(0.75, 0.82, 0.9, 1)
+text = "The host moves both Knights, resolves walls, and validates hitboxes. Defeat the slime; lava still tests respawn."

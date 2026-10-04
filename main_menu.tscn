@@ -951,6 +951,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_nlkkf")
+multiplayer_scene = "res://Scenes/lan_lobby.tscn"
 
 [node name="Background" type="Panel" parent="." unique_id=1845041817]
 layout_mode = 1

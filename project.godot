@@ -15,9 +15,15 @@ run/main_scene="res://main_menu.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
+<<<<<<< Updated upstream
 [audio]
 
 buses/default_bus_layout="uid://du4lo8rr7aljr"
+=======
+[autoload]
+
+LanSession="*res://Scripts/lan_session.gd"
+>>>>>>> Stashed changes
 
 [display]
 
