@@ -1,16 +1,22 @@
 [gd_scene format=4 uid="uid://bg554tr83pkv5"]
 
-[ext_resource type="Script" uid="uid://ocsqya0ruglq" path="res://main_menu.gd" id="1_nlkkf"]
-[ext_resource type="FontFile" uid="uid://cwj53u7tkvsge" path="res://GrapeSoda.ttf" id="2_fu7sn"]
-[ext_resource type="Texture2D" uid="uid://bqctptlp8poou" path="res://Background.png" id="2_nlkkf"]
-[ext_resource type="Texture2D" uid="uid://dwv38slyb8ke5" path="res://Logo.png" id="3_qe12f"]
-[ext_resource type="Texture2D" uid="uid://bcum1hmboyktg" path="res://Start Button.png" id="5_qe12f"]
-[ext_resource type="Texture2D" uid="uid://da1cup7pxytf3" path="res://Button2.png" id="6_8qtwp"]
-[ext_resource type="Texture2D" uid="uid://bbd6i56oxvgkg" path="res://Press start button.png" id="6_qe12f"]
-[ext_resource type="Texture2D" uid="uid://b5746um8tpiev" path="res://Pressed option button.png" id="8_8qtwp"]
-[ext_resource type="Texture2D" uid="uid://yuo1fus0p3cy" path="res://Pressed quit button.png" id="9_dy7ct"]
-[ext_resource type="Texture2D" uid="uid://cqc4rpb7ysmme" path="res://Pressed Multiplayer Button.png" id="10_0k4wn"]
-[ext_resource type="Texture2D" uid="uid://swisk6ju608d" path="res://Multiplayer Button.png" id="10_0o4t1"]
+[ext_resource type="Script" uid="uid://ocsqya0ruglq" path="res://art/UI/main_menu.gd" id="1_nlkkf"]
+[ext_resource type="FontFile" uid="uid://cwj53u7tkvsge" path="res://art/UI/GrapeSoda.ttf" id="2_fu7sn"]
+[ext_resource type="Texture2D" uid="uid://bqctptlp8poou" path="res://art/UI/Background.png" id="2_nlkkf"]
+[ext_resource type="Texture2D" uid="uid://dwv38slyb8ke5" path="res://art/UI/Logo.png" id="3_qe12f"]
+[ext_resource type="Texture2D" uid="uid://bcum1hmboyktg" path="res://art/UI/Start Button.png" id="5_qe12f"]
+[ext_resource type="Texture2D" uid="uid://da1cup7pxytf3" path="res://art/UI/Button2.png" id="6_8qtwp"]
+[ext_resource type="Texture2D" uid="uid://bbd6i56oxvgkg" path="res://art/UI/Press start button.png" id="6_qe12f"]
+[ext_resource type="Texture2D" uid="uid://b5746um8tpiev" path="res://art/UI/Pressed option button.png" id="8_8qtwp"]
+[ext_resource type="Texture2D" uid="uid://yuo1fus0p3cy" path="res://art/UI/Pressed quit button.png" id="9_dy7ct"]
+[ext_resource type="Texture2D" uid="uid://cqc4rpb7ysmme" path="res://art/UI/Pressed Multiplayer Button.png" id="10_0k4wn"]
+[ext_resource type="Texture2D" uid="uid://swisk6ju608d" path="res://art/UI/Multiplayer Button.png" id="10_0o4t1"]
+[ext_resource type="Texture2D" uid="uid://cas1fqdg7wwrh" path="res://art/UI/Buttons.png" id="12_d3g1u"]
+[ext_resource type="AudioStream" uid="uid://brhuof5rpul6j" path="res://Music/UI Music/789772__dan2008__calm-menu-music-loopable-lo-fi.wav" id="12_gs8ah"]
+[ext_resource type="Script" uid="uid://cl40q1f7yfy1c" path="res://art/UI/option.gd" id="13_gs8ah"]
+[ext_resource type="Texture2D" uid="uid://bervinc8nkdnb" path="res://art/UI/Pixel Art Back Button.png" id="13_sp0qi"]
+[ext_resource type="Script" uid="uid://bnkbbbra5e0tx" path="res://art/UI/audio_control.gd" id="14_3ergr"]
+[ext_resource type="Script" uid="uid://dq0y6ua6l2lam" path="res://art/UI/full_screen_control.gd" id="15_35yhj"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n7w73"]
 texture = ExtResource("2_nlkkf")
@@ -917,6 +923,26 @@ region_rect = Rect2(154, 551, 1224, 340)
 texture = ExtResource("9_dy7ct")
 region_rect = Rect2(202, 129, 1767, 513)
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sp0qi"]
+texture = ExtResource("12_d3g1u")
+region_rect = Rect2(801, 311, 656, 195)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_35yhj"]
+texture = ExtResource("12_d3g1u")
+region_rect = Rect2(801, 311, 656, 195)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3ergr"]
+texture = ExtResource("13_sp0qi")
+region_rect = Rect2(40, 63, 1662, 778)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_n7w73"]
+color = Color(0.98939866, 0.98939866, 0.98939854, 1)
+thickness = 6
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_gehdk"]
+color = Color(0, 1.1551381e-06, 0.7753542, 1)
+thickness = 6
+
 [node name="MainMenu" type="Control" unique_id=1632817570]
 layout_mode = 3
 anchors_preset = 15
@@ -926,7 +952,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_nlkkf")
 
-[node name="Panel" type="Panel" parent="." unique_id=1845041817]
+[node name="Background" type="Panel" parent="." unique_id=1845041817]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -937,13 +963,13 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_n7w73")
 
 [node name="Label" type="Label" parent="." unique_id=631756097]
 layout_mode = 0
-offset_left = 374.0
-offset_top = 69.0
-offset_right = 787.0
-offset_bottom = 293.0
+offset_left = 467.0
+offset_top = 68.0
+offset_right = 735.0
+offset_bottom = 277.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_vgqb0")
 
-[node name="Start" type="Button" parent="." unique_id=2093531918]
+[node name="Start Button" type="Button" parent="." unique_id=2093531918]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -964,7 +990,7 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_qe12f")
 theme_override_styles/hover = SubResource("StyleBoxTexture_0k4wn")
 action_mode = 0
 
-[node name="Options" type="Button" parent="." unique_id=742793812]
+[node name="Options Button" type="Button" parent="." unique_id=742793812]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -985,7 +1011,7 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_nixot")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_iotk1")
 theme_override_styles/hover = SubResource("StyleBoxTexture_cm266")
 
-[node name="Mutiplayer" type="Button" parent="." unique_id=1402318444]
+[node name="Mutiplayer Button" type="Button" parent="." unique_id=1402318444]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -1006,7 +1032,7 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_j5v2v")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_w44g7")
 theme_override_styles/hover = SubResource("StyleBoxTexture_8u0te")
 
-[node name="Quit" type="Button" parent="." unique_id=1223080712]
+[node name="Quit Button" type="Button" parent="." unique_id=1223080712]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -1027,7 +1053,113 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_mb6pw")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_mb6pw")
 theme_override_styles/hover = SubResource("StyleBoxTexture_g8g3n")
 
-[connection signal="pressed" from="Start" to="." method="_on_start_pressed"]
-[connection signal="pressed" from="Options" to="." method="_on_options_pressed"]
-[connection signal="pressed" from="Mutiplayer" to="." method="_on_options_pressed"]
-[connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1493000445]
+stream = ExtResource("12_gs8ah")
+autoplay = true
+bus = &"Music"
+
+[node name="Option" type="Panel" parent="." unique_id=1795230321 node_paths=PackedStringArray("resolution_option")]
+layout_mode = 0
+offset_left = 237.0
+offset_top = 277.0
+offset_right = 930.0
+offset_bottom = 562.0
+script = ExtResource("13_gs8ah")
+resolution_option = NodePath("HBoxContainer/Resolution")
+
+[node name="Label" type="Label" parent="Option" unique_id=328676047]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 63.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_fu7sn")
+theme_override_font_sizes/font_size = 48
+text = "Options"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Back" type="Button" parent="Option" unique_id=876572731]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -333.5
+offset_top = -135.5
+offset_right = -207.5
+offset_bottom = -75.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_j5v2v")
+theme_override_colors/font_color = Color(0.0035191544, 0.0035191746, 0.0035191574, 1)
+theme_override_fonts/font = ExtResource("2_fu7sn")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("StyleBoxTexture_sp0qi")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_35yhj")
+theme_override_styles/hover = SubResource("StyleBoxTexture_3ergr")
+
+[node name="MusicControl" type="HSlider" parent="Option" unique_id=747367033]
+layout_mode = 0
+offset_left = 47.0
+offset_top = 107.0
+offset_right = 260.0
+offset_bottom = 151.0
+theme_override_styles/slider = SubResource("StyleBoxLine_n7w73")
+theme_override_styles/grabber_area = SubResource("StyleBoxLine_gehdk")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxLine_gehdk")
+max_value = 1.0
+step = 0.05
+value = 1.0
+script = ExtResource("14_3ergr")
+audio_bus_name = "Music"
+
+[node name="Label" type="Label" parent="Option/MusicControl" unique_id=1539139595]
+layout_mode = 0
+offset_left = 39.0
+offset_top = -18.0
+offset_right = 172.0
+offset_bottom = 14.0
+theme_override_fonts/font = ExtResource("2_fu7sn")
+theme_override_font_sizes/font_size = 32
+text = "Music"
+horizontal_alignment = 1
+
+[node name="FullScreen Control" type="CheckButton" parent="Option" unique_id=1904951909]
+layout_mode = 0
+offset_left = 374.0
+offset_top = 95.0
+offset_right = 656.0
+offset_bottom = 135.0
+theme_override_fonts/font = ExtResource("2_fu7sn")
+theme_override_font_sizes/font_size = 32
+text = "FullScreen"
+script = ExtResource("15_35yhj")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Option" unique_id=681489472]
+layout_mode = 0
+offset_left = 383.0
+offset_top = 164.0
+offset_right = 619.0
+offset_bottom = 229.0
+
+[node name="Label" type="Label" parent="Option/HBoxContainer" unique_id=1275419509]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_fu7sn")
+theme_override_font_sizes/font_size = 32
+text = "Resolution"
+
+[node name="Resolution" type="OptionButton" parent="Option/HBoxContainer" unique_id=1295605007]
+layout_mode = 2
+
+[connection signal="pressed" from="Start Button" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="Options Button" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="Options Button" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="Mutiplayer Button" to="." method="_on_mutiplayer_pressed"]
+[connection signal="pressed" from="Mutiplayer Button" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="Quit Button" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="Quit Button" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="Option/Back" to="." method="_on_back_pressed"]
+[connection signal="value_changed" from="Option/MusicControl" to="Option/MusicControl" method="_on_value_changed"]
+[connection signal="toggled" from="Option/FullScreen Control" to="Option/FullScreen Control" method="_on_toggled"]

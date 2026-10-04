@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dlmtc85mg0mtf"
-path="res://.godot/imported/Priest Button.png-7f1225df783846ac3a88c1a93f3d8bf1.ctex"
+uid="uid://i6s1so6fim43"
+path="res://.godot/imported/Pressed Pixel Archer Button.png-cea7ff9bbaa77ea90f00ec9819c5b68a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/UI/Priest Button.png"
-dest_files=["res://.godot/imported/Priest Button.png-7f1225df783846ac3a88c1a93f3d8bf1.ctex"]
+source_file="res://art/UI/Pressed Pixel Archer Button.png"
+dest_files=["res://.godot/imported/Pressed Pixel Archer Button.png-cea7ff9bbaa77ea90f00ec9819c5b68a.ctex"]
 
 [params]
 

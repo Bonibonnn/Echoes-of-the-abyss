@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dlmtc85mg0mtf"
-path="res://.godot/imported/Priest Button.png-7f1225df783846ac3a88c1a93f3d8bf1.ctex"
+uid="uid://bervinc8nkdnb"
+path="res://.godot/imported/Pixel Art Back Button.png-be72fce7afbe1833898a5479776e3966.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/UI/Priest Button.png"
-dest_files=["res://.godot/imported/Priest Button.png-7f1225df783846ac3a88c1a93f3d8bf1.ctex"]
+source_file="res://art/UI/Pixel Art Back Button.png"
+dest_files=["res://.godot/imported/Pixel Art Back Button.png-be72fce7afbe1833898a5479776e3966.ctex"]
 
 [params]
 

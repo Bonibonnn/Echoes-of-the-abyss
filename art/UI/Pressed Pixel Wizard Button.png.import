@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dlmtc85mg0mtf"
-path="res://.godot/imported/Priest Button.png-7f1225df783846ac3a88c1a93f3d8bf1.ctex"
+uid="uid://dqwaupum50c0h"
+path="res://.godot/imported/Pressed Pixel Wizard Button.png-8c9d4e7ae21e60a9c402bb6e87ec7b42.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/UI/Priest Button.png"
-dest_files=["res://.godot/imported/Priest Button.png-7f1225df783846ac3a88c1a93f3d8bf1.ctex"]
+source_file="res://art/UI/Pressed Pixel Wizard Button.png"
+dest_files=["res://.godot/imported/Pressed Pixel Wizard Button.png-8c9d4e7ae21e60a9c402bb6e87ec7b42.ctex"]
 
 [params]
 
