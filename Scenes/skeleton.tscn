@@ -288,7 +288,8 @@ attack_hit_delay = 0.78
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1387313087]
 sprite_frames = SubResource("SpriteFrames_l5lc7")
-animation = &"summon"
+animation = &"idle"
+autoplay = "idle"
 
 [node name="detection_area" type="Area2D" parent="." unique_id=1760747618]
 visible = false

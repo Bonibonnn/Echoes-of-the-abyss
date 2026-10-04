@@ -1,16 +1,28 @@
 extends Combatant
 
+@export_category("Movement and Health")
 @export var chase_speed := 90.0
 @export var max_health := 3
+
+@export_category("Attack 1 - Slash")
 @export var attack_damage := 1
 @export var attack_cooldown := 1.0
 @export var attack_range := 48.0
+
+@export_category("Attack 2 - Heavy Slash")
+# The heavy slash uses the new attack2 animation and deals two damage.
+@export var heavy_slash_damage := 2
+@export_range(0.1, 10.0, 0.01, "suffix:s") var heavy_slash_cooldown := 1.5
+@export_range(0.0, 10.0, 0.01, "suffix:s") var heavy_slash_hit_delay := 0.6
+
+@export_category("Animation Timing")
 @export var hurt_duration := 0.3
 @export var death_duration := 0.8
 
 @onready var detection_area := get_node_or_null(^"detection_area") as Area2D
 
 var player: Node2D
+var next_attack_is_heavy := false
 
 
 func _ready() -> void:
@@ -41,7 +53,7 @@ func _physics_process(_delta: float) -> void:
 		var to_player := player.global_position - global_position
 		set_facing_from_x(to_player.x)
 		if to_player.length_squared() <= attack_range * attack_range and can_hit_target(player):
-			start_melee_attack(&"attack", attack_damage, &"player", attack_cooldown)
+			use_next_attack()
 			return
 
 		velocity = to_player.normalized() * chase_speed
@@ -50,6 +62,16 @@ func _physics_process(_delta: float) -> void:
 
 	move_and_slide()
 	update_idle_or_walk_animation()
+
+
+# Alternate the normal slash and the slower, stronger heavy slash.
+func use_next_attack() -> void:
+	if next_attack_is_heavy:
+		start_melee_attack(&"attack2", heavy_slash_damage, &"player", heavy_slash_cooldown, heavy_slash_hit_delay)
+		next_attack_is_heavy = false
+	else:
+		start_melee_attack(&"attack", attack_damage, &"player", attack_cooldown)
+		next_attack_is_heavy = true
 
 
 func get_max_health() -> int:

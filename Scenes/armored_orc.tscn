@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://cvh0u14vvervi" path="res://art/Characters(100x100 split)/Armored Orc/Armored Orc/Armored Orc_Hurt.png" id="6_q17mt"]
 [ext_resource type="Texture2D" uid="uid://cpqgh3qhegpef" path="res://art/Characters(100x100 split)/Armored Orc/Armored Orc/Armored Orc_Idle.png" id="7_0de7q"]
 [ext_resource type="Texture2D" uid="uid://bc25qqbp4tp0v" path="res://art/Characters(100x100 split)/Armored Orc/Armored Orc/Armored Orc_Walk.png" id="8_4pg4q"]
-[ext_resource type="Script" path="res://Scripts/armored_orc.gd" id="9_armored_orc"]
+[ext_resource type="Script" uid="uid://o1ujt8jpu1p3" path="res://Scripts/armored_orc.gd" id="9_armored_orc"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mxcc1"]
 atlas = ExtResource("1_bayvl")
@@ -425,44 +425,41 @@ script = ExtResource("9_armored_orc")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=507723274]
 sprite_frames = SubResource("SpriteFrames_l5lc7")
 animation = &"idle"
+autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2014890697]
 shape = SubResource("CircleShape2D_wgbdp")
 
-[node name="detection_area" type="Area2D" parent="."]
+[node name="detection_area" type="Area2D" parent="." unique_id=1831693297]
 visible = false
 collision_layer = 2
-collision_mask = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="detection_area"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="detection_area" unique_id=1208018748]
 shape = SubResource("CircleShape2D_detection")
 
-[node name="attack_pivot" type="Node2D" parent="."]
+[node name="attack_pivot" type="Node2D" parent="." unique_id=114336601]
 
-[node name="attack_hitbox" type="Area2D" parent="attack_pivot"]
+[node name="attack_hitbox" type="Area2D" parent="attack_pivot" unique_id=695978008]
 visible = false
 collision_layer = 0
-collision_mask = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="attack_pivot/attack_hitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="attack_pivot/attack_hitbox" unique_id=1985623186]
 position = Vector2(21, 0)
 shape = SubResource("RectangleShape2D_blunt_swing")
 
-[node name="stab_hitbox" type="Area2D" parent="attack_pivot"]
+[node name="stab_hitbox" type="Area2D" parent="attack_pivot" unique_id=1152394299]
 visible = false
 collision_layer = 0
-collision_mask = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="attack_pivot/stab_hitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="attack_pivot/stab_hitbox" unique_id=1453411015]
 position = Vector2(38, 0)
 shape = SubResource("RectangleShape2D_blunt_thrust")
 
-[node name="groundpound_hitbox" type="Area2D" parent="."]
+[node name="groundpound_hitbox" type="Area2D" parent="." unique_id=300963145]
 visible = false
 collision_layer = 0
-collision_mask = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="groundpound_hitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="groundpound_hitbox" unique_id=2093929615]
 shape = SubResource("CircleShape2D_groundpound")
 
 [connection signal="body_entered" from="detection_area" to="." method="_on_detection_area_body_entered"]

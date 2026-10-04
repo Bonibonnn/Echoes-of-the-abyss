@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dtcbwx5ncmd13" path="res://art/Characters(100x100 split)/Werebear/Werebear/Werebear_Attack03.png" id="3_375vd"]
 [ext_resource type="Texture2D" uid="uid://c60q8ykwla6pa" path="res://art/Characters(100x100 split)/Werebear/Werebear/Werebear_Death.png" id="4_krncc"]
 [ext_resource type="Texture2D" uid="uid://cnichmlrcb6e2" path="res://art/Characters(100x100 split)/Werebear/Werebear/Werebear_Hurt.png" id="5_ceepy"]
-[ext_resource type="Script" path="res://Scripts/werebear.gd" id="8_werebear"]
+[ext_resource type="Script" uid="uid://d3tk81gxtpa8x" path="res://Scripts/werebear.gd" id="8_werebear"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_itpf8"]
 atlas = ExtResource("1_optud")
@@ -420,6 +420,7 @@ animations = [{
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_itpf8"]
 radius = 8.246211
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_detection"]
 radius = 140.0
 
@@ -429,7 +430,6 @@ size = Vector2(34, 24)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_slam"]
 size = Vector2(42, 32)
 
-
 [node name="werebear" type="CharacterBody2D" unique_id=1001066494]
 collision_layer = 3
 script = ExtResource("8_werebear")
@@ -438,35 +438,33 @@ script = ExtResource("8_werebear")
 scale = Vector2(1.2, 1.2)
 sprite_frames = SubResource("SpriteFrames_l5lc7")
 animation = &"idle"
+autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=749350564]
 shape = SubResource("CircleShape2D_itpf8")
 
-[node name="detection_area" type="Area2D" parent="."]
+[node name="detection_area" type="Area2D" parent="." unique_id=1859049563]
 visible = false
 collision_layer = 2
-collision_mask = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="detection_area"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="detection_area" unique_id=946299772]
 shape = SubResource("CircleShape2D_detection")
 
-[node name="attack_pivot" type="Node2D" parent="."]
+[node name="attack_pivot" type="Node2D" parent="." unique_id=1164699860]
 
-[node name="attack_hitbox" type="Area2D" parent="attack_pivot"]
+[node name="attack_hitbox" type="Area2D" parent="attack_pivot" unique_id=508757262]
 visible = false
 collision_layer = 0
-collision_mask = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="attack_pivot/attack_hitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="attack_pivot/attack_hitbox" unique_id=846361312]
 position = Vector2(23, 0)
 shape = SubResource("RectangleShape2D_claw")
 
-[node name="slam_hitbox" type="Area2D" parent="attack_pivot"]
+[node name="slam_hitbox" type="Area2D" parent="attack_pivot" unique_id=1558875531]
 visible = false
 collision_layer = 0
-collision_mask = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="attack_pivot/slam_hitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="attack_pivot/slam_hitbox" unique_id=1028127138]
 position = Vector2(25, 0)
 shape = SubResource("RectangleShape2D_slam")
 

@@ -77,7 +77,9 @@ func host_session() -> int:
 	expected_match_peers.clear()
 	loaded_match_peers.clear()
 	active_match_id = -1
-	_set_status("Hosting at %s:%d. Waiting for one player." % [_get_lan_ip(), PORT])
+	var host_ip: String = get_lan_ip()
+	var host_address: String = "%s:%d" % [host_ip, PORT] if not host_ip.is_empty() else "no LAN IPv4 address"
+	_set_status("Hosting at %s. Waiting for one player." % host_address)
 	lobby_changed.emit()
 	return OK
 
@@ -289,7 +291,24 @@ func _set_host_player_ready(peer_id: int, wants_ready: bool) -> void:
 
 
 func get_lan_ip() -> String:
-	return _get_lan_ip()
+	var candidates: Array[Dictionary] = _get_lan_ipv4_candidates()
+	if candidates.is_empty():
+		return ""
+
+	return str(candidates[0].get("address", ""))
+
+
+# Returns short, readable choices for the host lobby. The first choice is the
+# best guess for a normal Wi-Fi/Ethernet LAN, but the list remains available if
+# a computer has more than one network adapter.
+func get_lan_ip_options() -> PackedStringArray:
+	var options: PackedStringArray = PackedStringArray()
+	for candidate: Dictionary in _get_lan_ipv4_candidates():
+		var interface_name: String = str(candidate.get("interface_name", "Network"))
+		var address: String = str(candidate.get("address", ""))
+		if not address.is_empty():
+			options.append("%s — %s" % [interface_name, address])
+	return options
 
 
 # This is a host-only action. Clients cannot choose their own match scene or
@@ -517,8 +536,105 @@ func _set_status(message: String) -> void:
 	status_changed.emit(message)
 
 
-func _get_lan_ip() -> String:
-	for address in IP.get_local_addresses():
-		if address.contains(".") and not address.begins_with("127."):
-			return address
-	return "your IPv4 address"
+func _get_lan_ipv4_candidates() -> Array[Dictionary]:
+	var wifi_candidates: Array[Dictionary] = []
+	var ethernet_candidates: Array[Dictionary] = []
+	var other_private_candidates: Array[Dictionary] = []
+	var fallback_candidates: Array[Dictionary] = []
+	var seen_addresses: Dictionary = {}
+	var interfaces: Array[Dictionary] = IP.get_local_interfaces()
+
+	for interface_data: Dictionary in interfaces:
+		var friendly_name: String = str(interface_data.get("friendly", "")).strip_edges()
+		var interface_name: String = friendly_name
+		if interface_name.is_empty():
+			interface_name = str(interface_data.get("name", "Network")).strip_edges()
+		if interface_name.is_empty():
+			interface_name = "Network"
+
+		var addresses_value: Variant = interface_data.get("addresses", PackedStringArray())
+		if not (addresses_value is PackedStringArray):
+			continue
+
+		var addresses: PackedStringArray = addresses_value
+		for address: String in addresses:
+			if not _is_usable_lan_ipv4(address) or seen_addresses.has(address):
+				continue
+
+			seen_addresses[address] = true
+			var candidate: Dictionary = {
+				"interface_name": _get_compact_interface_name(interface_name),
+				"address": address,
+			}
+
+			if _is_private_lan_ipv4(address):
+				if _is_wifi_interface(interface_name):
+					wifi_candidates.append(candidate)
+				elif _is_ethernet_interface(interface_name):
+					ethernet_candidates.append(candidate)
+				else:
+					other_private_candidates.append(candidate)
+			else:
+				fallback_candidates.append(candidate)
+
+	wifi_candidates.append_array(ethernet_candidates)
+	wifi_candidates.append_array(other_private_candidates)
+	wifi_candidates.append_array(fallback_candidates)
+	return wifi_candidates
+
+
+func _is_usable_lan_ipv4(address: String) -> bool:
+	var octets: PackedStringArray = address.split(".")
+	if octets.size() != 4:
+		return false
+
+	var values: Array[int] = []
+	for octet_text: String in octets:
+		if not octet_text.is_valid_int():
+			return false
+
+		var octet: int = octet_text.to_int()
+		if octet < 0 or octet > 255:
+			return false
+		values.append(octet)
+
+	var first: int = values[0]
+	var second: int = values[1]
+	if first == 0 or first == 127 or first >= 224:
+		return false
+	if first == 169 and second == 254:
+		return false
+	return true
+
+
+func _is_private_lan_ipv4(address: String) -> bool:
+	var octets: PackedStringArray = address.split(".")
+	var first: int = octets[0].to_int()
+	var second: int = octets[1].to_int()
+	return (
+		first == 10
+		or (first == 172 and second >= 16 and second <= 31)
+		or (first == 192 and second == 168)
+	)
+
+
+func _is_wifi_interface(interface_name: String) -> bool:
+	var normalized_name: String = interface_name.to_lower()
+	return (
+		normalized_name.contains("wi-fi")
+		or normalized_name.contains("wifi")
+		or normalized_name.contains("wireless")
+	)
+
+
+func _is_ethernet_interface(interface_name: String) -> bool:
+	var normalized_name: String = interface_name.to_lower()
+	return normalized_name.contains("ethernet") or normalized_name.begins_with("eth")
+
+
+func _get_compact_interface_name(interface_name: String) -> String:
+	if _is_wifi_interface(interface_name):
+		return "Wi-Fi"
+	if _is_ethernet_interface(interface_name):
+		return "Ethernet"
+	return interface_name

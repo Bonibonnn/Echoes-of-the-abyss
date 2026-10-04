@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bldmgaha4tocp" path="res://art/Characters(100x100 split)/Werewolf/Werewolf/Werewolf_Hurt.png" id="4_h61ru"]
 [ext_resource type="Texture2D" uid="uid://dbcbyms0upadl" path="res://art/Characters(100x100 split)/Werewolf/Werewolf/Werewolf_Idle.png" id="5_cenwu"]
 [ext_resource type="Texture2D" uid="uid://byc6yvit07sou" path="res://art/Characters(100x100 split)/Werewolf/Werewolf/Werewolf_Walk.png" id="6_fbm2h"]
-[ext_resource type="Script" path="res://Scripts/werewolf.gd" id="7_werewolf"]
+[ext_resource type="Script" uid="uid://bk3ssyydr3427" path="res://Scripts/werewolf.gd" id="7_werewolf"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bupca"]
 atlas = ExtResource("1_2spt5")
@@ -357,7 +357,6 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_o06y3"]
 radius = 7.071068
 
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_detection"]
 radius = 140.0
 
@@ -365,32 +364,31 @@ radius = 140.0
 size = Vector2(26, 18)
 
 [node name="werewolf" type="CharacterBody2D" unique_id=1126635083]
-
 collision_layer = 3
 script = ExtResource("7_werewolf")
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1142730635]
 sprite_frames = SubResource("SpriteFrames_l5lc7")
 animation = &"idle"
+autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1738648022]
 shape = SubResource("CircleShape2D_o06y3")
 
-[node name="detection_area" type="Area2D" parent="."]
+[node name="detection_area" type="Area2D" parent="." unique_id=917176069]
 visible = false
 collision_layer = 2
-collision_mask = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="detection_area"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="detection_area" unique_id=1594066835]
 shape = SubResource("CircleShape2D_detection")
 
-[node name="attack_pivot" type="Node2D" parent="."]
+[node name="attack_pivot" type="Node2D" parent="." unique_id=1225783333]
 
-[node name="attack_hitbox" type="Area2D" parent="attack_pivot"]
+[node name="attack_hitbox" type="Area2D" parent="attack_pivot" unique_id=207715842]
 visible = false
 collision_layer = 0
-collision_mask = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="attack_pivot/attack_hitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="attack_pivot/attack_hitbox" unique_id=1680283327]
 position = Vector2(18, 0)
 shape = SubResource("RectangleShape2D_claw")
 

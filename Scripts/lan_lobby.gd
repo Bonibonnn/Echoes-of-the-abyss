@@ -112,7 +112,7 @@ func _refresh_lobby() -> void:
 		leave_button.disabled = not is_active
 
 	if host_ip_label != null:
-		host_ip_label.text = "Your host IP: %s" % LanSession.get_lan_ip() if is_host else "Enter the host IP to join."
+		host_ip_label.text = _get_host_address_hint(is_host)
 	if players_label != null:
 		players_label.text = "Players connected: %d / 2" % connected_players
 
@@ -164,6 +164,17 @@ func _refresh_lobby() -> void:
 		host_roster_label.text = _get_roster_line("HOST", 1)
 	if joiner_roster_label != null:
 		joiner_roster_label.text = _get_roster_line("PLAYER 2", _get_joiner_peer_id())
+
+
+func _get_host_address_hint(is_host: bool) -> String:
+	if not is_host:
+		return "Enter the host IP to join. Port 7001 is automatic."
+
+	var ip_options: PackedStringArray = LanSession.get_lan_ip_options()
+	if ip_options.is_empty():
+		return "No LAN IPv4 found. Connect to Wi-Fi/Ethernet, then Host again."
+
+	return "Share with Player 2: %s (port %d)" % [ip_options[0], LanSession.PORT]
 
 
 func _on_session_status_changed(message: String) -> void:

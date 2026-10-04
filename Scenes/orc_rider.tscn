@@ -419,6 +419,7 @@ script = ExtResource("8_orc_rider")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1026596738]
 sprite_frames = SubResource("SpriteFrames_l5lc7")
 animation = &"idle"
+autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=233667229]
 position = Vector2(1, -4)
