@@ -1,0 +1,201 @@
+[gd_scene format=3 uid="uid://dny6i7dvglw0u"]
+
+[ext_resource type="Texture2D" uid="uid://bqctptlp8poou" path="res://art/UI/Background.png" id="1_nstox"]
+[ext_resource type="FontFile" uid="uid://cwj53u7tkvsge" path="res://art/UI/GrapeSoda.ttf" id="2_a66yo"]
+[ext_resource type="Texture2D" uid="uid://cc8o02bxhdsy2" path="res://art/UI/Better Knight Button.png" id="3_ht42v"]
+[ext_resource type="Texture2D" uid="uid://dp4ftl6yl7kck" path="res://art/UI/Pressed Knight Button.png" id="4_8ruiq"]
+[ext_resource type="Texture2D" uid="uid://lvmdvjda8k24" path="res://art/UI/Archer Button.png" id="4_q2be1"]
+[ext_resource type="Texture2D" uid="uid://dcb16ii81virg" path="res://art/UI/Wizard Button.png" id="5_q6i8b"]
+[ext_resource type="Texture2D" uid="uid://dlmtc85mg0mtf" path="res://art/UI/Priest Button.png" id="6_ht42v"]
+[ext_resource type="Texture2D" uid="uid://i6s1so6fim43" path="res://art/UI/Pressed Pixel Archer Button.png" id="6_injp0"]
+[ext_resource type="Texture2D" uid="uid://dqwaupum50c0h" path="res://art/UI/Pressed Pixel Wizard Button.png" id="8_l1a7q"]
+[ext_resource type="Texture2D" uid="uid://dxfekddmgfafc" path="res://art/UI/Pressed Pixel Cleric Button.png" id="9_ftyht"]
+[ext_resource type="AudioStream" uid="uid://brhuof5rpul6j" path="res://Music/UI Music/789772__dan2008__calm-menu-music-loopable-lo-fi.wav" id="9_jl5o1"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n7w73"]
+texture = ExtResource("1_nstox")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nstox"]
+texture = ExtResource("3_ht42v")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8ruiq"]
+texture = ExtResource("3_ht42v")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qemuc"]
+texture = ExtResource("4_8ruiq")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q6i8b"]
+texture = ExtResource("4_q2be1")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q2be1"]
+texture = ExtResource("4_q2be1")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wo2gd"]
+texture = ExtResource("6_injp0")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2xeq5"]
+texture = ExtResource("5_q6i8b")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s582q"]
+texture = ExtResource("5_q6i8b")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ht42v"]
+texture = ExtResource("8_l1a7q")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t75yo"]
+texture = ExtResource("6_ht42v")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_o2qlu"]
+texture = ExtResource("6_ht42v")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jk08i"]
+texture = ExtResource("9_ftyht")
+
+[node name="SelectCharacter" type="Control" unique_id=386156478]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="." unique_id=1193291760]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_n7w73")
+
+[node name="Label" type="Label" parent="." unique_id=1020332499]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -267.0
+offset_top = 102.0
+offset_right = 263.0
+offset_bottom = 182.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_a66yo")
+theme_override_font_sizes/font_size = 80
+text = "Select Character"
+
+[node name="Knight Button" type="Button" parent="." unique_id=1611352323]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2
+anchor_top = 0.5
+anchor_right = 0.2
+anchor_bottom = 0.5
+offset_left = -117.40001
+offset_top = -72.0
+offset_right = 36.59999
+offset_bottom = 91.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_nstox")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_8ruiq")
+theme_override_styles/hover = SubResource("StyleBoxTexture_qemuc")
+expand_icon = true
+
+[node name="Label" type="Label" parent="Knight Button" unique_id=1694164024]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 169.0
+offset_right = 115.0
+offset_bottom = 201.0
+theme_override_fonts/font = ExtResource("2_a66yo")
+theme_override_font_sizes/font_size = 32
+text = "Knight"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Archer Button" type="Button" parent="." unique_id=214264234]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.21900001
+anchor_top = 0.51900005
+anchor_right = 0.21900001
+anchor_bottom = 0.51900005
+offset_left = 113.71199
+offset_top = -83.31204
+offset_right = 267.71198
+offset_bottom = 79.68796
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_q6i8b")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_q2be1")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wo2gd")
+expand_icon = true
+
+[node name="Label" type="Label" parent="Archer Button" unique_id=673775519]
+layout_mode = 0
+offset_left = 31.0
+offset_top = 173.0
+offset_right = 119.0
+offset_bottom = 205.0
+theme_override_fonts/font = ExtResource("2_a66yo")
+theme_override_font_sizes/font_size = 32
+text = "Archer"
+
+[node name="Wizard Button" type="Button" parent="." unique_id=1481742949]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.21900001
+anchor_top = 0.51900005
+anchor_right = 0.21900001
+anchor_bottom = 0.51900005
+offset_left = 386.71198
+offset_top = -84.31204
+offset_right = 544.712
+offset_bottom = 79.68796
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_2xeq5")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_s582q")
+theme_override_styles/hover = SubResource("StyleBoxTexture_ht42v")
+expand_icon = true
+
+[node name="Label" type="Label" parent="Wizard Button" unique_id=1096407341]
+layout_mode = 0
+offset_left = 39.0
+offset_top = 175.0
+offset_right = 127.0
+offset_bottom = 207.0
+theme_override_fonts/font = ExtResource("2_a66yo")
+theme_override_font_sizes/font_size = 32
+text = "Wizard"
+
+[node name="Priest Button" type="Button" parent="." unique_id=1794833797]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.21900001
+anchor_top = 0.51900005
+anchor_right = 0.21900001
+anchor_bottom = 0.51900005
+offset_left = 641.712
+offset_top = -81.31204
+offset_right = 782.712
+offset_bottom = 69.68796
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_t75yo")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_o2qlu")
+theme_override_styles/hover = SubResource("StyleBoxTexture_jk08i")
+expand_icon = true
+
+[node name="Label" type="Label" parent="Priest Button" unique_id=2073331007]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 172.0
+offset_right = 114.0
+offset_bottom = 204.0
+theme_override_fonts/font = ExtResource("2_a66yo")
+theme_override_font_sizes/font_size = 32
+text = "Priest"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=110934390]
+stream = ExtResource("9_jl5o1")
+autoplay = true
