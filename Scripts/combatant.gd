@@ -18,7 +18,7 @@ signal health_changed(current_health: int, maximum_health: int)
 @export_range(0.0, 2.0, 0.01) var damage_invulnerability_time := 0.12
 
 const ONE_SHOT_ANIMATIONS := [
-	&"attack", &"attack1", &"attack2",
+	&"attack", &"attack1", &"attack2", &"attack3",
 	&"skill", &"skill1", &"skill2", &"fireball",
 	&"block", &"heal", &"summon", &"hurt", &"death"
 ]
@@ -34,11 +34,13 @@ var is_hurt := false
 var is_dead := false
 var is_damage_invulnerable := false
 var is_frozen := false
+var is_stunned := false
 var is_burning := false
 
 var _attack_token := 0
 var _damage_invulnerability_token := 0
 var _freeze_token := 0
+var _stun_token := 0
 var _burn_token := 0
 var _pivot_scale := Vector2.ONE
 var _hitbox_position := Vector2.ZERO
@@ -94,7 +96,7 @@ func requires_attack_hitbox() -> bool:
 
 
 func is_busy() -> bool:
-	return is_dead or is_hurt or is_attacking or is_frozen
+	return is_dead or is_hurt or is_attacking or is_frozen or is_stunned
 
 
 # Changes the left/right sprite direction and mirrors the forward hitbox.
@@ -169,7 +171,7 @@ func begin_attack(animation_name: StringName) -> int:
 
 
 func is_attack_token_active(token: int) -> bool:
-	return token == _attack_token and is_attacking and not is_hurt and not is_dead
+	return token == _attack_token and is_attacking and not is_hurt and not is_dead and not is_stunned
 
 
 func finish_attack(token: int) -> void:
@@ -216,7 +218,8 @@ func take_damage(damage: int) -> void:
 	await wait_for_gameplay_time(maxf(get_hurt_duration(), get_animation_duration(&"hurt"))).timeout
 	if not is_dead:
 		is_hurt = false
-		update_idle_or_walk_animation()
+		if not is_frozen and not is_stunned:
+			update_idle_or_walk_animation()
 
 
 func _start_damage_invulnerability() -> void:
@@ -253,7 +256,30 @@ func apply_freeze(
 
 	is_frozen = false
 	_refresh_status_tint()
-	if not is_hurt:
+	if not is_hurt and not is_stunned:
+		update_idle_or_walk_animation()
+
+
+# Stops movement and all actions for the duration. Reapplying stun refreshes it.
+func apply_stun(duration: float) -> void:
+	if is_dead or duration <= 0.0:
+		return
+
+	_stun_token += 1
+	var token := _stun_token
+	is_stunned = true
+
+	# Cancel a delayed swing so a stunned target cannot attack later.
+	_attack_token += 1
+	is_attacking = false
+	velocity = Vector2.ZERO
+
+	await wait_for_gameplay_time(duration).timeout
+	if token != _stun_token or is_dead:
+		return
+
+	is_stunned = false
+	if not is_hurt and not is_frozen:
 		update_idle_or_walk_animation()
 
 

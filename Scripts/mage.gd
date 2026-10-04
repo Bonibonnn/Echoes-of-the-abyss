@@ -174,7 +174,7 @@ func start_fire_explosion() -> void:
 	if not is_attack_token_active(token):
 		return
 
-	if is_valid_enemy_target(target, fire_explosion_target_range):
+	if is_instance_valid(target) and is_valid_enemy_target(target, fire_explosion_target_range):
 		apply_fire_explosion(target.global_position)
 
 	await wait_for_gameplay_time(cast_duration - release_time).timeout
@@ -202,7 +202,7 @@ func start_freeze_area() -> void:
 	if not is_attack_token_active(token):
 		return
 
-	if is_valid_enemy_target(target, freeze_area_target_range):
+	if is_instance_valid(target) and is_valid_enemy_target(target, freeze_area_target_range):
 		spawn_freeze_area(target.global_position)
 
 	await wait_for_gameplay_time(cast_duration - release_time).timeout

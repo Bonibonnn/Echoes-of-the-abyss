@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cwomxlw4pjo8h" path="res://art/Characters(100x100 split)/Skeleton/Skeleton/Skeleton_Hurt.png" id="3_ks230"]
 [ext_resource type="Texture2D" uid="uid://bjf8hcu5jj52o" path="res://art/Characters(100x100 split)/Skeleton/Skeleton/Skeleton_Idle.png" id="4_shq1q"]
 [ext_resource type="Texture2D" uid="uid://ddg5xflx8x4sx" path="res://art/Characters(100x100 split)/Skeleton/Skeleton/Skeleton_Walk.png" id="5_xbfmp"]
+[ext_resource type="Texture2D" uid="uid://bgxca5bx3x1li" path="res://art/Characters(100x100 split)/Skeleton/Skeleton/Skeleton_Summon.png" id="6_ks230"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_q1wii"]
 atlas = ExtResource("1_5abox")
@@ -86,6 +87,26 @@ region = Rect2(400, 0, 100, 100)
 [sub_resource type="AtlasTexture" id="AtlasTexture_t1o88"]
 atlas = ExtResource("4_shq1q")
 region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_shq1q"]
+atlas = ExtResource("6_ks230")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xbfmp"]
+atlas = ExtResource("6_ks230")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pbn8f"]
+atlas = ExtResource("6_ks230")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_trmo5"]
+atlas = ExtResource("6_ks230")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i6aie"]
+atlas = ExtResource("6_ks230")
+region = Rect2(400, 0, 100, 100)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lhll6"]
 atlas = ExtResource("5_xbfmp")
@@ -203,6 +224,26 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_shq1q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xbfmp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pbn8f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_trmo5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i6aie")
+}],
+"loop": 1,
+"name": &"summon",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_lhll6")
 }, {
 "duration": 1.0,
@@ -247,8 +288,7 @@ attack_hit_delay = 0.78
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1387313087]
 sprite_frames = SubResource("SpriteFrames_l5lc7")
-animation = &"walk"
-frame_progress = 0.14037625
+animation = &"summon"
 
 [node name="detection_area" type="Area2D" parent="." unique_id=1760747618]
 visible = false
@@ -258,7 +298,6 @@ visible = false
 shape = SubResource("CircleShape2D_l5lc7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1101976501]
-visible = false
 position = Vector2(0, 1)
 shape = SubResource("CircleShape2D_fgxly")
 

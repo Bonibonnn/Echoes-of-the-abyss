@@ -1,16 +1,5 @@
 extends Combatant
 
-# Priest player controller for Godot 4.7.
-#
-# Priest scene setup:
-# priest (CharacterBody2D with this script)
-# ├── AnimatedSprite2D
-# └── CollisionShape2D
-#
-# Drag your two separate Area2D scenes into the Inspector slots:
-# - auraplosion (range).tscn -> Auraplosion Scene (Attack 2 visual)
-# - heal.tscn                 -> Heal Scene (Q visual)
-
 @export_category("Movement")
 @export var speed := 115.0
 

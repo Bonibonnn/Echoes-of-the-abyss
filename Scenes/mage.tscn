@@ -525,6 +525,7 @@ script = ExtResource("1_7elky")
 freeze_area_scene = ExtResource("2_rh4uj")
 fireball_scene = ExtResource("3_4qsol")
 close_freeze_radius = 30.0
+close_freeze_duration = 3.0
 close_freeze_release_time = 1.0
 fire_explosion_radius = 30.0
 fire_explosion_release_time = 1.02

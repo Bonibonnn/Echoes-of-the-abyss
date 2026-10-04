@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://box5ux654515w" path="res://Scenes/healthbar.tscn" id="7_5v1tr"]
 [ext_resource type="Script" uid="uid://bf4qirgm8dxok" path="res://Scripts/dungeon_door.gd" id="7_k7acu"]
 [ext_resource type="Texture2D" uid="uid://bkcp5yv1jp0e1" path="res://art/Pixel Art Animated Portal/sprite-sheet.png" id="7_o06y3"]
+[ext_resource type="PackedScene" uid="uid://dk4mvctl8xccs" path="res://Scenes/elite_orc.tscn" id="8_elite_orc"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5a7ea"]
 texture = ExtResource("1_5a7ea")
@@ -284,6 +285,9 @@ position = Vector2(560, 147)
 [node name="dungeon_door" type="Area2D" parent="." unique_id=617557474]
 script = ExtResource("7_k7acu")
 destination_scene = "uid://bm6hwpvfnhuwr"
+starts_locked = true
+required_boss_path = NodePath("../elite_orc")
+portal_visual_path = NodePath("../portal")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="dungeon_door" unique_id=32550876]
 position = Vector2(1422.625, 343)
@@ -307,3 +311,6 @@ autoplay = "portal"
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2102277698]
 
 [node name="healthbar" parent="CanvasLayer" unique_id=1361943585 instance=ExtResource("7_5v1tr")]
+
+[node name="elite_orc" parent="." unique_id=118646566 instance=ExtResource("8_elite_orc")]
+position = Vector2(1352, 353)
