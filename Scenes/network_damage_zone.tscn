@@ -1,0 +1,38 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/network_damage_zone.gd" id="1_damage_zone"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_damage_zone"]
+size = Vector2(190, 140)
+
+[node name="network_damage_zone" type="Area2D"]
+collision_layer = 0
+collision_mask = 3
+monitoring = false
+monitorable = false
+script = ExtResource("1_damage_zone")
+
+[node name="lava_fill" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-95, -70, 95, -70, 95, 70, -95, 70)
+color = Color(0.9, 0.16, 0.05, 0.45)
+
+[node name="lava_border" type="Line2D" parent="."]
+points = PackedVector2Array(-95, -70, 95, -70, 95, 70, -95, 70)
+closed = true
+width = 5.0
+default_color = Color(1, 0.54, 0.08, 1)
+
+[node name="collision_shape" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_damage_zone")
+
+[node name="label" type="Label" parent="."]
+offset_left = -92.0
+offset_top = -12.0
+offset_right = 92.0
+offset_bottom = 14.0
+theme_override_colors/font_color = Color(1, 0.94, 0.72, 1)
+theme_override_font_sizes/font_size = 15
+text = "LAVA — 1 HP / second"
+horizontal_alignment = 1
+vertical_alignment = 1
+

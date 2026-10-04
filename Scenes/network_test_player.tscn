@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/network_test_player.gd" id="1_network_player"]
+
+[node name="network_test_player" type="CharacterBody2D"]
+script = ExtResource("1_network_player")
+
+[node name="body" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-18, 0, 0, -18, 18, 0, 0, 18)
+color = Color(1, 1, 1, 1)
+
+[node name="peer_label" type="Label" parent="."]
+offset_left = -60.0
+offset_top = -48.0
+offset_right = 60.0
+offset_bottom = -24.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "Player"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="camera" type="Camera2D" parent="."]
+

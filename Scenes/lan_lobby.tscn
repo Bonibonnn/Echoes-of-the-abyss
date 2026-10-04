@@ -1,0 +1,715 @@
+[gd_scene format=3 uid="uid://jxkrpkr65ymr"]
+
+[ext_resource type="Script" uid="uid://nmb42d1llrjo" path="res://Scripts/lan_lobby.gd" id="1_lobby_script"]
+[ext_resource type="FontFile" uid="uid://cwj53u7tkvsge" path="res://art/UI/GrapeSoda.ttf" id="2_font"]
+[ext_resource type="Texture2D" uid="uid://bqctptlp8poou" path="res://art/UI/Background.png" id="3_background"]
+[ext_resource type="Texture2D" uid="uid://1p53q6c5kkaj" path="res://art/UI/Blank Button.png" id="4_card"]
+[ext_resource type="Texture2D" path="res://art/UI/Better Knight Button.png" id="5_knight"]
+[ext_resource type="Texture2D" path="res://art/UI/Pressed Knight Button.png" id="6_knight_pressed"]
+[ext_resource type="Texture2D" path="res://art/UI/Archer Button.png" id="7_archer"]
+[ext_resource type="Texture2D" path="res://art/UI/Wizard Button.png" id="8_mage"]
+[ext_resource type="Texture2D" path="res://art/UI/Priest Button.png" id="9_priest"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_background"]
+texture = ExtResource("3_background")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_knight"]
+texture = ExtResource("5_knight")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_knight_pressed"]
+texture = ExtResource("6_knight_pressed")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_archer"]
+texture = ExtResource("7_archer")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mage"]
+texture = ExtResource("8_mage")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_priest"]
+texture = ExtResource("9_priest")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+bg_color = Color(0.04, 0.31, 0.75, 0.94)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.12, 0.88, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0.05, 0.2, 0.8)
+shadow_size = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
+bg_color = Color(0.08, 0.55, 0.98, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.66, 0.96, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0.05, 0.2, 0.8)
+shadow_size = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_disabled"]
+bg_color = Color(0.08, 0.13, 0.25, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.18, 0.38, 0.52, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_line_edit"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.01, 0.06, 0.18, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.15, 0.82, 1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="lan_lobby" type="Control" unique_id=339674296]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lobby_script")
+
+[node name="background" type="Panel" parent="." unique_id=1945734083]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_background")
+
+[node name="title" type="Label" parent="." unique_id=2003371856]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 48.0
+offset_bottom = 100.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.7, 0.97, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0.06, 0.25, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 34
+text = "LAN MULTIPLAYER"
+horizontal_alignment = 1
+
+[node name="subtitle" type="Label" parent="." unique_id=1513967916]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 108.0
+offset_bottom = 136.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.72, 0.86, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "Host or join, then choose a LAN-ready character together"
+horizontal_alignment = 1
+
+[node name="lobby_card" type="Control" parent="." unique_id=649288640]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -330.0
+offset_top = -190.0
+offset_right = 330.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="card_art" type="TextureRect" parent="lobby_card" unique_id=597220331]
+modulate = Color(1, 1, 1, 0.42)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_card")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="host_heading" type="Label" parent="lobby_card" unique_id=598306469]
+layout_mode = 0
+offset_left = 46.0
+offset_top = 34.0
+offset_right = 300.0
+offset_bottom = 64.0
+theme_override_colors/font_color = Color(0.68, 0.96, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 19
+text = "HOST A GAME"
+
+[node name="host_button" type="Button" parent="lobby_card" unique_id=1696559190]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 76.0
+offset_right = 302.0
+offset_bottom = 122.0
+theme_override_colors/font_color = Color(0.95, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 17
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
+text = "HOST"
+
+[node name="host_ip_label" type="Label" parent="lobby_card" unique_id=1888506202]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 132.0
+offset_right = 616.0
+offset_bottom = 156.0
+theme_override_colors/font_color = Color(0.81, 0.92, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "Your host IP appears here after hosting."
+
+[node name="separator" type="ColorRect" parent="lobby_card" unique_id=1590891808]
+layout_mode = 0
+offset_left = 38.0
+offset_top = 172.0
+offset_right = 622.0
+offset_bottom = 175.0
+mouse_filter = 2
+color = Color(0.1, 0.77, 1, 0.7)
+
+[node name="join_heading" type="Label" parent="lobby_card" unique_id=110072208]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 190.0
+offset_right = 330.0
+offset_bottom = 220.0
+theme_override_colors/font_color = Color(0.68, 0.96, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 19
+text = "JOIN A GAME"
+
+[node name="ip_caption" type="Label" parent="lobby_card" unique_id=1322920933]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 232.0
+offset_right = 155.0
+offset_bottom = 258.0
+theme_override_colors/font_color = Color(0.81, 0.92, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "HOST IP"
+
+[node name="ip_address" type="LineEdit" parent="lobby_card" unique_id=744353377]
+layout_mode = 0
+offset_left = 152.0
+offset_top = 222.0
+offset_right = 428.0
+offset_bottom = 264.0
+theme_override_colors/font_color = Color(0.92, 0.98, 1, 1)
+theme_override_colors/font_placeholder_color = Color(0.46, 0.62, 0.76, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_line_edit")
+placeholder_text = "Example: 192.168.1.25"
+
+[node name="join_button" type="Button" parent="lobby_card" unique_id=1977208158]
+layout_mode = 0
+offset_left = 444.0
+offset_top = 222.0
+offset_right = 616.0
+offset_bottom = 264.0
+theme_override_colors/font_color = Color(0.95, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
+text = "JOIN"
+
+[node name="players_label" type="Label" parent="lobby_card" unique_id=255891141]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 286.0
+offset_right = 360.0
+offset_bottom = 312.0
+theme_override_colors/font_color = Color(0.71, 0.93, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 15
+text = "Players connected: 0 / 2"
+
+[node name="start_button" type="Button" parent="lobby_card" unique_id=2064621581]
+layout_mode = 0
+offset_left = 390.0
+offset_top = 278.0
+offset_right = 616.0
+offset_bottom = 324.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
+text = "ENTER LAN WORLD"
+
+[node name="status_label" type="Label" parent="lobby_card" unique_id=1314603236]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 342.0
+offset_right = 616.0
+offset_bottom = 374.0
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "Choose Host, or enter the host IP and choose Join."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="leave_button" type="Button" parent="lobby_card" unique_id=327948074]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 392.0
+offset_right = 302.0
+offset_bottom = 432.0
+theme_override_colors/font_color = Color(0.95, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
+text = "LEAVE SESSION"
+
+[node name="back_button" type="Button" parent="lobby_card" unique_id=476375992]
+layout_mode = 0
+offset_left = 358.0
+offset_top = 392.0
+offset_right = 616.0
+offset_bottom = 432.0
+theme_override_colors/font_color = Color(0.95, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
+text = "BACK TO MENU"
+
+[node name="selection_panel" type="Control" parent="." unique_id=455802990]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="selection_title" type="Label" parent="selection_panel" unique_id=496347948]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 148.0
+offset_bottom = 184.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.7, 0.97, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+text = "SELECT YOUR LAN CHARACTER"
+horizontal_alignment = 1
+
+[node name="selection_hint" type="Label" parent="selection_panel" unique_id=542767327]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 184.0
+offset_bottom = 210.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.73, 0.86, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "Knight, Archer, Mage, and Priest are LAN-ready."
+horizontal_alignment = 1
+
+[node name="knight_button" type="Button" parent="selection_panel" unique_id=193928416]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2
+anchor_top = 0.5
+anchor_right = 0.2
+anchor_bottom = 0.5
+offset_left = -77.0
+offset_top = -104.0
+offset_right = 77.0
+offset_bottom = 59.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_knight")
+theme_override_styles/hover = SubResource("StyleBoxTexture_knight_pressed")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_knight_pressed")
+toggle_mode = true
+tooltip_text = "Select Knight"
+
+[node name="knight_label" type="Label" parent="selection_panel" unique_id=539152699]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2
+anchor_top = 0.5
+anchor_right = 0.2
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = 70.0
+offset_right = 100.0
+offset_bottom = 93.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.81, 0.97, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "KNIGHT"
+horizontal_alignment = 1
+
+[node name="knight_state_label" type="Label" parent="selection_panel" unique_id=183413336]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2
+anchor_top = 0.5
+anchor_right = 0.2
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = 94.0
+offset_right = 100.0
+offset_bottom = 114.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.42, 0.93, 0.69, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 12
+text = "LAN READY"
+horizontal_alignment = 1
+
+[node name="archer_button" type="Button" parent="selection_panel" unique_id=150228918]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.4
+anchor_top = 0.5
+anchor_right = 0.4
+anchor_bottom = 0.5
+offset_left = -77.0
+offset_top = -104.0
+offset_right = 77.0
+offset_bottom = 59.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_archer")
+theme_override_styles/hover = SubResource("StyleBoxTexture_archer")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_archer")
+toggle_mode = true
+tooltip_text = "Select Archer"
+
+[node name="archer_label" type="Label" parent="selection_panel" unique_id=644835640]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.4
+anchor_top = 0.5
+anchor_right = 0.4
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = 70.0
+offset_right = 100.0
+offset_bottom = 93.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.81, 0.97, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "ARCHER"
+horizontal_alignment = 1
+
+[node name="archer_state_label" type="Label" parent="selection_panel" unique_id=393598153]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.4
+anchor_top = 0.5
+anchor_right = 0.4
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = 94.0
+offset_right = 100.0
+offset_bottom = 114.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.42, 0.93, 0.69, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 12
+text = "LAN READY"
+horizontal_alignment = 1
+
+[node name="mage_button" type="Button" parent="selection_panel" unique_id=578081063]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.6
+anchor_top = 0.5
+anchor_right = 0.6
+anchor_bottom = 0.5
+offset_left = -77.0
+offset_top = -104.0
+offset_right = 77.0
+offset_bottom = 59.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_mage")
+theme_override_styles/hover = SubResource("StyleBoxTexture_mage")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_mage")
+toggle_mode = true
+tooltip_text = "Select Mage"
+
+[node name="mage_label" type="Label" parent="selection_panel" unique_id=592960214]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.6
+anchor_top = 0.5
+anchor_right = 0.6
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = 70.0
+offset_right = 100.0
+offset_bottom = 93.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.81, 0.97, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "MAGE"
+horizontal_alignment = 1
+
+[node name="mage_state_label" type="Label" parent="selection_panel" unique_id=123117029]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.6
+anchor_top = 0.5
+anchor_right = 0.6
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = 94.0
+offset_right = 100.0
+offset_bottom = 114.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.42, 0.93, 0.69, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 12
+text = "LAN READY"
+horizontal_alignment = 1
+
+[node name="priest_button" type="Button" parent="selection_panel" unique_id=175297040]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.8
+anchor_top = 0.5
+anchor_right = 0.8
+anchor_bottom = 0.5
+offset_left = -77.0
+offset_top = -104.0
+offset_right = 77.0
+offset_bottom = 59.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_priest")
+theme_override_styles/hover = SubResource("StyleBoxTexture_priest")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_priest")
+toggle_mode = true
+tooltip_text = "Select Priest"
+
+[node name="priest_label" type="Label" parent="selection_panel" unique_id=93402068]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.8
+anchor_top = 0.5
+anchor_right = 0.8
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = 70.0
+offset_right = 100.0
+offset_bottom = 93.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.81, 0.97, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "PRIEST"
+horizontal_alignment = 1
+
+[node name="priest_state_label" type="Label" parent="selection_panel" unique_id=929432708]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.8
+anchor_top = 0.5
+anchor_right = 0.8
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = 94.0
+offset_right = 100.0
+offset_bottom = 114.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.42, 0.93, 0.69, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 12
+text = "LAN READY"
+horizontal_alignment = 1
+
+[node name="roster_panel" type="ColorRect" parent="selection_panel" unique_id=213374680]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 150.0
+offset_top = 430.0
+offset_right = -150.0
+offset_bottom = 505.0
+grow_horizontal = 2
+color = Color(0.02, 0.08, 0.2, 0.9)
+mouse_filter = 2
+
+[node name="roster_title" type="Label" parent="selection_panel/roster_panel" unique_id=815924548]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 7.0
+offset_right = 260.0
+offset_bottom = 27.0
+theme_override_colors/font_color = Color(0.43, 0.9, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 13
+text = "LAN ROSTER"
+
+[node name="host_roster_label" type="Label" parent="selection_panel/roster_panel" unique_id=105129767]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 30.0
+offset_right = 370.0
+offset_bottom = 53.0
+theme_override_colors/font_color = Color(0.83, 0.94, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "HOST: No character selected — WAITING"
+
+[node name="joiner_roster_label" type="Label" parent="selection_panel/roster_panel" unique_id=805840750]
+layout_mode = 0
+offset_left = 390.0
+offset_top = 30.0
+offset_right = 720.0
+offset_bottom = 53.0
+theme_override_colors/font_color = Color(0.83, 0.94, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "PLAYER 2: Waiting for player"
+
+[node name="local_choice_label" type="Label" parent="selection_panel" unique_id=188826662]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 516.0
+offset_bottom = 538.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.79, 0.93, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "Your selection: No character selected"
+horizontal_alignment = 1
+
+[node name="ready_button" type="Button" parent="selection_panel" unique_id=169309149]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -360.0
+offset_top = 228.0
+offset_right = -125.0
+offset_bottom = 270.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.95, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
+text = "READY UP"
+
+[node name="start_button" type="Button" parent="selection_panel" unique_id=112694507]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -110.0
+offset_top = 228.0
+offset_right = 125.0
+offset_bottom = 270.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.95, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
+text = "ENTER LAN WORLD"
+
+[node name="leave_button" type="Button" parent="selection_panel" unique_id=248686156]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 140.0
+offset_top = 228.0
+offset_right = 375.0
+offset_bottom = 270.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.95, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
+text = "LEAVE LOBBY"
+
+[node name="status_label" type="Label" parent="selection_panel" unique_id=932486939]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 610.0
+offset_bottom = 634.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 13
+text = "Choose Knight, Archer, Mage, or Priest, then press Ready Up."
+horizontal_alignment = 1

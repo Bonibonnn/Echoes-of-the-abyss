@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/network_archer_arrow.gd" id="1_h5x2m"]
+[ext_resource type="Texture2D" uid="uid://fto7y4vggmvv" path="res://art/Characters(100x100 split)/Archer/Arrow(projectile)/Arrow02(100x100).png" id="1_l5ahi"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_l5lc7"]
+radius = 5.0
+
+[node name="network_archer_arrow" type="Area2D" unique_id=914613016]
+collision_layer = 0
+collision_mask = 5
+script = ExtResource("1_h5x2m")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=580361530]
+texture = ExtResource("1_l5ahi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1789909478]
+position = Vector2(6, 0)
+shape = SubResource("CircleShape2D_l5lc7")

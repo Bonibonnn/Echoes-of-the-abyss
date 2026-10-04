@@ -1,0 +1,231 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/network_training_dummy.gd" id="1_training_dummy"]
+[ext_resource type="Texture2D" path="res://art/Characters(100x100 split)/Slime/Slime/Slime_Idle.png" id="2_slime_idle"]
+[ext_resource type="Texture2D" path="res://art/Characters(100x100 split)/Slime/Slime/Slime_Walk.png" id="3_slime_walk"]
+[ext_resource type="Texture2D" path="res://art/Characters(100x100 split)/Slime/Slime/Slime_Attack01.png" id="4_slime_attack"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_idle_0"]
+atlas = ExtResource("2_slime_idle")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_idle_1"]
+atlas = ExtResource("2_slime_idle")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_idle_2"]
+atlas = ExtResource("2_slime_idle")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_idle_3"]
+atlas = ExtResource("2_slime_idle")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_idle_4"]
+atlas = ExtResource("2_slime_idle")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_idle_5"]
+atlas = ExtResource("2_slime_idle")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_walk_0"]
+atlas = ExtResource("3_slime_walk")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_walk_1"]
+atlas = ExtResource("3_slime_walk")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_walk_2"]
+atlas = ExtResource("3_slime_walk")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_walk_3"]
+atlas = ExtResource("3_slime_walk")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_walk_4"]
+atlas = ExtResource("3_slime_walk")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_walk_5"]
+atlas = ExtResource("3_slime_walk")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack_0"]
+atlas = ExtResource("4_slime_attack")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack_1"]
+atlas = ExtResource("4_slime_attack")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack_2"]
+atlas = ExtResource("4_slime_attack")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack_3"]
+atlas = ExtResource("4_slime_attack")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack_4"]
+atlas = ExtResource("4_slime_attack")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slime_attack_5"]
+atlas = ExtResource("4_slime_attack")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_network_slime"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_idle_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_idle_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_idle_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_idle_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_idle_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_idle_5")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_walk_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_walk_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_walk_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_walk_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_walk_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_walk_5")
+}],
+"loop": 1,
+"name": &"walk",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slime_attack_5")
+}],
+"loop": 0,
+"name": &"attack1",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_network_slime"]
+radius = 22.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_enemy_hitbox"]
+size = Vector2(18, 14)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_health_background"]
+bg_color = Color(0.08, 0.03, 0.05, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.95, 0.82, 0.84, 0.9)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_health_fill"]
+bg_color = Color(0.9, 0.18, 0.22, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[node name="training_dummy" type="CharacterBody2D" groups=["lan_training_dummy"]]
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1_training_dummy")
+
+[node name="animated_sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_network_slime")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="collision_shape" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_network_slime")
+
+[node name="enemy_hitbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitoring = true
+
+[node name="collision_shape" type="CollisionShape2D" parent="enemy_hitbox"]
+position = Vector2(17, 0)
+shape = SubResource("RectangleShape2D_enemy_hitbox")
+
+[node name="health_label" type="Label" parent="."]
+offset_left = -68.0
+offset_top = -86.0
+offset_right = 68.0
+offset_bottom = -64.0
+theme_override_colors/font_color = Color(1, 0.9, 0.92, 1)
+theme_override_font_sizes/font_size = 14
+text = "Host Slime: 6 / 6"
+horizontal_alignment = 1
+
+[node name="health_bar" type="ProgressBar" parent="."]
+offset_left = -48.0
+offset_top = -62.0
+offset_right = 48.0
+offset_bottom = -50.0
+theme_override_styles/background = SubResource("StyleBoxFlat_health_background")
+theme_override_styles/fill = SubResource("StyleBoxFlat_health_fill")
+max_value = 6.0
+value = 6.0
+show_percentage = false
+
+[node name="status_label" type="Label" parent="."]
+offset_left = -92.0
+offset_top = 52.0
+offset_right = 92.0
+offset_bottom = 74.0
+theme_override_colors/font_color = Color(0.75, 0.86, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "Host controls chase + damage"
+horizontal_alignment = 1
+
+
+

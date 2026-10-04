@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://bfgh2q7pwppja"]
+[gd_scene format=3 uid="uid://dp53vuq4qhqfi"]
 
 [ext_resource type="Texture2D" uid="uid://bqctptlp8poou" path="res://art/UI/Background.png" id="1_nstox"]
 [ext_resource type="FontFile" uid="uid://cwj53u7tkvsge" path="res://art/UI/GrapeSoda.ttf" id="2_a66yo"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://dqwaupum50c0h" path="res://art/UI/Pressed Pixel Wizard Button.png" id="8_l1a7q"]
 [ext_resource type="Texture2D" uid="uid://dxfekddmgfafc" path="res://art/UI/Pressed Pixel Cleric Button.png" id="9_ftyht"]
 [ext_resource type="AudioStream" uid="uid://brhuof5rpul6j" path="res://Music/UI Music/789772__dan2008__calm-menu-music-loopable-lo-fi.wav" id="9_jl5o1"]
+[ext_resource type="Script" uid="uid://84prhwbx2542" path="res://Scripts/select_character.gd" id="10_select_character"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n7w73"]
 texture = ExtResource("1_nstox")
@@ -58,6 +59,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("10_select_character")
 
 [node name="Panel" type="Panel" parent="." unique_id=1193291760]
 layout_mode = 1
@@ -196,6 +198,6 @@ theme_override_fonts/font = ExtResource("2_a66yo")
 theme_override_font_sizes/font_size = 32
 text = "Priest"
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=110934390]
+[node name="UI_music" type="AudioStreamPlayer" parent="." unique_id=110934390]
 stream = ExtResource("9_jl5o1")
 autoplay = true

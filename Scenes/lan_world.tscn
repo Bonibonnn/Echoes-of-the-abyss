@@ -1,0 +1,91 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Scenes/world.tscn" id="1_world"]
+[ext_resource type="Script" path="res://Scripts/lan_world.gd" id="2_lan_world_script"]
+[ext_resource type="PackedScene" path="res://Scenes/network_knight_player.tscn" id="3_network_knight"]
+[ext_resource type="PackedScene" path="res://Scenes/network_archer_player.tscn" id="4_network_archer"]
+[ext_resource type="PackedScene" path="res://Scenes/network_archer_arrow.tscn" id="5_network_archer_arrow"]
+[ext_resource type="PackedScene" path="res://Scenes/network_mage_player.tscn" id="6_network_mage"]
+[ext_resource type="PackedScene" path="res://Scenes/network_mage_fireball.tscn" id="7_network_mage_fireball"]
+[ext_resource type="PackedScene" path="res://Scenes/network_mage_freeze_effect.tscn" id="8_network_mage_freeze_effect"]
+[ext_resource type="PackedScene" path="res://Scenes/network_priest_player.tscn" id="9_network_priest"]
+[ext_resource type="PackedScene" path="res://Scenes/network_priest_auraplosion_effect.tscn" id="10_network_priest_aura"]
+[ext_resource type="PackedScene" path="res://Scenes/network_priest_heal_effect.tscn" id="11_network_priest_heal"]
+[ext_resource type="PackedScene" path="res://Scenes/network_training_dummy.tscn" id="12_network_slime"]
+[ext_resource type="PackedScene" path="res://Scenes/network_skeleton.tscn" id="13_network_skeleton"]
+
+[node name="world" instance=ExtResource("1_world") groups=["lan_knight_test"]]
+script = ExtResource("2_lan_world_script")
+network_knight_player_scene = ExtResource("3_network_knight")
+network_archer_player_scene = ExtResource("4_network_archer")
+network_archer_arrow_scene = ExtResource("5_network_archer_arrow")
+network_mage_player_scene = ExtResource("6_network_mage")
+network_mage_fireball_scene = ExtResource("7_network_mage_fireball")
+network_mage_freeze_effect_scene = ExtResource("8_network_mage_freeze_effect")
+network_priest_player_scene = ExtResource("9_network_priest")
+network_priest_auraplosion_effect_scene = ExtResource("10_network_priest_aura")
+network_priest_heal_effect_scene = ExtResource("11_network_priest_heal")
+
+[node name="lan_host_spawn" type="Marker2D" parent="."]
+position = Vector2(18, 162)
+
+[node name="lan_joiner_spawn" type="Marker2D" parent="."]
+position = Vector2(54, 162)
+
+[node name="players" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="projectiles" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="training_dummy" parent="." instance=ExtResource("12_network_slime")]
+position = Vector2(559, 161)
+
+[node name="network_skeleton" parent="." instance=ExtResource("13_network_skeleton")]
+position = Vector2(559, 133)
+
+[node name="interface" type="CanvasLayer" parent="."]
+
+[node name="panel" type="ColorRect" parent="interface"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 655.0
+offset_bottom = 162.0
+mouse_filter = 2
+color = Color(0.03, 0.06, 0.11, 0.9)
+
+[node name="title" type="Label" parent="interface/panel"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 600.0
+offset_bottom = 40.0
+theme_override_colors/font_color = Color(0.4, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "LAN World — Enemy Roster"
+
+[node name="status_label" type="Label" parent="interface/panel"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 50.0
+offset_right = 610.0
+offset_bottom = 88.0
+theme_override_colors/font_color = Color(0.86, 0.9, 0.96, 1)
+autowrap_mode = 2
+text = "Waiting for both players to finish loading..."
+
+[node name="leave_button" type="Button" parent="interface/panel"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 102.0
+offset_right = 190.0
+offset_bottom = 130.0
+text = "Leave LAN World"
+
+[node name="instructions" type="Label" parent="interface"]
+offset_left = 20.0
+offset_top = 178.0
+offset_right = 1100.0
+offset_bottom = 208.0
+theme_override_colors/font_color = Color(0.75, 0.82, 0.9, 1)
+text = "Enemy-roster phase: the host controls shared Slime and Skeleton chase, attacks, health, debuffs, and defeat state for both players."

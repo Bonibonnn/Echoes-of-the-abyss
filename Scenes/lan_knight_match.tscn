@@ -1,0 +1,122 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/lan_knight_match.gd" id="1_match_script"]
+[ext_resource type="PackedScene" path="res://Scenes/network_knight_player.tscn" id="2_network_knight"]
+[ext_resource type="PackedScene" path="res://Scenes/network_training_dummy.tscn" id="3_training_dummy"]
+[ext_resource type="PackedScene" path="res://Scenes/network_damage_zone.tscn" id="4_damage_zone"]
+[ext_resource type="PackedScene" path="res://Scenes/network_archer_player.tscn" id="5_network_archer"]
+[ext_resource type="PackedScene" path="res://Scenes/network_archer_arrow.tscn" id="6_network_archer_arrow"]
+[ext_resource type="PackedScene" path="res://Scenes/network_mage_player.tscn" id="7_network_mage"]
+[ext_resource type="PackedScene" path="res://Scenes/network_mage_fireball.tscn" id="8_network_mage_fireball"]
+[ext_resource type="PackedScene" path="res://Scenes/network_mage_freeze_effect.tscn" id="9_network_mage_freeze_effect"]
+[ext_resource type="PackedScene" path="res://Scenes/network_priest_player.tscn" id="10_network_priest"]
+[ext_resource type="PackedScene" path="res://Scenes/network_priest_auraplosion_effect.tscn" id="11_network_priest_aura"]
+[ext_resource type="PackedScene" path="res://Scenes/network_priest_heal_effect.tscn" id="12_network_priest_heal"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_horizontal_wall"]
+size = Vector2(964, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vertical_wall"]
+size = Vector2(24, 700)
+
+[node name="lan_knight_match" type="Node2D" groups=["lan_knight_test"]]
+script = ExtResource("1_match_script")
+network_knight_player_scene = ExtResource("2_network_knight")
+network_archer_player_scene = ExtResource("5_network_archer")
+network_archer_arrow_scene = ExtResource("6_network_archer_arrow")
+network_mage_player_scene = ExtResource("7_network_mage")
+network_mage_fireball_scene = ExtResource("8_network_mage_fireball")
+network_mage_freeze_effect_scene = ExtResource("9_network_mage_freeze_effect")
+network_priest_player_scene = ExtResource("10_network_priest")
+network_priest_auraplosion_effect_scene = ExtResource("11_network_priest_aura")
+network_priest_heal_effect_scene = ExtResource("12_network_priest_heal")
+
+[node name="test_background" type="Polygon2D" parent="."]
+color = Color(0.04, 0.11, 0.16, 1)
+polygon = PackedVector2Array(-1000, -1000, 2000, -1000, 2000, 2000, -1000, 2000)
+
+[node name="arena_border" type="Line2D" parent="."]
+points = PackedVector2Array(60, 225, 1000, 225, 1000, 900, 60, 900)
+closed = true
+width = 5.0
+default_color = Color(0.15, 0.55, 0.72, 1)
+
+[node name="top_wall" type="StaticBody2D" parent="."]
+position = Vector2(530, 225)
+
+[node name="collision_shape" type="CollisionShape2D" parent="top_wall"]
+shape = SubResource("RectangleShape2D_horizontal_wall")
+
+[node name="bottom_wall" type="StaticBody2D" parent="."]
+position = Vector2(530, 900)
+
+[node name="collision_shape" type="CollisionShape2D" parent="bottom_wall"]
+shape = SubResource("RectangleShape2D_horizontal_wall")
+
+[node name="left_wall" type="StaticBody2D" parent="."]
+position = Vector2(60, 562.5)
+
+[node name="collision_shape" type="CollisionShape2D" parent="left_wall"]
+shape = SubResource("RectangleShape2D_vertical_wall")
+
+[node name="right_wall" type="StaticBody2D" parent="."]
+position = Vector2(1000, 562.5)
+
+[node name="collision_shape" type="CollisionShape2D" parent="right_wall"]
+shape = SubResource("RectangleShape2D_vertical_wall")
+
+[node name="training_dummy" parent="." instance=ExtResource("3_training_dummy")]
+position = Vector2(530, 560)
+
+[node name="damage_zone" parent="." instance=ExtResource("4_damage_zone")]
+position = Vector2(800, 690)
+
+[node name="players" type="Node2D" parent="."]
+
+[node name="projectiles" type="Node2D" parent="."]
+
+[node name="interface" type="CanvasLayer" parent="."]
+
+[node name="panel" type="ColorRect" parent="interface"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 625.0
+offset_bottom = 145.0
+mouse_filter = 2
+color = Color(0.03, 0.06, 0.11, 0.9)
+
+[node name="title" type="Label" parent="interface/panel"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 570.0
+offset_bottom = 40.0
+theme_override_colors/font_color = Color(0.4, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "LAN Shared Character Match"
+
+[node name="status_label" type="Label" parent="interface/panel"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 50.0
+offset_right = 580.0
+offset_bottom = 80.0
+theme_override_colors/font_color = Color(0.86, 0.9, 0.96, 1)
+autowrap_mode = 2
+text = "Waiting for both players to finish loading..."
+
+[node name="leave_button" type="Button" parent="interface/panel"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 91.0
+offset_right = 180.0
+offset_bottom = 119.0
+text = "Leave Match"
+
+[node name="instructions" type="Label" parent="interface"]
+offset_left = 20.0
+offset_top = 165.0
+offset_right = 1020.0
+offset_bottom = 194.0
+theme_override_colors/font_color = Color(0.75, 0.82, 0.9, 1)
+text = "Both players loaded through the lobby. The host resolves Knight, Archer, Mage, and Priest actions, slime combat, lava damage, and respawn."
