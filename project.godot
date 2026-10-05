@@ -11,13 +11,18 @@ config_version=5
 [application]
 
 config/name="Echoes of th abyss"
-run/main_scene="uid://cpnglif50oldv"
+run/main_scene="res://main_menu.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
 [audio]
 
 buses/default_bus_layout="uid://du4lo8rr7aljr"
+
+[autoload]
+
+GameFlow="*res://Scripts/game_flow.gd"
+LanSession="*uid://do340axn8yh0l"
 
 [display]
 

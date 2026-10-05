@@ -8,12 +8,14 @@ extends Control
 @export var mage_scene: PackedScene = preload("res://Scenes/mage.tscn")
 @export var priest_scene: PackedScene = preload("res://Scenes/priest.tscn")
 @export var player_spawn_path: NodePath = ^"player_spawn"
+@export_file("*.tscn") var main_menu_scene: String = "res://main_menu.tscn"
 
 # These paths match the button names in select-character.tscn exactly.
 @onready var knight_button := get_node_or_null(^"Knight Button") as BaseButton
 @onready var archer_button := get_node_or_null(^"Archer Button") as BaseButton
 @onready var mage_button := get_node_or_null(^"Wizard Button") as BaseButton
 @onready var priest_button := get_node_or_null(^"Priest Button") as BaseButton
+@onready var back_button := get_node_or_null(^"Back") as BaseButton
 
 # Stops accidental double-clicks from loading more than one world.
 var is_loading := false
@@ -24,6 +26,8 @@ func _ready() -> void:
 	connect_character_button(archer_button, archer_scene, "Archer")
 	connect_character_button(mage_button, mage_scene, "Mage")
 	connect_character_button(priest_button, priest_scene, "Priest")
+	if back_button != null and not back_button.pressed.is_connected(_return_to_main_menu):
+		back_button.pressed.connect(_return_to_main_menu)
 
 
 # Connects one character portrait button to its matching player scene.
@@ -71,3 +75,15 @@ func select_character(character_scene: PackedScene, character_name: String) -> v
 	if change_error != OK:
 		is_loading = false
 		push_error("Could not start as %s. Error code: %s" % [character_name, change_error])
+
+
+# Returns safely to the main menu without creating a player or world scene.
+func _return_to_main_menu() -> void:
+	if is_loading:
+		return
+
+	is_loading = true
+	var change_error: int = get_tree().change_scene_to_file(main_menu_scene)
+	if change_error != OK:
+		is_loading = false
+		push_error("Could not return to the main menu. Error code: %d" % change_error)

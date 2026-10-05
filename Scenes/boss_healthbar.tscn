@@ -1,0 +1,82 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://Scripts/boss_healthbar.gd" id="1_bossbar"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.035, 0.02, 0.06, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.58, 0.18, 0.24, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_background"]
+bg_color = Color(0.05, 0.035, 0.07, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.78, 0.62, 0.42, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fill"]
+bg_color = Color(0.72, 0.08, 0.13, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="boss_healthbar" type="Control"]
+layout_mode = 3
+anchors_preset = 10
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -190.0
+offset_top = 18.0
+offset_right = 190.0
+offset_bottom = 68.0
+grow_horizontal = 2
+mouse_filter = 2
+script = ExtResource("1_bossbar")
+
+[node name="panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="boss_name" type="Label" parent="panel"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 3.0
+offset_right = 372.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0.96, 0.79, 0.51, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 15
+text = "NECROMANCER"
+horizontal_alignment = 1
+
+[node name="health_bar" type="ProgressBar" parent="panel"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 28.0
+offset_right = 368.0
+offset_bottom = 43.0
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_background")
+theme_override_styles/fill = SubResource("StyleBoxFlat_fill")
+show_percentage = false

@@ -49,3 +49,8 @@ func spawn_skeleton_at(spawn_position: Vector2) -> void:
 
 	spawn_parent.add_child(skeleton)
 	skeleton.global_position = spawn_position
+
+	# The spawned Skeleton stays still until its own summon animation finishes.
+	var combat_skeleton: Combatant = skeleton as Combatant
+	if combat_skeleton != null:
+		combat_skeleton.play_summon_animation()

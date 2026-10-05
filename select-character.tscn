@@ -12,6 +12,8 @@
 [ext_resource type="Texture2D" uid="uid://dxfekddmgfafc" path="res://art/UI/Pressed Pixel Cleric Button.png" id="9_ftyht"]
 [ext_resource type="AudioStream" uid="uid://brhuof5rpul6j" path="res://Music/UI Music/789772__dan2008__calm-menu-music-loopable-lo-fi.wav" id="9_jl5o1"]
 [ext_resource type="Script" uid="uid://84prhwbx2542" path="res://Scripts/select_character.gd" id="10_select_character"]
+[ext_resource type="Texture2D" uid="uid://cas1fqdg7wwrh" path="res://art/UI/Buttons.png" id="11_back_buttons"]
+[ext_resource type="Texture2D" uid="uid://bervinc8nkdnb" path="res://art/UI/Pixel Art Back Button.png" id="12_back_hover"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n7w73"]
 texture = ExtResource("1_nstox")
@@ -52,6 +54,18 @@ texture = ExtResource("6_ht42v")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jk08i"]
 texture = ExtResource("9_ftyht")
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_back_normal"]
+texture = ExtResource("11_back_buttons")
+region_rect = Rect2(801, 311, 656, 195)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_back_pressed"]
+texture = ExtResource("11_back_buttons")
+region_rect = Rect2(801, 311, 656, 195)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_back_hover"]
+texture = ExtResource("12_back_hover")
+region_rect = Rect2(40, 63, 1662, 778)
+
 [node name="SelectCharacter" type="Control" unique_id=386156478]
 layout_mode = 3
 anchors_preset = 15
@@ -83,6 +97,17 @@ grow_horizontal = 2
 theme_override_fonts/font = ExtResource("2_a66yo")
 theme_override_font_sizes/font_size = 80
 text = "Select Character"
+
+[node name="Back" type="Button" parent="."]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 26.0
+offset_right = 154.0
+offset_bottom = 86.0
+tooltip_text = "Return to the main menu"
+theme_override_styles/normal = SubResource("StyleBoxTexture_back_normal")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_back_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_back_hover")
 
 [node name="Knight Button" type="Button" parent="." unique_id=1611352323]
 layout_mode = 1
@@ -201,3 +226,4 @@ text = "Priest"
 [node name="UI_music" type="AudioStreamPlayer" parent="." unique_id=110934390]
 stream = ExtResource("9_jl5o1")
 autoplay = true
+bus = &"Music"

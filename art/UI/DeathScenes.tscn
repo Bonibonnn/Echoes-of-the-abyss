@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://licyithk1ghb" path="res://art/UI/Pixel-Art Blue Restart Button.png" id="2_c5b33"]
 [ext_resource type="Texture2D" uid="uid://yuo1fus0p3cy" path="res://art/UI/Pressed quit button.png" id="3_c5b33"]
 [ext_resource type="Texture2D" uid="uid://cdykgknvkqc7o" path="res://art/UI/Pressed Pixel Restart Button.png" id="3_k5eom"]
+[ext_resource type="Script" path="res://Scripts/death_scenes.gd" id="4_death_scenes"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n7w73"]
 texture = ExtResource("1_otp6w")
@@ -40,6 +41,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("4_death_scenes")
 
 [node name="Panel" type="Panel" parent="." unique_id=1256304047]
 layout_mode = 1

@@ -1,12 +1,14 @@
 [gd_scene format=3 uid="uid://dwu3qstglvo31"]
 
-[ext_resource type="PackedScene" uid="uid://b5gjrj87k2kij" path="res://Scenes/enemy.tscn" id="1_kpu7f"]
-[ext_resource type="PackedScene" uid="uid://si2jakbfvkkr" path="res://Scenes/mage.tscn" id="2_3n873"]
+[ext_resource type="PackedScene" uid="uid://d30nugf2k2pr1" path="res://Scenes/player.tscn" id="2_3n873"]
+[ext_resource type="PackedScene" uid="uid://4o1uhbipphl7" path="res://Scenes/necromancer.tscn" id="2_kpu7f"]
 
 [node name="test area" type="Node2D" unique_id=1872969644]
 
-[node name="enemy" parent="." unique_id=168129594 instance=ExtResource("1_kpu7f")]
-position = Vector2(770, 256)
+[node name="necromancer" parent="." unique_id=1113116547 instance=ExtResource("2_kpu7f")]
+position = Vector2(728, 242)
 
-[node name="mage" parent="." unique_id=1695064001 instance=ExtResource("2_3n873")]
-position = Vector2(659, 251)
+[node name="player" parent="." unique_id=969721258 instance=ExtResource("2_3n873")]
+position = Vector2(665, 242)
+max_health = 50
+attack_damage = 5

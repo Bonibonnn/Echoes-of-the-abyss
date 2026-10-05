@@ -20,7 +20,7 @@ signal health_changed(current_health: int, maximum_health: int)
 const ONE_SHOT_ANIMATIONS := [
 	&"attack", &"attack1", &"attack2", &"attack3",
 	&"skill", &"skill1", &"skill2", &"fireball",
-	&"block", &"heal", &"summon", &"hurt", &"death"
+	&"block", &"heal", &"summon", &"summon2", &"hurt", &"death"
 ]
 
 @onready var animated_sprite := get_node_or_null(^"AnimatedSprite2D") as AnimatedSprite2D
@@ -36,6 +36,7 @@ var is_damage_invulnerable := false
 var is_frozen := false
 var is_stunned := false
 var is_burning := false
+var is_summoning := false
 
 var _attack_token := 0
 var _damage_invulnerability_token := 0
@@ -96,7 +97,7 @@ func requires_attack_hitbox() -> bool:
 
 
 func is_busy() -> bool:
-	return is_dead or is_hurt or is_attacking or is_frozen or is_stunned
+	return is_dead or is_hurt or is_attacking or is_frozen or is_stunned or is_summoning
 
 
 # Changes the left/right sprite direction and mirrors the forward hitbox.
@@ -181,6 +182,29 @@ func finish_attack(token: int) -> void:
 		update_idle_or_walk_animation()
 
 
+# Plays an appearance animation and holds the Combatant still until it ends.
+# Enemy spawners use this so their normal AI cannot instantly replace summon
+# with idle or walk on the next physics frame.
+func play_summon_animation() -> void:
+	if is_dead or is_busy():
+		return
+
+	var summon_duration: float = get_animation_duration(&"summon")
+	if summon_duration <= 0.0:
+		return
+
+	is_summoning = true
+	velocity = Vector2.ZERO
+	play_animation(&"summon", true)
+	await wait_for_gameplay_time(summon_duration).timeout
+
+	if is_dead or not is_summoning:
+		return
+
+	is_summoning = false
+	update_idle_or_walk_animation()
+
+
 # Only applies damage during the chosen contact frame and inside the front hitbox.
 func deal_melee_damage(damage: int, target_group: StringName) -> void:
 	if attack_hitbox == null or damage <= 0:
@@ -196,6 +220,8 @@ func take_damage(damage: int) -> void:
 	# against several attacks landing on the very same instant.
 	if is_dead or is_damage_invulnerable or damage <= 0:
 		return
+	# A real hit interrupts the spawn animation so hurt/death remains visible.
+	is_summoning = false
 
 	set_health(health - damage)
 	if health == 0:
@@ -243,6 +269,7 @@ func apply_freeze(
 	var token := _freeze_token
 	_freeze_tint = tint
 	is_frozen = true
+	is_summoning = false
 
 	# Cancel an in-progress delayed hit so a frozen enemy cannot strike later.
 	_attack_token += 1
@@ -268,6 +295,7 @@ func apply_stun(duration: float) -> void:
 	_stun_token += 1
 	var token := _stun_token
 	is_stunned = true
+	is_summoning = false
 
 	# Cancel a delayed swing so a stunned target cannot attack later.
 	_attack_token += 1

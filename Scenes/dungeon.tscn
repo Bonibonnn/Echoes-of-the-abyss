@@ -7,6 +7,14 @@
 [ext_resource type="Texture2D" uid="uid://ddclfwpvhwpla" path="res://Terrain/Skeleton dungeon/Animated_object/Objects.png" id="5_5v1xs"]
 [ext_resource type="PackedScene" uid="uid://box5ux654515w" path="res://Scenes/healthbar.tscn" id="7_203el"]
 [ext_resource type="AudioStream" uid="uid://crdw5ycf6kr3c" path="res://Music/BGM musc/Video Dungeon Boss.mp3" id="7_dcl0p"]
+[ext_resource type="PackedScene" uid="uid://4o1uhbipphl7" path="res://Scenes/necromancer.tscn" id="8_necromancer"]
+[ext_resource type="PackedScene" path="res://Scenes/ingame_options.tscn" id="9_ingame_options"]
+[ext_resource type="Script" uid="uid://bict3l0hm05am" path="res://Scripts/random_skeleton_spawner.gd" id="10_34b4t"]
+[ext_resource type="PackedScene" path="res://Scenes/boss_healthbar.tscn" id="12_bosshealth"]
+[ext_resource type="PackedScene" uid="uid://6imp8q0vekre" path="res://Scenes/skeleton.tscn" id="12_eoyr6"]
+[ext_resource type="PackedScene" uid="uid://c3l0muuoorcxh" path="res://Scenes/greatsword_skeleton.tscn" id="13_x01mf"]
+[ext_resource type="PackedScene" uid="uid://kt7m5ehx88t" path="res://Scenes/skeleton_archer.tscn" id="14_ocu3a"]
+[ext_resource type="PackedScene" uid="uid://6bb0t305v1kd" path="res://Scenes/armored_skeleton.tscn" id="15_oqkf0"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_l3tba"]
 texture = ExtResource("1_dakn4")
@@ -4596,6 +4604,9 @@ b = Vector2(-41, -40)
 [sub_resource type="CircleShape2D" id="CircleShape2D_j7nhg"]
 radius = 10.049875
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2i2of"]
+size = Vector2(15, 226)
+
 [node name="dungeon" type="Node2D" unique_id=1568520789]
 position = Vector2(0, 2)
 
@@ -4613,178 +4624,181 @@ tile_set = SubResource("TileSet_80oxj")
 tile_map_data = PackedByteArray("AAAuABMAAAASABcAAAAuABQAAAASABgAAAAuABUAAAASABkAAAAuABYAAAASABoAAAAvABMAAAATABcAAAAvABQAAAATABgAAAAvABUAAAATABkAAAAvABYAAAATABoAAAAwABMAAAAUABcAAAAwABQAAAAUABgAAAAwABUAAAAUABkAAAAwABYAAAAUABoAAAAxABQAAAAVABgAAAAxABUAAAAVABkAAAAxABYAAAAVABoAAAA/ABIAAAASABcAAAA/ABMAAAASABgAAAA/ABQAAAASABkAAAA/ABUAAAASABoAAABAABIAAAATABcAAABAABMAAAATABgAAABAABQAAAATABkAAABAABUAAAATABoAAABBABIAAAAUABcAAABBABMAAAAUABgAAABBABQAAAAUABkAAABBABUAAAAUABoAAABCABMAAAAVABgAAABCABQAAAAVABkAAABCABUAAAAVABoAAAAtABQAAAARABgAAAAtABUAAAARABkAAAAtABYAAAARABoAAAA+ABMAAAAJAAAAAAA+ABQAAAAJAAEAAAA+ABUAAAAJAAIAAAAfABMAAAAqABcAAAAfABQAAAAqABgAAAAfABUAAAAqABkAAAAfABYAAAAqABoAAAAgABMAAAArABcAAAAgABQAAAArABgAAAAgABUAAAArABkAAAAgABYAAAArABoAAAAhABMAAAAsABcAAAAhABQAAAAsABgAAAAhABUAAAAsABkAAAAhABYAAAAsABoAAAAkABUAAAAqABsAAAAkABYAAAAqABwAAAAlABUAAAArABsAAAAlABYAAAArABwAAAAmABkAAAAqAB8AAAAmABoAAAAqACAAAAAmABsAAAAqACEAAAAnABkAAAArAB8AAAAnABoAAAArACAAAAAnABsAAAArACEAAAAoABkAAAAsAB8AAAAoABoAAAAsACAAAAAoABsAAAAsACEAAAAdABkAAAAqAB8AAAAdABoAAAAqACAAAAAdABsAAAAqACEAAAAeABkAAAArAB8AAAAeABoAAAArACAAAAAeABsAAAArACEAAAAfABkAAAAsAB8AAAAfABoAAAAsACAAAAAfABsAAAAsACEAAAAiACAAAAASACkAAAAiACEAAAASACoAAAAjACAAAAATACkAAAAjACEAAAATACoAAAA1AAQAAAASACkAAAA1AAUAAAASACoAAAA2AAQAAAATACkAAAA2AAUAAAATACoAAAA3AAQAAAAWACkAAAA3AAUAAAAWACoAAAA4AAQAAAAXACkAAAA4AAUAAAAXACoAAAA5AAQAAAASACkAAAA5AAUAAAASACoAAAA6AAQAAAATACkAAAA6AAUAAAATACoAAAA6AAYAAAASACkAAAA6AAcAAAASACoAAAA7AAYAAAATACkAAAA7AAcAAAATACoAAAA3AAcAAAASACkAAAA3AAgAAAASACoAAAA4AAcAAAATACkAAAA4AAgAAAATACoAAAA1AAYAAAASACkAAAA1AAcAAAASACoAAAA2AAYAAAATACkAAAA2AAcAAAATACoAAAA9AAQAAAASACkAAAA9AAUAAAASACoAAAA+AAQAAAATACkAAAA+AAUAAAATACoAAAA9AAcAAAASACkAAAA9AAgAAAASACoAAAA+AAcAAAATACkAAAA+AAgAAAATACoAAAA6AAgAAAAgACkAAAA6AAkAAAAgACoAAAA7AAgAAAAhACkAAAA7AAkAAAAhACoAAAA9AAkAAAAgACkAAAA9AAoAAAAgACoAAAA+AAkAAAAhACkAAAA+AAoAAAAhACoAAAA7AAMAAAAgACkAAAA7AAQAAAAgACoAAAA8AAMAAAAhACkAAAA8AAQAAAAhACoAAAAYAAsAAAACACUAAAAYAAwAAAACACYAAAAZAAsAAAADACUAAAAZAAwAAAADACYAAAAbAAkAAAACACUAAAAbAAoAAAACACYAAAAcAAkAAAADACUAAAAcAAoAAAADACYAAAAOAAwAAAACACUAAAAOAA0AAAACACYAAAAPAAwAAAADACUAAAAPAA0AAAADACYAAAA1ABYAAAAAAAMAAAA1ABcAAAAAAAQAAAA1ABgAAAAAAAUAAAA2ABQAAAABAAEAAAA2ABUAAAABAAIAAAA2ABYAAAABAAMAAAA2ABcAAAABAAQAAAA2ABgAAAABAAUAAAA3ABQAAAACAAEAAAA3ABUAAAACAAIAAAA3ABYAAAACAAMAAAA3ABcAAAACAAQAAAA3ABgAAAACAAUAAAA3ABkAAAACAAYAAAA3ADgAAAACACUAAAA3ADkAAAACACYAAAA4ABMAAAADAAAAAAA4ABQAAAADAAEAAAA4ABUAAAADAAIAAAA4ABYAAAADAAMAAAA4ABcAAAADAAQAAAA4ABgAAAADAAUAAAA4ABkAAAADAAYAAAA4ADgAAAADACUAAAA4ADkAAAADACYAAAA5ABMAAAAEAAAAAAA5ABQAAAAEAAEAAAA5ABUAAAAEAAIAAAA5ABYAAAAEAAMAAAA5ABcAAAAEAAQAAAA5ABgAAAAEAAUAAAA5ABkAAAAEAAYAAAA5ABoAAAAEAAcAAAA6ABMAAAAFAAAAAAA6ABQAAAAFAAEAAAA6ABUAAAAFAAIAAAA6ABYAAAAFAAMAAAA6ABcAAAAFAAQAAAA6ABgAAAAFAAUAAAA6ABkAAAAFAAYAAAA7ABMAAAAGAAAAAAA7ABQAAAAGAAEAAAA7ABUAAAAGAAIAAAA7ABYAAAAGAAMAAAA7ABcAAAAGAAQAAAA7ABgAAAAGAAUAAAA8ABMAAAAHAAAAAAA8ABQAAAAHAAEAAAA8ABUAAAAHAAIAAAA8ABYAAAAHAAMAAAA8ABcAAAAHAAQAAAA9ABMAAAAIAAAAAAA9ABQAAAAIAAEAAAA9ABUAAAAIAAIAAAA9ABYAAAAIAAMAAAA=")
 tile_set = SubResource("TileSet_l5lc7")
 
-[node name="tree_animated" type="StaticBody2D" parent="." unique_id=1547390027]
+[node name="objects" type="Node2D" parent="." unique_id=78377591]
 
-[node name="tree_animated" type="AnimatedSprite2D" parent="tree_animated" unique_id=1897436005]
+[node name="tree_animated" type="StaticBody2D" parent="objects" unique_id=1547390027]
+
+[node name="tree_animated" type="AnimatedSprite2D" parent="objects/tree_animated" unique_id=1897436005]
 position = Vector2(169, 248)
 scale = Vector2(0.9591837, 1)
 sprite_frames = SubResource("SpriteFrames_l5lc7")
 animation = &"idle"
 autoplay = "idle"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="tree_animated" unique_id=1640913516]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="objects/tree_animated" unique_id=1640913516]
 position = Vector2(162, 279.5)
 shape = SubResource("RectangleShape2D_wgbdp")
 
-[node name="tree_animated2" type="StaticBody2D" parent="." unique_id=463149999]
+[node name="tree_animated2" type="StaticBody2D" parent="objects" unique_id=463149999]
 
-[node name="tree_animated" type="AnimatedSprite2D" parent="tree_animated2" unique_id=1182431198]
+[node name="tree_animated" type="AnimatedSprite2D" parent="objects/tree_animated2" unique_id=1182431198]
 position = Vector2(350, 163)
 scale = Vector2(0.9591837, 1)
 sprite_frames = SubResource("SpriteFrames_l5lc7")
 animation = &"idle"
 autoplay = "idle"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="tree_animated2" unique_id=699697402]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="objects/tree_animated2" unique_id=699697402]
 position = Vector2(346, 197)
 shape = SubResource("RectangleShape2D_wgbdp")
 
-[node name="tree_animated3" type="StaticBody2D" parent="." unique_id=2088438141]
+[node name="tree_animated3" type="StaticBody2D" parent="objects" unique_id=2088438141]
 
-[node name="tree_animated" type="AnimatedSprite2D" parent="tree_animated3" unique_id=2089156721]
+[node name="tree_animated" type="AnimatedSprite2D" parent="objects/tree_animated3" unique_id=2089156721]
 position = Vector2(563, 117)
 scale = Vector2(0.9591837, 1)
 sprite_frames = SubResource("SpriteFrames_l5lc7")
 animation = &"idle"
 autoplay = "idle"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="tree_animated3" unique_id=2094595642]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="objects/tree_animated3" unique_id=2094595642]
 position = Vector2(558, 149)
 shape = SubResource("RectangleShape2D_wgbdp")
 
-[node name="border" type="StaticBody2D" parent="." unique_id=1939658261]
+[node name="border" type="StaticBody2D" parent="objects" unique_id=1939658261]
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="border" unique_id=113684284]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="objects/border" unique_id=113684284]
 polygon = PackedVector2Array(0, -2, 66, -9, 179, -8, 437, -5, 491, -7, 675, -2, 750, -5, 970, -3, 1088, -5, 1136, -3, 1142, 20, 1138, 75, 1141, 253, 1135, 553, 1131, 610, 1120, 618, 598, 618, 225, 618, -10, 615, -10, 389, -11, 69, -12, -38, -58, 23, -85, 214, -70, 399, -76, 528, -69, 577, -31, 675, 115, 738, 434, 742, 718, 716, 953, 702, 1156, 715, 1234, 613, 1212, 290, 1235, 97, 1214, -187, 994, -190, 772, -109, 525, -55, 293, -84, 138, -59, 100, -38, 24, -18)
 
-[node name="object" type="StaticBody2D" parent="." unique_id=1763149341]
+[node name="object" type="StaticBody2D" parent="objects" unique_id=1763149341]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="object" unique_id=565678994]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="objects/object" unique_id=565678994]
 position = Vector2(392, 313)
 shape = SubResource("CircleShape2D_l5lc7")
 debug_color = Color(0.13651973, 0.5812271, 0.76997995, 0.41960785)
 
-[node name="trunk" type="StaticBody2D" parent="." unique_id=1110644868]
+[node name="trunk" type="StaticBody2D" parent="objects" unique_id=1110644868]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="trunk" unique_id=661896233]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="objects/trunk" unique_id=661896233]
 position = Vector2(239, 207)
 shape = SubResource("CircleShape2D_5v1xs")
 debug_color = Color(0.13651973, 0.5812271, 0.76997995, 0.41960785)
 
-[node name="trunk2" type="StaticBody2D" parent="." unique_id=1667829015]
+[node name="trunk2" type="StaticBody2D" parent="objects" unique_id=1667829015]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="trunk2" unique_id=2034180857]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="objects/trunk2" unique_id=2034180857]
 position = Vector2(398, 191)
 shape = SubResource("CircleShape2D_5v1xs")
 debug_color = Color(0.13651973, 0.5812271, 0.76997995, 0.41960785)
 
-[node name="trunk3" type="StaticBody2D" parent="." unique_id=2057568363]
+[node name="trunk3" type="StaticBody2D" parent="objects" unique_id=2057568363]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="trunk3" unique_id=665937899]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="objects/trunk3" unique_id=665937899]
 position = Vector2(448, 158)
 shape = SubResource("CircleShape2D_5v1xs")
 debug_color = Color(0.13651973, 0.5812271, 0.76997995, 0.41960785)
 
-[node name="object2" type="StaticBody2D" parent="." unique_id=390390618]
+[node name="object2" type="StaticBody2D" parent="objects" unique_id=390390618]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="object2" unique_id=1742976018]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="objects/object2" unique_id=1742976018]
 position = Vector2(560.5, 354.5)
 shape = SubResource("RectangleShape2D_fgxly")
 debug_color = Color(0.13651973, 0.5812271, 0.76997995, 0.41960785)
 
-[node name="plant" type="StaticBody2D" parent="." unique_id=813810517]
+[node name="plant" type="StaticBody2D" parent="objects" unique_id=813810517]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="plant" unique_id=593753902]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="objects/plant" unique_id=593753902]
 position = Vector2(486.875, 425.125)
 shape = SubResource("RectangleShape2D_dcl0p")
 debug_color = Color(0.13651973, 0.5812271, 0.76997995, 0.41960785)
 
-[node name="plant2" type="StaticBody2D" parent="." unique_id=2134070171]
+[node name="plant2" type="StaticBody2D" parent="objects" unique_id=2134070171]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="plant2" unique_id=1762203888]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="objects/plant2" unique_id=1762203888]
 position = Vector2(632, 427)
 shape = SubResource("RectangleShape2D_dcl0p")
 debug_color = Color(0.13651973, 0.5812271, 0.76997995, 0.41960785)
 
-[node name="skeleton" type="StaticBody2D" parent="." unique_id=1965631609]
+[node name="skeleton" type="StaticBody2D" parent="objects" unique_id=1965631609]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="skeleton" unique_id=1561884375]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="objects/skeleton" unique_id=1561884375]
 position = Vector2(763, 339)
 shape = SubResource("CircleShape2D_80oxj")
 debug_color = Color(0.13651973, 0.5812271, 0.76997995, 0.41960785)
 
-[node name="skeleton2" type="StaticBody2D" parent="." unique_id=1803246284]
+[node name="skeleton2" type="StaticBody2D" parent="objects" unique_id=1803246284]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="skeleton2" unique_id=166893611]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="objects/skeleton2" unique_id=166893611]
 position = Vector2(1037, 322)
 shape = SubResource("CircleShape2D_80oxj")
 debug_color = Color(0.13651973, 0.5812271, 0.76997995, 0.41960785)
 
-[node name="big_skeleton" type="StaticBody2D" parent="." unique_id=2017798078]
+[node name="big_skeleton" type="StaticBody2D" parent="objects" unique_id=2017798078]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="big_skeleton" unique_id=1596213692]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="objects/big_skeleton" unique_id=1596213692]
 position = Vector2(921, 342)
 shape = SubResource("CircleShape2D_203el")
 debug_color = Color(0.13651973, 0.5812271, 0.76997995, 0.41960785)
 
-[node name="big_skeleton2" type="StaticBody2D" parent="." unique_id=231053314]
+[node name="big_skeleton2" type="StaticBody2D" parent="objects" unique_id=231053314]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="big_skeleton2" unique_id=1363198887]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="objects/big_skeleton2" unique_id=1363198887]
 position = Vector2(877, 383)
 shape = SubResource("SegmentShape2D_ubn4n")
 debug_color = Color(0.13651973, 0.5812271, 0.76997995, 0.41960785)
 
-[node name="big_skeleton3" type="StaticBody2D" parent="." unique_id=537650562]
+[node name="big_skeleton3" type="StaticBody2D" parent="objects" unique_id=537650562]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="big_skeleton3" unique_id=570872664]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="objects/big_skeleton3" unique_id=570872664]
 position = Vector2(876, 376)
 shape = SubResource("SegmentShape2D_t83ds")
 debug_color = Color(0.13651973, 0.5812271, 0.76997995, 0.41960785)
 
-[node name="big_skeleton4" type="StaticBody2D" parent="." unique_id=1214359886]
+[node name="big_skeleton4" type="StaticBody2D" parent="objects" unique_id=1214359886]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="big_skeleton4" unique_id=502336205]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="objects/big_skeleton4" unique_id=502336205]
 position = Vector2(956, 403)
 shape = SubResource("SegmentShape2D_34b4t")
 debug_color = Color(0.13651973, 0.5812271, 0.76997995, 0.41960785)
 
-[node name="big_skeleton6" type="StaticBody2D" parent="." unique_id=217922524]
+[node name="big_skeleton6" type="StaticBody2D" parent="objects" unique_id=217922524]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="big_skeleton6" unique_id=1125225335]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="objects/big_skeleton6" unique_id=1125225335]
 position = Vector2(1052, 368)
 shape = SubResource("SegmentShape2D_2i2of")
 debug_color = Color(0.13651973, 0.5812271, 0.76997995, 0.41960785)
 
-[node name="big_skeleton7" type="StaticBody2D" parent="." unique_id=2008177194]
+[node name="big_skeleton7" type="StaticBody2D" parent="objects" unique_id=2008177194]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="big_skeleton7" unique_id=124680761]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="objects/big_skeleton7" unique_id=124680761]
 position = Vector2(1042, 356)
 shape = SubResource("SegmentShape2D_6tvcj")
 debug_color = Color(0.13651973, 0.5812271, 0.76997995, 0.41960785)
 
-[node name="big_skeleton5" type="StaticBody2D" parent="." unique_id=161322841]
+[node name="big_skeleton5" type="StaticBody2D" parent="objects" unique_id=161322841]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="big_skeleton5" unique_id=2065158783]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="objects/big_skeleton5" unique_id=2065158783]
 position = Vector2(925, 409)
 shape = SubResource("CircleShape2D_j7nhg")
 debug_color = Color(0.13651973, 0.5812271, 0.76997995, 0.41960785)
 
-[node name="big_skeleton8" type="StaticBody2D" parent="." unique_id=757301539]
+[node name="big_skeleton8" type="StaticBody2D" parent="objects" unique_id=757301539]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="big_skeleton8" unique_id=629334320]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="objects/big_skeleton8" unique_id=629334320]
 position = Vector2(951, 375)
 shape = SubResource("CircleShape2D_j7nhg")
 debug_color = Color(0.13651973, 0.5812271, 0.76997995, 0.41960785)
 
-[node name="border2" type="StaticBody2D" parent="." unique_id=1098473389]
+[node name="border2" type="StaticBody2D" parent="objects" unique_id=1098473389]
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="border2" unique_id=277351093]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="objects/border2" unique_id=277351093]
 polygon = PackedVector2Array(-7, 341, 21, 344, 71, 350, 158, 345, 263, 348, 300, 348, 303, 373, 306, 392, 360, 397, 380, 398, 385, 434, 402, 435, 398, 481, 414, 476, 413, 512, 427, 509, 429, 546, 445, 553, 462, 547, 464, 513, 477, 509, 481, 492, 611, 491, 734, 490, 735, 481, 748, 487, 748, 526, 748, 557, 758, 572, 781, 572, 820, 572, 830, 571, 832, 538, 831, 530, 849, 528, 865, 545, 904, 567, 947, 574, 1007, 573, 1047, 545, 1058, 515, 1078, 485, 1076, 417, 1056, 381, 1083, 350, 1076, 291, 986, 279, 844, 296, 776, 298, 718, 299, 719, 357, 732, 392, 734, 416, 720, 401, 707, 364, 703, 323, 702, 289, 740, 292, 787, 290, 862, 287, 917, 277, 962, 272, 994, 273, 1039, 276, 1076, 286, 1088, 307, 1088, 328, 1089, 348, 1076, 371, 1066, 384, 1076, 406, 1084, 422, 1083, 445, 1084, 489, 1065, 515, 1056, 542, 1022, 575, 991, 583, 936, 581, 899, 573, 866, 558, 846, 543, 838, 555, 838, 576, 811, 581, 757, 579, 740, 570, 736, 540, 741, 501, 738, 492, 722, 500, 660, 500, 585, 498, 519, 495, 488, 506, 479, 519, 469, 533, 465, 559, 436, 565, 414, 535, 418, 521, 405, 518, 409, 489, 387, 486, 397, 444, 373, 434, 375, 403, 304, 399, 289, 358, 167, 354, 57, 358, 8, 352)
 
 [node name="dungeon" type="AudioStreamPlayer" parent="." unique_id=52006272]
 stream = ExtResource("7_dcl0p")
 volume_db = -6.0
 autoplay = true
+bus = &"Music"
 
 [node name="player_spawn" type="Marker2D" parent="." unique_id=1431793356]
 position = Vector2(27, 326)
@@ -4792,5 +4806,113 @@ position = Vector2(27, 326)
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1167549387]
 
 [node name="healthbar" parent="CanvasLayer" unique_id=1361943585 instance=ExtResource("7_203el")]
-offset_top = 2.0
-offset_bottom = 2.0
+offset_left = -40.0
+offset_top = 8.0
+offset_right = -40.0
+offset_bottom = 8.0
+
+[node name="boss_healthbar" parent="CanvasLayer" unique_id=2139060885 instance=ExtResource("12_bosshealth")]
+anchors_preset = 5
+
+[node name="ingame_options" parent="." unique_id=659744128 instance=ExtResource("9_ingame_options")]
+
+[node name="necromancer" parent="." unique_id=1113116547 instance=ExtResource("8_necromancer")]
+position = Vector2(921, 446)
+
+[node name="random_skeleton_spawner" type="Area2D" parent="." unique_id=491549268]
+collision_layer = 3
+script = ExtResource("10_34b4t")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="random_skeleton_spawner" unique_id=2066919233]
+position = Vector2(805, 168)
+shape = SubResource("RectangleShape2D_2i2of")
+debug_color = Color(0.911681, 0, 0.17255759, 0.41960785)
+
+[node name="spawn_point" type="Marker2D" parent="random_skeleton_spawner" unique_id=1682452363]
+position = Vector2(863, 114)
+
+[node name="spawn_point4" type="Marker2D" parent="random_skeleton_spawner" unique_id=562877059]
+position = Vector2(899, 83)
+
+[node name="spawn_point2" type="Marker2D" parent="random_skeleton_spawner" unique_id=2060405902]
+position = Vector2(867, 78)
+
+[node name="spawn_point5" type="Marker2D" parent="random_skeleton_spawner" unique_id=1967938644]
+position = Vector2(932, 77)
+
+[node name="spawn_point6" type="Marker2D" parent="random_skeleton_spawner" unique_id=1844191437]
+position = Vector2(937, 141)
+
+[node name="spawn_point7" type="Marker2D" parent="random_skeleton_spawner" unique_id=1912852972]
+position = Vector2(947, 106)
+
+[node name="spawn_point3" type="Marker2D" parent="random_skeleton_spawner" unique_id=1743231880]
+position = Vector2(898, 132)
+
+[node name="enemies" type="Node2D" parent="." unique_id=376725622]
+
+[node name="skeleton" parent="enemies" unique_id=930479232 instance=ExtResource("12_eoyr6")]
+position = Vector2(201, 307)
+
+[node name="skeleton2" parent="enemies" unique_id=1017093223 instance=ExtResource("12_eoyr6")]
+position = Vector2(205, 334)
+
+[node name="skeleton3" parent="enemies" unique_id=823972253 instance=ExtResource("12_eoyr6")]
+position = Vector2(248, 292)
+
+[node name="greatsword_skeleton" parent="enemies" unique_id=1718138264 instance=ExtResource("13_x01mf")]
+position = Vector2(687, 427)
+
+[node name="greatsword_skeleton2" parent="enemies" unique_id=1290404350 instance=ExtResource("13_x01mf")]
+position = Vector2(691, 476)
+
+[node name="skeleton_archer" parent="enemies" unique_id=1895848753 instance=ExtResource("14_ocu3a")]
+position = Vector2(281, 253)
+
+[node name="skeleton_archer2" parent="enemies" unique_id=1901369874 instance=ExtResource("14_ocu3a")]
+position = Vector2(284, 221)
+
+[node name="armored_skeleton" parent="enemies" unique_id=612382198 instance=ExtResource("15_oqkf0")]
+position = Vector2(706, 429)
+
+[node name="armored_skeleton2" parent="enemies" unique_id=371055801 instance=ExtResource("15_oqkf0")]
+position = Vector2(708, 473)
+
+[node name="skeleton_archer3" parent="enemies" unique_id=801788159 instance=ExtResource("14_ocu3a")]
+position = Vector2(568, 430)
+
+[node name="skeleton_archer4" parent="enemies" unique_id=1462056824 instance=ExtResource("14_ocu3a")]
+position = Vector2(570, 477)
+
+[node name="armored_skeleton3" parent="enemies" unique_id=1661450004 instance=ExtResource("15_oqkf0")]
+position = Vector2(670, 258)
+
+[node name="armored_skeleton4" parent="enemies" unique_id=681691660 instance=ExtResource("15_oqkf0")]
+position = Vector2(691, 148)
+
+[node name="armored_skeleton5" parent="enemies" unique_id=1674483370 instance=ExtResource("15_oqkf0")]
+position = Vector2(677, 215)
+
+[node name="greatsword_skeleton3" parent="enemies" unique_id=701697880 instance=ExtResource("13_x01mf")]
+position = Vector2(732, 201)
+
+[node name="skeleton_archer5" parent="enemies" unique_id=1299085945 instance=ExtResource("14_ocu3a")]
+position = Vector2(752, 240)
+
+[node name="skeleton_archer6" parent="enemies" unique_id=92576164 instance=ExtResource("14_ocu3a")]
+position = Vector2(760, 163)
+
+[node name="skeleton4" parent="enemies" unique_id=755890093 instance=ExtResource("12_eoyr6")]
+position = Vector2(448, 256)
+
+[node name="skeleton5" parent="enemies" unique_id=106255854 instance=ExtResource("12_eoyr6")]
+position = Vector2(422, 213)
+
+[node name="skeleton6" parent="enemies" unique_id=1351911871 instance=ExtResource("12_eoyr6")]
+position = Vector2(462, 215)
+
+[node name="skeleton7" parent="enemies" unique_id=1373295718 instance=ExtResource("12_eoyr6")]
+position = Vector2(485, 242)
+
+[node name="greatsword_skeleton4" parent="enemies" unique_id=1576257994 instance=ExtResource("13_x01mf")]
+position = Vector2(420, 400)

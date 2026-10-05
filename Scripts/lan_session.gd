@@ -552,12 +552,15 @@ func _get_lan_ipv4_candidates() -> Array[Dictionary]:
 		if interface_name.is_empty():
 			interface_name = "Network"
 
-		var addresses_value: Variant = interface_data.get("addresses", PackedStringArray())
-		if not (addresses_value is PackedStringArray):
+		# Godot 4.7 returns this field as a normal Array, not a PackedStringArray.
+		# Reading it as Array lets the Host screen find Windows Wi-Fi/Ethernet IPv4s.
+		var addresses_value: Variant = interface_data.get("addresses", [])
+		if not (addresses_value is Array):
 			continue
 
-		var addresses: PackedStringArray = addresses_value
-		for address: String in addresses:
+		var addresses: Array = addresses_value
+		for raw_address: Variant in addresses:
+			var address: String = str(raw_address)
 			if not _is_usable_lan_ipv4(address) or seen_addresses.has(address):
 				continue
 

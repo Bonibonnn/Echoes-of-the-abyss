@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://b3kstic2p5pod" path="res://art/UI/Pixel Victory Crown and Radiant Rays.png" id="1_wvvqk"]
 [ext_resource type="Texture2D" uid="uid://cas1fqdg7wwrh" path="res://art/UI/Buttons.png" id="2_xk2if"]
 [ext_resource type="Texture2D" uid="uid://b46ih48h8p4yt" path="res://art/UI/Pixel-Art HOME Button Sprite.png" id="3_mf5ug"]
+[ext_resource type="Script" path="res://Scripts/victory_scenes.gd" id="4_victory_scenes"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n7w73"]
 texture = ExtResource("1_wvvqk")
@@ -26,6 +27,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("4_victory_scenes")
 
 [node name="Panel" type="Panel" parent="." unique_id=1714572702]
 layout_mode = 1
@@ -36,7 +38,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_n7w73")
 
-[node name="Button" type="Button" parent="Panel" unique_id=85631367]
+[node name="Home" type="Button" parent="Panel" unique_id=85631367]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

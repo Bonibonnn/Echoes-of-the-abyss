@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://hoabks13lx3u" path="res://Scenes/werebear.tscn" id="7_werebear"]
 [ext_resource type="PackedScene" uid="uid://dk4mvctl8xccs" path="res://Scenes/elite_orc.tscn" id="8_elite_orc"]
 [ext_resource type="Script" uid="uid://bg6hb16lrscte" path="res://Scripts/slime_spawner.gd" id="8_slime_spawner"]
+[ext_resource type="PackedScene" path="res://Scenes/ingame_options.tscn" id="9_ingame_options"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5a7ea"]
 texture = ExtResource("1_5a7ea")
@@ -410,6 +411,7 @@ position = Vector2(30, 162)
 stream = SubResource("AudioStreamMP3_5ukr8")
 volume_db = -4.0
 autoplay = true
+bus = &"Music"
 
 [node name="portal" type="AnimatedSprite2D" parent="." unique_id=2007093437]
 position = Vector2(1424, 343)
@@ -421,6 +423,8 @@ autoplay = "portal"
 
 [node name="healthbar" parent="CanvasLayer" unique_id=1361943585 instance=ExtResource("7_5v1tr")]
 visible = false
+
+[node name="ingame_options" parent="." instance=ExtResource("9_ingame_options")]
 
 [node name="elite_orc" parent="." unique_id=118646566 instance=ExtResource("8_elite_orc")]
 position = Vector2(1372, 344)

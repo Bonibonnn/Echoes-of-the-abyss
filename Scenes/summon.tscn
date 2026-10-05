@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://dv5h4nnsseqs7"]
+
+[ext_resource type="Texture2D" uid="uid://c4psa5nuiayfa" path="res://art/Characters(100x100 split)/Necromancer/Necromancer/Necromancer_Sumon_Effect.png" id="1_twmrq"]
+[ext_resource type="Script" uid="uid://bhq8bmbtljw58" path="res://Scripts/auraplosion.gd" id="2_aurap"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_22w3o"]
+atlas = ExtResource("1_twmrq")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o6qx3"]
+atlas = ExtResource("1_twmrq")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8fla5"]
+atlas = ExtResource("1_twmrq")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wlgkr"]
+atlas = ExtResource("1_twmrq")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qgdxr"]
+atlas = ExtResource("1_twmrq")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_41d42"]
+atlas = ExtResource("1_twmrq")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fg7xo"]
+atlas = ExtResource("1_twmrq")
+region = Rect2(600, 0, 100, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_l5lc7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_22w3o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o6qx3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8fla5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wlgkr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qgdxr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_41d42")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fg7xo")
+}],
+"loop": 1,
+"name": &"summon",
+"speed": 5.0
+}]
+
+[node name="summon" type="Area2D" unique_id=1448668195]
+script = ExtResource("2_aurap")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=210746254]
+sprite_frames = SubResource("SpriteFrames_l5lc7")
+animation = &"summon"
+frame = 5
+frame_progress = 0.4606852
