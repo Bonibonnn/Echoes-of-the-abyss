@@ -10,10 +10,10 @@ config_version=5
 
 [application]
 
-config/name="Echoes of th abyss"
+config/name="Echoes of the abyss"
 run/main_scene="res://main_menu.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="uid://deajlpjryhh1d"
 
 [audio]
 
