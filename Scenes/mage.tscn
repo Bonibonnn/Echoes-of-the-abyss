@@ -522,6 +522,7 @@ radius = 7.28011
 
 [node name="mage" type="CharacterBody2D" unique_id=1695064001]
 script = ExtResource("1_7elky")
+max_health = 15
 freeze_area_scene = ExtResource("2_rh4uj")
 fireball_scene = ExtResource("3_4qsol")
 close_freeze_radius = 30.0

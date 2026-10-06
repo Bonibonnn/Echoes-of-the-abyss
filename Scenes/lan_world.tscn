@@ -11,8 +11,23 @@
 [ext_resource type="PackedScene" path="res://Scenes/network_priest_player.tscn" id="9_network_priest"]
 [ext_resource type="PackedScene" path="res://Scenes/network_priest_auraplosion_effect.tscn" id="10_network_priest_aura"]
 [ext_resource type="PackedScene" path="res://Scenes/network_priest_heal_effect.tscn" id="11_network_priest_heal"]
-[ext_resource type="PackedScene" path="res://Scenes/network_training_dummy.tscn" id="12_network_slime"]
-[ext_resource type="PackedScene" path="res://Scenes/network_skeleton.tscn" id="13_network_skeleton"]
+[ext_resource type="Script" path="res://Scripts/network_enemy.gd" id="12_network_enemy"]
+[ext_resource type="PackedScene" path="res://Scenes/bat.tscn" id="13_bat"]
+[ext_resource type="PackedScene" path="res://Scenes/slime.tscn" id="14_slime"]
+[ext_resource type="PackedScene" path="res://Scenes/werewolf.tscn" id="15_werewolf"]
+[ext_resource type="PackedScene" path="res://Scenes/werebear.tscn" id="16_werebear"]
+[ext_resource type="PackedScene" path="res://Scenes/enemy.tscn" id="17_orc"]
+[ext_resource type="PackedScene" path="res://Scenes/armored_orc.tscn" id="18_armored_orc"]
+[ext_resource type="PackedScene" path="res://Scenes/orc_rider.tscn" id="19_orc_rider"]
+[ext_resource type="PackedScene" path="res://Scenes/elite_orc.tscn" id="20_elite_orc"]
+[ext_resource type="Script" path="res://Scripts/lan_enemy_spawner.gd" id="21_spawner"]
+[ext_resource type="Script" path="res://Scripts/lan_dungeon_portal.gd" id="22_portal"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lan_slime_trap"]
+size = Vector2(112, 82)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lan_portal"]
+size = Vector2(29.25, 57)
 
 [node name="world" instance=ExtResource("1_world") groups=["lan_knight_test"]]
 script = ExtResource("2_lan_world_script")
@@ -26,11 +41,17 @@ network_priest_player_scene = ExtResource("9_network_priest")
 network_priest_auraplosion_effect_scene = ExtResource("10_network_priest_aura")
 network_priest_heal_effect_scene = ExtResource("11_network_priest_heal")
 
-[node name="lan_host_spawn" type="Marker2D" parent="."]
-position = Vector2(18, 162)
+[node name="lan_player_1_spawn" type="Marker2D" parent="."]
+position = Vector2(12, 144)
 
-[node name="lan_joiner_spawn" type="Marker2D" parent="."]
-position = Vector2(54, 162)
+[node name="lan_player_2_spawn" type="Marker2D" parent="."]
+position = Vector2(48, 144)
+
+[node name="lan_player_3_spawn" type="Marker2D" parent="."]
+position = Vector2(12, 180)
+
+[node name="lan_player_4_spawn" type="Marker2D" parent="."]
+position = Vector2(48, 180)
 
 [node name="players" type="Node2D" parent="."]
 y_sort_enabled = true
@@ -38,11 +59,212 @@ y_sort_enabled = true
 [node name="projectiles" type="Node2D" parent="."]
 y_sort_enabled = true
 
-[node name="training_dummy" parent="." instance=ExtResource("12_network_slime")]
-position = Vector2(559, 161)
+[node name="dynamic_enemies" type="Node2D" parent="."]
+y_sort_enabled = true
 
-[node name="network_skeleton" parent="." instance=ExtResource("13_network_skeleton")]
-position = Vector2(559, 133)
+[node name="lan_slime_trap" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitoring = true
+script = ExtResource("21_spawner")
+profiles = PackedStringArray("slime")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="lan_slime_trap"]
+position = Vector2(503, 158)
+shape = SubResource("RectangleShape2D_lan_slime_trap")
+
+[node name="spawn_point_1" type="Marker2D" parent="lan_slime_trap"]
+position = Vector2(551, 131)
+
+[node name="spawn_point_2" type="Marker2D" parent="lan_slime_trap"]
+position = Vector2(464, 127)
+
+[node name="spawn_point_3" type="Marker2D" parent="lan_slime_trap"]
+position = Vector2(553, 179)
+
+[node name="spawn_point_4" type="Marker2D" parent="lan_slime_trap"]
+position = Vector2(465, 176)
+
+[node name="lan_dungeon_portal" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitoring = true
+script = ExtResource("22_portal")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="lan_dungeon_portal"]
+position = Vector2(1422.625, 343)
+shape = SubResource("RectangleShape2D_lan_portal")
+
+[node name="lan_bat_1" parent="." instance=ExtResource("13_bat")]
+position = Vector2(170, 175)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"bat"
+
+[node name="lan_bat_2" parent="." instance=ExtResource("13_bat")]
+position = Vector2(140, 92)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"bat"
+
+[node name="lan_bat_3" parent="." instance=ExtResource("13_bat")]
+position = Vector2(160, 119)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"bat"
+
+[node name="lan_bat_4" parent="." instance=ExtResource("13_bat")]
+position = Vector2(154, 239)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"bat"
+
+[node name="lan_bat_5" parent="." instance=ExtResource("13_bat")]
+position = Vector2(1092, 162)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"bat"
+
+[node name="lan_bat_6" parent="." instance=ExtResource("13_bat")]
+position = Vector2(1009, 173)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"bat"
+
+[node name="lan_bat_7" parent="." instance=ExtResource("13_bat")]
+position = Vector2(920, 174)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"bat"
+
+[node name="lan_bat_8" parent="." instance=ExtResource("13_bat")]
+position = Vector2(1241, 490)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"bat"
+
+[node name="lan_bat_9" parent="." instance=ExtResource("13_bat")]
+position = Vector2(1116, 503)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"bat"
+
+[node name="lan_bat_10" parent="." instance=ExtResource("13_bat")]
+position = Vector2(1019, 478)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"bat"
+
+[node name="lan_slime_1" parent="." instance=ExtResource("14_slime")]
+position = Vector2(350, 240)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"slime"
+
+[node name="lan_slime_2" parent="." instance=ExtResource("14_slime")]
+position = Vector2(353, 72)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"slime"
+
+[node name="lan_slime_3" parent="." instance=ExtResource("14_slime")]
+position = Vector2(480, 45)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"slime"
+
+[node name="lan_slime_4" parent="." instance=ExtResource("14_slime")]
+position = Vector2(1379, 207)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"slime"
+
+[node name="lan_slime_5" parent="." instance=ExtResource("14_slime")]
+position = Vector2(1296, 175)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"slime"
+
+[node name="lan_slime_6" parent="." instance=ExtResource("14_slime")]
+position = Vector2(1381, 477)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"slime"
+
+[node name="lan_slime_7" parent="." instance=ExtResource("14_slime")]
+position = Vector2(1220, 550)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"slime"
+
+[node name="lan_werewolf_1" parent="." instance=ExtResource("15_werewolf")]
+position = Vector2(440, 160)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"werewolf"
+
+[node name="lan_werewolf_2" parent="." instance=ExtResource("15_werewolf")]
+position = Vector2(761, 161)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"werewolf"
+
+[node name="lan_werewolf_3" parent="." instance=ExtResource("15_werewolf")]
+position = Vector2(639, 332)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"werewolf"
+
+[node name="lan_werebear" parent="." instance=ExtResource("16_werebear")]
+position = Vector2(667, 200)
+scale = Vector2(1.15, 1.15)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"werebear"
+
+[node name="lan_orc_1" parent="." instance=ExtResource("17_orc")]
+position = Vector2(853, 289)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"orc"
+
+[node name="lan_orc_2" parent="." instance=ExtResource("17_orc")]
+position = Vector2(807, 352)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"orc"
+
+[node name="lan_orc_3" parent="." instance=ExtResource("17_orc")]
+position = Vector2(909, 328)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"orc"
+
+[node name="lan_orc_4" parent="." instance=ExtResource("17_orc")]
+position = Vector2(836, 401)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"orc"
+
+[node name="lan_armored_orc_1" parent="." instance=ExtResource("18_armored_orc")]
+position = Vector2(1078, 380)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"armored_orc"
+
+[node name="lan_armored_orc_2" parent="." instance=ExtResource("18_armored_orc")]
+position = Vector2(1079, 318)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"armored_orc"
+
+[node name="lan_armored_orc_3" parent="." instance=ExtResource("18_armored_orc")]
+position = Vector2(1077, 338)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"armored_orc"
+
+[node name="lan_armored_orc_4" parent="." instance=ExtResource("18_armored_orc")]
+position = Vector2(1077, 358)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"armored_orc"
+
+[node name="lan_orc_rider_1" parent="." instance=ExtResource("19_orc_rider")]
+position = Vector2(894, 450)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"orc_rider"
+
+[node name="lan_orc_rider_2" parent="." instance=ExtResource("19_orc_rider")]
+position = Vector2(924, 282)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"orc_rider"
+
+[node name="lan_orc_rider_3" parent="." instance=ExtResource("19_orc_rider")]
+position = Vector2(1329, 399)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"orc_rider"
+
+[node name="lan_orc_rider_4" parent="." instance=ExtResource("19_orc_rider")]
+position = Vector2(1333, 318)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"orc_rider"
+
+[node name="lan_elite_orc" parent="." instance=ExtResource("20_elite_orc")]
+position = Vector2(1372, 344)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"elite_orc"
 
 [node name="interface" type="CanvasLayer" parent="."]
 
@@ -62,7 +284,7 @@ offset_right = 600.0
 offset_bottom = 40.0
 theme_override_colors/font_color = Color(0.4, 0.85, 1, 1)
 theme_override_font_sizes/font_size = 20
-text = "LAN World — Enemy Roster"
+text = "LAN World — 2-4 Player Adventure"
 
 [node name="status_label" type="Label" parent="interface/panel"]
 layout_mode = 0
@@ -72,7 +294,7 @@ offset_right = 610.0
 offset_bottom = 88.0
 theme_override_colors/font_color = Color(0.86, 0.9, 0.96, 1)
 autowrap_mode = 2
-text = "Waiting for both players to finish loading..."
+text = "Waiting for all LAN players to finish loading..."
 
 [node name="leave_button" type="Button" parent="interface/panel"]
 layout_mode = 0
@@ -85,7 +307,7 @@ text = "Leave LAN World"
 [node name="instructions" type="Label" parent="interface"]
 offset_left = 20.0
 offset_top = 178.0
-offset_right = 1100.0
+offset_right = 1220.0
 offset_bottom = 208.0
 theme_override_colors/font_color = Color(0.75, 0.82, 0.9, 1)
-text = "Enemy-roster phase: the host controls shared Slime and Skeleton chase, attacks, health, debuffs, and defeat state for both players."
+text = "All enemy AI, hits, health, debuffs, stuns, traps, and portal travel are host-controlled for the entire party."

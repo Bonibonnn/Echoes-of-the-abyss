@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://b238id51u1gdp"]
 
-[ext_resource type="Script" path="res://Scripts/network_mage_player.gd" id="1_7elky"]
+[ext_resource type="Script" uid="uid://bqpbsbrfjyvex" path="res://Scripts/network_mage_player.gd" id="1_7elky"]
 [ext_resource type="Texture2D" uid="uid://bry1rkrij1tqq" path="res://art/Characters(100x100 split)/Wizard/Wizard/Wizard_Death.png" id="1_h01ui"]
 [ext_resource type="Texture2D" uid="uid://7i3gom6qbdxf" path="res://art/Characters(100x100 split)/Wizard/Wizard/Wizard_Attack01(With magic effects).png" id="1_jtp6b"]
 [ext_resource type="Texture2D" uid="uid://clb4ivg8b3nvp" path="res://art/Characters(100x100 split)/Wizard/Wizard/Wizard_Attack02(With magic effects).png" id="2_7elky"]
@@ -539,15 +539,8 @@ corner_radius_bottom_left = 2
 
 [node name="network_mage_player" type="CharacterBody2D" unique_id=1695064001]
 collision_layer = 2
-collision_mask = 1
 script = ExtResource("1_7elky")
-close_freeze_radius = 30.0
-close_freeze_duration = 3.0
-close_freeze_release_time = 1.0
-fire_explosion_radius = 30.0
-fire_explosion_release_time = 1.02
-freeze_area_target_range = 130.0
-fireball_release_time = 1.0
+network_max_health = 12
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2061550214]
 sprite_frames = SubResource("SpriteFrames_l5lc7")
@@ -559,7 +552,7 @@ shape = SubResource("CircleShape2D_5yqmp")
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1844395761]
 zoom = Vector2(3, 3)
 
-[node name="peer_label" type="Label" parent="."]
+[node name="peer_label" type="Label" parent="." unique_id=291541345]
 offset_left = -82.0
 offset_top = -116.0
 offset_right = 82.0
@@ -569,18 +562,18 @@ text = "Mage"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="health_label" type="Label" parent="."]
+[node name="health_label" type="Label" parent="." unique_id=1412005845]
 offset_left = -52.0
 offset_top = -92.0
 offset_right = 52.0
 offset_bottom = -72.0
 theme_override_colors/font_color = Color(0.9, 1, 0.92, 1)
 theme_override_font_sizes/font_size = 13
-text = "HP: 4 / 4"
+text = "HP: 12 / 12"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="health_bar" type="ProgressBar" parent="."]
+[node name="health_bar" type="ProgressBar" parent="." unique_id=1433168849]
 offset_left = -48.0
 offset_top = -70.0
 offset_right = 48.0

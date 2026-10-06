@@ -103,7 +103,7 @@ offset_right = 580.0
 offset_bottom = 80.0
 theme_override_colors/font_color = Color(0.86, 0.9, 0.96, 1)
 autowrap_mode = 2
-text = "Waiting for both players to finish loading..."
+text = "Waiting for all LAN players to finish loading..."
 
 [node name="leave_button" type="Button" parent="interface/panel"]
 layout_mode = 0
@@ -119,4 +119,4 @@ offset_top = 165.0
 offset_right = 1020.0
 offset_bottom = 194.0
 theme_override_colors/font_color = Color(0.75, 0.82, 0.9, 1)
-text = "Both players loaded through the lobby. The host resolves Knight, Archer, Mage, and Priest actions, slime combat, lava damage, and respawn."
+text = "All connected players load through the lobby. The host resolves Knight, Archer, Mage, and Priest actions, slime combat, lava damage, and respawn."

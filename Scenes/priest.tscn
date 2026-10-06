@@ -381,6 +381,7 @@ radius = 6.0
 
 [node name="priest" type="CharacterBody2D" unique_id=1766003359]
 script = ExtResource("1_df5yf")
+max_health = 12
 auraplosion_scene = ExtResource("2_alcim")
 heal_scene = ExtResource("3_g77hk")
 close_attack_release_time = 1.0

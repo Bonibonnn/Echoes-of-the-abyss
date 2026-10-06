@@ -1,7 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dcob4bojn7hii"]
 
 [ext_resource type="Texture2D" uid="uid://4g0gokaglkv2" path="res://art/Characters(100x100 split)/Archer/Archer/Archer_Attack01.png" id="1_i11xr"]
-[ext_resource type="Script" path="res://Scripts/network_archer_player.gd" id="1_qp52x"]
+[ext_resource type="Script" uid="uid://snilhivklth2" path="res://Scripts/network_archer_player.gd" id="1_qp52x"]
 [ext_resource type="Texture2D" uid="uid://doymhmo1psv5w" path="res://art/Characters(100x100 split)/Archer/Archer/Archer_Attack02.png" id="2_lxifh"]
 [ext_resource type="Texture2D" uid="uid://b1txpd4xvt0se" path="res://art/Characters(100x100 split)/Archer/Archer/Archer_Death.png" id="3_qp52x"]
 [ext_resource type="Texture2D" uid="uid://dnwfbnenuaq3v" path="res://art/Characters(100x100 split)/Archer/Archer/Archer_Hurt.png" id="4_fhmuk"]
@@ -366,10 +366,8 @@ corner_radius_bottom_left = 2
 
 [node name="network_archer_player" type="CharacterBody2D" unique_id=1131808682]
 collision_layer = 2
-collision_mask = 1
 script = ExtResource("1_qp52x")
-basic_arrow_release_time = 1.2
-heavy_arrow_release_time = 1.92
+network_max_health = 10
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1205069775]
 sprite_frames = SubResource("SpriteFrames_l5lc7")
@@ -384,7 +382,7 @@ shape = SubResource("CircleShape2D_wgbdp")
 [node name="Camera2D" type="Camera2D" parent="." unique_id=623063424]
 zoom = Vector2(3, 3)
 
-[node name="peer_label" type="Label" parent="."]
+[node name="peer_label" type="Label" parent="." unique_id=1257951409]
 offset_left = -82.0
 offset_top = -116.0
 offset_right = 82.0
@@ -394,18 +392,18 @@ text = "Archer"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="health_label" type="Label" parent="."]
+[node name="health_label" type="Label" parent="." unique_id=933085130]
 offset_left = -52.0
 offset_top = -92.0
 offset_right = 52.0
 offset_bottom = -72.0
 theme_override_colors/font_color = Color(0.9, 1, 0.92, 1)
 theme_override_font_sizes/font_size = 13
-text = "HP: 4 / 4"
+text = "HP: 10 / 10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="health_bar" type="ProgressBar" parent="."]
+[node name="health_bar" type="ProgressBar" parent="." unique_id=1835915249]
 offset_left = -48.0
 offset_top = -70.0
 offset_right = 48.0

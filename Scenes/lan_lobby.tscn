@@ -260,7 +260,7 @@ offset_bottom = 312.0
 theme_override_colors/font_color = Color(0.71, 0.93, 1, 1)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 15
-text = "Players connected: 0 / 2"
+text = "Players connected: 0 / 4"
 
 [node name="start_button" type="Button" parent="lobby_card" unique_id=2064621581]
 layout_mode = 0
@@ -349,7 +349,7 @@ grow_horizontal = 2
 theme_override_colors/font_color = Color(0.73, 0.86, 1, 1)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 14
-text = "Knight, Archer, Mage, and Priest are LAN-ready."
+text = "2-4 players choose a LAN-ready class, then Ready Up."
 horizontal_alignment = 1
 
 [node name="knight_button" type="Button" parent="selection_panel" unique_id=193928416]
@@ -606,24 +606,46 @@ text = "LAN ROSTER"
 [node name="host_roster_label" type="Label" parent="selection_panel/roster_panel" unique_id=105129767]
 layout_mode = 0
 offset_left = 18.0
-offset_top = 30.0
+offset_top = 28.0
 offset_right = 370.0
-offset_bottom = 53.0
+offset_bottom = 47.0
 theme_override_colors/font_color = Color(0.83, 0.94, 1, 1)
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 12
 text = "HOST: No character selected — WAITING"
 
-[node name="joiner_roster_label" type="Label" parent="selection_panel/roster_panel" unique_id=805840750]
+[node name="player_2_roster_label" type="Label" parent="selection_panel/roster_panel" unique_id=805840750]
 layout_mode = 0
 offset_left = 390.0
-offset_top = 30.0
+offset_top = 28.0
 offset_right = 720.0
-offset_bottom = 53.0
+offset_bottom = 47.0
 theme_override_colors/font_color = Color(0.83, 0.94, 1, 1)
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 12
 text = "PLAYER 2: Waiting for player"
+
+[node name="player_3_roster_label" type="Label" parent="selection_panel/roster_panel"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 50.0
+offset_right = 370.0
+offset_bottom = 70.0
+theme_override_colors/font_color = Color(0.83, 0.94, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 12
+text = "PLAYER 3: Waiting for player"
+
+[node name="player_4_roster_label" type="Label" parent="selection_panel/roster_panel"]
+layout_mode = 0
+offset_left = 390.0
+offset_top = 50.0
+offset_right = 720.0
+offset_bottom = 70.0
+theme_override_colors/font_color = Color(0.83, 0.94, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 12
+text = "PLAYER 4: Waiting for player"
 
 [node name="local_choice_label" type="Label" parent="selection_panel" unique_id=188826662]
 layout_mode = 1
@@ -711,5 +733,5 @@ grow_horizontal = 2
 theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 13
-text = "Choose Knight, Archer, Mage, or Priest, then press Ready Up."
+text = "Choose Knight, Archer, Mage, or Priest, then press Ready Up. Every connected player must be ready."
 horizontal_alignment = 1

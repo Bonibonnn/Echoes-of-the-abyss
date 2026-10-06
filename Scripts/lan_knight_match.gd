@@ -11,6 +11,27 @@ const PLAYER_DAMAGE_INVULNERABILITY := 0.65
 const PLAYER_RESPAWN_DELAY := 2.0
 const MOVEMENT_INPUT_TIMEOUT := 0.25
 
+# Dynamic LAN summons use the normal art scenes, but replace their local AI
+# script with network_enemy.gd before they enter the scene tree.
+const NETWORK_ENEMY_SCRIPT: Script = preload("res://Scripts/network_enemy.gd")
+const LAN_SUMMON_EFFECT_SCENE: PackedScene = preload("res://Scenes/summon.tscn")
+const NETWORK_SKELETON_ARROW_SCENE: PackedScene = preload("res://Scenes/network_skeleton_arrow.tscn")
+const LAN_ENEMY_SCENES: Dictionary = {
+	&"bat": preload("res://Scenes/bat.tscn"),
+	&"slime": preload("res://Scenes/slime.tscn"),
+	&"werewolf": preload("res://Scenes/werewolf.tscn"),
+	&"werebear": preload("res://Scenes/werebear.tscn"),
+	&"orc": preload("res://Scenes/enemy.tscn"),
+	&"armored_orc": preload("res://Scenes/armored_orc.tscn"),
+	&"orc_rider": preload("res://Scenes/orc_rider.tscn"),
+	&"elite_orc": preload("res://Scenes/elite_orc.tscn"),
+	&"skeleton": preload("res://Scenes/skeleton.tscn"),
+	&"skeleton_archer": preload("res://Scenes/skeleton_archer.tscn"),
+	&"armored_skeleton": preload("res://Scenes/armored_skeleton.tscn"),
+	&"greatsword_skeleton": preload("res://Scenes/greatsword_skeleton.tscn"),
+	&"necromancer": preload("res://Scenes/necromancer.tscn"),
+}
+
 @export var network_knight_player_scene: PackedScene
 @export var network_archer_player_scene: PackedScene
 @export var network_archer_arrow_scene: PackedScene
@@ -23,6 +44,7 @@ const MOVEMENT_INPUT_TIMEOUT := 0.25
 
 @onready var players := get_node_or_null(^"players") as Node2D
 @onready var projectiles := get_node_or_null(^"projectiles") as Node2D
+@onready var dynamic_enemies := get_node_or_null(^"dynamic_enemies") as Node2D
 @onready var damage_zone := get_node_or_null(^"damage_zone") as Area2D
 @onready var status_label := get_node_or_null(^"interface/panel/status_label") as Label
 @onready var leave_button := get_node_or_null(^"interface/panel/leave_button") as Button
@@ -44,6 +66,7 @@ var player_state_revision_by_peer: Dictionary = {}
 var next_player_damage_time_by_peer: Dictionary = {}
 var next_damage_zone_tick_by_peer: Dictionary = {}
 var respawn_token_by_peer: Dictionary = {}
+var player_stunned_until_by_peer: Dictionary = {}
 
 # Knight-only host state. Its actions now follow the same authoritative pattern
 # as the other three classes: clients can request a button press, but cannot
@@ -68,6 +91,11 @@ var archer_strength_token_by_peer: Dictionary = {}
 var next_archer_arrow_id := 0
 var active_archer_arrow_damage_by_id: Dictionary = {}
 
+# Skeleton Archer arrows use their own replicated IDs so they never overlap
+# with player Archer arrows, even when both fly at the same time.
+var next_skeleton_arrow_id: int = 0
+var active_skeleton_arrow_damage_by_id: Dictionary = {}
+
 # Mage actions follow the same host-authority rule as Archer. Each action has
 # its own cooldown key, while active_attack_sequence_by_peer prevents any cast
 # from overlapping with another attack or skill.
@@ -84,6 +112,10 @@ var priest_invulnerable_by_peer: Dictionary = {}
 var next_priest_invulnerability_time_by_peer: Dictionary = {}
 var priest_invulnerability_token_by_peer: Dictionary = {}
 
+# IDs make summoned/spawned enemy paths identical on every connected computer.
+var next_dynamic_enemy_id: int = 0
+var next_lan_summon_effect_id: int = 0
+
 
 func _ready() -> void:
 	if leave_button != null:
@@ -97,7 +129,7 @@ func _ready() -> void:
 		return
 
 	match_id = LanSession.active_match_id
-	_set_status("Waiting for both players to finish loading...")
+	_set_status("Waiting for all LAN players to finish loading...")
 	LanSession.notify_local_match_loaded(match_id)
 
 	# This also supports reopening the scene after an already-complete handshake.
@@ -131,6 +163,7 @@ func _physics_process(_delta: float) -> void:
 
 	_simulate_host_player_movement()
 	_sync_archer_arrow_snapshots()
+	_sync_skeleton_arrow_snapshots()
 	_sync_mage_fireball_snapshots()
 
 	if damage_zone == null:
@@ -226,6 +259,11 @@ func submit_host_movement_input(
 		return
 	if _get_network_player(peer_id) == null:
 		return
+	if _is_player_stunned(peer_id):
+		movement_input_by_peer[peer_id] = Vector2.ZERO
+		last_movement_input_sequence_by_peer[peer_id] = input_sequence
+		last_movement_input_time_by_peer[peer_id] = Time.get_ticks_msec() / 1000.0
+		return
 
 	movement_input_by_peer[peer_id] = direction.limit_length(1.0)
 	last_movement_input_sequence_by_peer[peer_id] = input_sequence
@@ -277,7 +315,7 @@ func request_host_knight_action(
 	action_id: String,
 	requested_facing: int = 0
 ) -> void:
-	if not match_is_active or not multiplayer.is_server() or bool(player_dead_by_peer.get(peer_id, false)):
+	if not match_is_active or not multiplayer.is_server() or bool(player_dead_by_peer.get(peer_id, false)) or _is_player_stunned(peer_id):
 		return
 	if LanSession.get_selected_character(peer_id) != LanSession.KNIGHT_CHARACTER_ID:
 		return
@@ -464,7 +502,7 @@ func request_host_mage_action(
 	action_id: String,
 	requested_facing: int = 0
 ) -> void:
-	if not match_is_active or not multiplayer.is_server() or bool(player_dead_by_peer.get(peer_id, false)):
+	if not match_is_active or not multiplayer.is_server() or bool(player_dead_by_peer.get(peer_id, false)) or _is_player_stunned(peer_id):
 		return
 	if LanSession.get_selected_character(peer_id) != LanSession.MAGE_CHARACTER_ID:
 		return
@@ -652,7 +690,7 @@ func request_host_priest_action(
 	action_id: String,
 	requested_facing: int = 0
 ) -> void:
-	if not match_is_active or not multiplayer.is_server() or bool(player_dead_by_peer.get(peer_id, false)):
+	if not match_is_active or not multiplayer.is_server() or bool(player_dead_by_peer.get(peer_id, false)) or _is_player_stunned(peer_id):
 		return
 	if LanSession.get_selected_character(peer_id) != LanSession.PRIEST_CHARACTER_ID:
 		return
@@ -669,14 +707,14 @@ func request_host_priest_action(
 	if config.is_empty():
 		return
 
-	# Attack 2 needs a valid host-side target before its cast begins. Q only
-	# begins when the Priest can actually regain health, matching the normal game.
+	# Attack 2 needs a valid host-side target before its cast begins. Q begins
+	# when at least one living party member in its healing circle needs health.
 	if action_id == "attack2":
 		if _get_nearest_lan_enemy_for_player(player, float(config.get("target_range", 0.0))) == null:
 			return
 	elif action_id == "skill1":
-		var maximum_health := _get_player_max_health(peer_id)
-		if int(player_health_by_peer.get(peer_id, maximum_health)) >= maximum_health:
+		var heal_radius: float = maxf(0.0, float(config.get("heal_radius", 0.0)))
+		if not _has_healable_lan_player_in_radius(player.global_position, heal_radius):
 			return
 	elif action_id != "attack1" and action_id != "skill2":
 		return
@@ -804,10 +842,32 @@ func _apply_priest_ranged_auraplosion(player: Node, config: Dictionary) -> void:
 	_damage_lan_enemy(target, int(config.get("damage", 0)))
 
 
-func _apply_priest_heal(peer_id: int, player: Node, config: Dictionary) -> void:
-	heal_player_on_server(peer_id, int(config.get("heal_amount", 0)))
-	var player_position: Vector2 = player.get(&"global_position")
-	spawn_network_priest_heal_effect.rpc(player_position)
+func _apply_priest_heal(_peer_id: int, player: Node, config: Dictionary) -> void:
+	var priest: Node2D = player as Node2D
+	if priest == null:
+		return
+
+	# Q keeps its self-heal, then also restores every living teammate close to
+	# the Priest. The host chooses the targets so every computer sees the same HP.
+	var heal_amount: int = int(config.get("heal_amount", 0))
+	var heal_radius: float = maxf(0.0, float(config.get("heal_radius", 0.0)))
+	for target: CharacterBody2D in get_alive_players_in_radius(priest.global_position, heal_radius):
+		var target_peer_id: int = target.get_multiplayer_authority()
+		if heal_player_on_server(target_peer_id, heal_amount):
+			# Only show the animated heal on players who actually regained HP.
+			spawn_network_priest_heal_effect.rpc(target.global_position)
+
+
+# Returns true only when an alive player inside the Priest's Q circle is hurt.
+# This lets a full-health Priest heal an injured teammate without wasting Q.
+func _has_healable_lan_player_in_radius(center: Vector2, radius: float) -> bool:
+	for candidate: CharacterBody2D in get_alive_players_in_radius(center, radius):
+		var candidate_peer_id: int = candidate.get_multiplayer_authority()
+		var maximum_health: int = _get_player_max_health(candidate_peer_id)
+		var current_health: int = int(player_health_by_peer.get(candidate_peer_id, maximum_health))
+		if current_health < maximum_health:
+			return true
+	return false
 
 
 func _set_priest_invulnerable(peer_id: int, enabled: bool) -> void:
@@ -860,7 +920,7 @@ func request_host_archer_action(
 	requested_facing: int = 0,
 	requested_direction: Vector2 = Vector2.ZERO
 ) -> void:
-	if not match_is_active or not multiplayer.is_server() or bool(player_dead_by_peer.get(peer_id, false)):
+	if not match_is_active or not multiplayer.is_server() or bool(player_dead_by_peer.get(peer_id, false)) or _is_player_stunned(peer_id):
 		return
 	if LanSession.get_selected_character(peer_id) != LanSession.ARCHER_CHARACTER_ID:
 		return
@@ -1172,6 +1232,109 @@ func _get_network_archer_arrow(arrow_id: int) -> Area2D:
 	return projectiles.get_node_or_null(NodePath("archer_arrow_%d" % arrow_id)) as Area2D
 
 
+# Host-only Skeleton Archer arrow management. These arrows are not player
+# controlled: their target, damage, collision, and lifetime all stay server-side.
+func spawn_network_skeleton_arrow_on_server(
+	spawn_position: Vector2,
+	flight_direction: Vector2,
+	damage: int,
+	range_limit: float
+) -> void:
+	if not match_is_active or not multiplayer.is_server() or damage <= 0:
+		return
+	if flight_direction.is_zero_approx():
+		return
+
+	next_skeleton_arrow_id += 1
+	var arrow_id: int = next_skeleton_arrow_id
+	active_skeleton_arrow_damage_by_id[arrow_id] = damage
+	spawn_network_skeleton_arrow.rpc(
+		arrow_id,
+		spawn_position + flight_direction.normalized() * 14.0,
+		flight_direction,
+		range_limit
+	)
+
+
+@rpc("authority", "call_local", "reliable")
+func spawn_network_skeleton_arrow(
+	arrow_id: int,
+	spawn_position: Vector2,
+	flight_direction: Vector2,
+	range_limit: float
+) -> void:
+	if projectiles == null or NETWORK_SKELETON_ARROW_SCENE == null:
+		return
+
+	var arrow_path: NodePath = NodePath("skeleton_arrow_%d" % arrow_id)
+	if projectiles.get_node_or_null(arrow_path) != null:
+		return
+
+	var arrow: Area2D = NETWORK_SKELETON_ARROW_SCENE.instantiate() as Area2D
+	if arrow == null:
+		push_error("Network Skeleton Arrow Scene must have an Area2D root.")
+		return
+
+	arrow.name = String(arrow_path)
+	projectiles.add_child(arrow, true)
+	arrow.global_position = spawn_position
+	arrow.call(&"launch", arrow_id, flight_direction, range_limit)
+
+
+func _sync_skeleton_arrow_snapshots() -> void:
+	for arrow_id_value: Variant in active_skeleton_arrow_damage_by_id:
+		var arrow_id: int = int(arrow_id_value)
+		var arrow: Area2D = _get_network_skeleton_arrow(arrow_id)
+		if arrow == null:
+			_despawn_skeleton_arrow_on_server(arrow_id)
+			continue
+		sync_network_skeleton_arrow.rpc(arrow_id, arrow.global_position, arrow.rotation)
+
+
+@rpc("authority", "call_remote", "unreliable_ordered", 3)
+func sync_network_skeleton_arrow(arrow_id: int, network_position: Vector2, network_rotation: float) -> void:
+	var arrow: Area2D = _get_network_skeleton_arrow(arrow_id)
+	if arrow != null:
+		arrow.call(&"apply_network_position", network_position, network_rotation)
+
+
+func server_resolve_skeleton_arrow_collision(arrow_id: int, body: Node2D) -> void:
+	if not match_is_active or not multiplayer.is_server() or not active_skeleton_arrow_damage_by_id.has(arrow_id):
+		return
+
+	var player: CharacterBody2D = body as CharacterBody2D
+	if player != null and players != null and player.get_parent() == players:
+		var peer_id: int = player.get_multiplayer_authority()
+		if get_alive_player(peer_id) == player:
+			damage_player_on_server(peer_id, int(active_skeleton_arrow_damage_by_id[arrow_id]))
+	_despawn_skeleton_arrow_on_server(arrow_id)
+
+
+func server_expire_skeleton_arrow(arrow_id: int) -> void:
+	if match_is_active and multiplayer.is_server():
+		_despawn_skeleton_arrow_on_server(arrow_id)
+
+
+func _despawn_skeleton_arrow_on_server(arrow_id: int) -> void:
+	if not active_skeleton_arrow_damage_by_id.has(arrow_id):
+		return
+	active_skeleton_arrow_damage_by_id.erase(arrow_id)
+	despawn_network_skeleton_arrow.rpc(arrow_id)
+
+
+@rpc("authority", "call_local", "reliable")
+func despawn_network_skeleton_arrow(arrow_id: int) -> void:
+	var arrow: Area2D = _get_network_skeleton_arrow(arrow_id)
+	if arrow != null:
+		arrow.queue_free()
+
+
+func _get_network_skeleton_arrow(arrow_id: int) -> Area2D:
+	if projectiles == null:
+		return null
+	return projectiles.get_node_or_null(NodePath("skeleton_arrow_%d" % arrow_id)) as Area2D
+
+
 # Host-only Mage fireball management. The projectile scene exists on every
 # peer, but the host alone moves it, accepts collisions, and applies burn.
 func _spawn_mage_fireball_on_server(peer_id: int, player: Node, config: Dictionary) -> void:
@@ -1438,22 +1601,24 @@ func damage_player_on_server(peer_id: int, damage: int) -> void:
 
 # Host-only health restoration used by Priest's Q. The same player-life
 # dictionary and reliable state RPC keep both health bars in agreement.
-func heal_player_on_server(peer_id: int, amount: int) -> void:
+# Returning true lets Q show its visual only when health really changed.
+func heal_player_on_server(peer_id: int, amount: int) -> bool:
 	if not match_is_active or not multiplayer.is_server() or amount <= 0:
-		return
+		return false
 	if bool(player_dead_by_peer.get(peer_id, false)) or _get_network_player(peer_id) == null:
-		return
+		return false
 
-	var maximum_health := _get_player_max_health(peer_id)
-	var current_health := int(player_health_by_peer.get(peer_id, maximum_health))
-	var new_health := mini(maximum_health, current_health + amount)
+	var maximum_health: int = _get_player_max_health(peer_id)
+	var current_health: int = int(player_health_by_peer.get(peer_id, maximum_health))
+	var new_health: int = mini(maximum_health, current_health + amount)
 	if new_health <= current_health:
-		return
+		return false
 
-	var new_revision := int(player_state_revision_by_peer.get(peer_id, 0)) + 1
+	var new_revision: int = int(player_state_revision_by_peer.get(peer_id, 0)) + 1
 	player_health_by_peer[peer_id] = new_health
 	player_state_revision_by_peer[peer_id] = new_revision
 	apply_player_state.rpc(peer_id, new_health, maximum_health, new_revision, false, Vector2.ZERO, false)
+	return true
 
 
 @rpc("authority", "call_local", "reliable")
@@ -1483,6 +1648,7 @@ func _initialize_player_life(peer_id: int) -> void:
 	if player_health_by_peer.has(peer_id):
 		return
 
+	player_stunned_until_by_peer.erase(peer_id)
 	var maximum_health := _get_player_max_health(peer_id)
 	player_health_by_peer[peer_id] = maximum_health
 	player_dead_by_peer[peer_id] = false
@@ -1520,6 +1686,7 @@ func _respawn_player_after_delay(peer_id: int, token: int) -> void:
 	player_state_revision_by_peer[peer_id] = new_revision
 	next_player_damage_time_by_peer.erase(peer_id)
 	next_damage_zone_tick_by_peer.erase(peer_id)
+	player_stunned_until_by_peer.erase(peer_id)
 	_clear_host_movement_input(peer_id)
 	_clear_knight_special_state(peer_id)
 	_clear_archer_special_state(peer_id)
@@ -1564,7 +1731,21 @@ func _clear_priest_special_state(peer_id: int) -> void:
 
 
 func _get_spawn_position(peer_id: int) -> Vector2:
-	return Vector2(460, 450) if peer_id == 1 else Vector2(600, 450)
+	# The standalone LAN arena uses the same sorted roster order as lan_world,
+	# so all four players get a separate fallback position during testing.
+	var peer_ids: PackedInt32Array = LanSession.get_connected_peer_ids()
+	var spawn_index: int = peer_ids.find(peer_id)
+	match spawn_index:
+		0:
+			return Vector2(460, 450)
+		1:
+			return Vector2(600, 450)
+		2:
+			return Vector2(460, 550)
+		3:
+			return Vector2(600, 550)
+		_:
+			return Vector2(460, 450)
 
 
 # Every move_and_slide call runs on the host. Dash uses a host timer and
@@ -1579,7 +1760,7 @@ func _simulate_host_player_movement() -> void:
 		var peer_id := player.get_multiplayer_authority()
 		var direction := Vector2.ZERO
 		var last_input_time := float(last_movement_input_time_by_peer.get(peer_id, 0.0))
-		if not bool(player_dead_by_peer.get(peer_id, false)) and now - last_input_time <= MOVEMENT_INPUT_TIMEOUT:
+		if not _is_player_stunned(peer_id) and not bool(player_dead_by_peer.get(peer_id, false)) and now - last_input_time <= MOVEMENT_INPUT_TIMEOUT:
 			direction = movement_input_by_peer.get(peer_id, Vector2.ZERO)
 
 		var is_archer := LanSession.get_selected_character(peer_id) == LanSession.ARCHER_CHARACTER_ID
@@ -1673,13 +1854,144 @@ func get_alive_player(peer_id: int) -> CharacterBody2D:
 	return _get_network_player(peer_id) as CharacterBody2D
 
 
+# Circular enemy attacks use this host-only helper so a spin, slam, or
+# Deathplosion damages every nearby LAN player, not just the chased target.
+func get_alive_players_in_radius(center: Vector2, radius: float) -> Array[CharacterBody2D]:
+	var targets: Array[CharacterBody2D] = []
+	if not match_is_active or not multiplayer.is_server() or players == null or radius <= 0.0:
+		return targets
+
+	var radius_squared: float = radius * radius
+	for child: Node in players.get_children():
+		var candidate: CharacterBody2D = child as CharacterBody2D
+		if candidate == null:
+			continue
+		var peer_id: int = candidate.get_multiplayer_authority()
+		if bool(player_dead_by_peer.get(peer_id, false)):
+			continue
+		if center.distance_squared_to(candidate.global_position) <= radius_squared:
+			targets.append(candidate)
+	return targets
+
+
+# Stun is host-owned just like health. It stops host simulation immediately and
+# rejects new movement/attack requests until its timer reaches zero.
+func stun_player_on_server(peer_id: int, duration: float) -> void:
+	if not match_is_active or not multiplayer.is_server() or duration <= 0.0:
+		return
+	if bool(player_dead_by_peer.get(peer_id, false)) or _get_network_player(peer_id) == null:
+		return
+
+	var now: float = Time.get_ticks_msec() / 1000.0
+	player_stunned_until_by_peer[peer_id] = maxf(
+		float(player_stunned_until_by_peer.get(peer_id, 0.0)),
+		now + duration
+	)
+	_clear_host_movement_input(peer_id)
+	# Any queued attack hit checks its sequence before dealing damage. Removing
+	# this record makes a stun stop an unfinished player action immediately.
+	active_attack_sequence_by_peer.erase(peer_id)
+
+
+func _is_player_stunned(peer_id: int) -> bool:
+	return Time.get_ticks_msec() / 1000.0 < float(player_stunned_until_by_peer.get(peer_id, 0.0))
+
+
 func _get_network_player(peer_id: int) -> Node:
 	if players == null:
 		return null
 	return players.get_node_or_null(NodePath(str(peer_id)))
 
 
+# Used by the graveyard spawner and Necromancer. The host creates a predictable
+# ID, then a reliable RPC creates the same LAN-only enemy path on every peer.
+func spawn_lan_enemy_on_server(profile: StringName, spawn_position: Vector2) -> Node2D:
+	if not match_is_active or not multiplayer.is_server() or dynamic_enemies == null:
+		return null
+	if not LAN_ENEMY_SCENES.has(profile):
+		push_error("No LAN scene is registered for enemy profile: %s" % profile)
+		return null
+
+	next_dynamic_enemy_id += 1
+	var enemy_id: int = next_dynamic_enemy_id
+	spawn_dynamic_lan_enemy.rpc(enemy_id, String(profile), spawn_position)
+	return dynamic_enemies.get_node_or_null(NodePath("enemy_%d" % enemy_id)) as Node2D
+
+
+# A Necromancer wave gets the existing summon.tscn visual at every skeleton
+# spawn point. It is visual-only; the host still creates and controls the
+# actual summoned enemy immediately after this effect starts.
+func spawn_lan_summon_effect_on_server(spawn_position: Vector2) -> void:
+	if not match_is_active or not multiplayer.is_server() or projectiles == null:
+		return
+
+	next_lan_summon_effect_id += 1
+	spawn_lan_summon_effect.rpc(next_lan_summon_effect_id, spawn_position)
+
+
+@rpc("authority", "call_local", "reliable")
+func spawn_lan_summon_effect(effect_id: int, spawn_position: Vector2) -> void:
+	if projectiles == null or LAN_SUMMON_EFFECT_SCENE == null:
+		return
+
+	var effect_name: StringName = StringName("lan_summon_effect_%d" % effect_id)
+	if projectiles.get_node_or_null(NodePath(effect_name)) != null:
+		return
+
+	var effect: Area2D = LAN_SUMMON_EFFECT_SCENE.instantiate() as Area2D
+	if effect == null:
+		push_error("summon.tscn must have an Area2D root.")
+		return
+
+	effect.name = effect_name
+	projectiles.add_child(effect, true)
+	effect.global_position = spawn_position
+	if effect.has_method(&"activate"):
+		effect.call(&"activate")
+
+
+@rpc("authority", "call_local", "reliable")
+func spawn_dynamic_lan_enemy(enemy_id: int, profile: String, spawn_position: Vector2) -> void:
+	if dynamic_enemies == null:
+		return
+
+	var enemy_name: StringName = StringName("enemy_%d" % enemy_id)
+	if dynamic_enemies.get_node_or_null(NodePath(enemy_name)) != null:
+		return
+
+	var profile_name: StringName = StringName(profile)
+	var scene_value: Variant = LAN_ENEMY_SCENES.get(profile_name, null)
+	var enemy_scene: PackedScene = scene_value as PackedScene
+	if enemy_scene == null:
+		push_error("Could not load LAN enemy profile: %s" % profile)
+		return
+
+	var enemy: CharacterBody2D = enemy_scene.instantiate() as CharacterBody2D
+	if enemy == null:
+		push_error("LAN enemy scenes must have CharacterBody2D roots.")
+		return
+
+	# Replacing the script before add_child prevents the normal local AI from
+	# ever entering the tree or running on a joining computer.
+	enemy.set_script(NETWORK_ENEMY_SCRIPT)
+	enemy.name = enemy_name
+	enemy.set(&"enemy_profile", profile_name)
+	dynamic_enemies.add_child(enemy, true)
+	enemy.global_position = spawn_position
+	if enemy.has_method(&"play_server_spawn_summon"):
+		enemy.call(&"play_server_spawn_summon")
+
+
+# World and dungeon subclasses override this for their gate/boss completion.
+func on_lan_enemy_defeated(_profile: StringName) -> void:
+	pass
+
+
 func _reset_lan_enemies() -> void:
+	if dynamic_enemies != null:
+		for enemy: Node in dynamic_enemies.get_children():
+			enemy.queue_free()
+		next_dynamic_enemy_id = 0
 	for enemy: Node2D in _get_lan_enemies():
 		if enemy.has_method(&"reset_for_network_session"):
 			enemy.call(&"reset_for_network_session")
@@ -1814,6 +2126,7 @@ func _reset_match_records() -> void:
 	next_player_damage_time_by_peer.clear()
 	next_damage_zone_tick_by_peer.clear()
 	respawn_token_by_peer.clear()
+	player_stunned_until_by_peer.clear()
 	next_archer_attack_time_by_peer.clear()
 	next_archer_dash_time_by_peer.clear()
 	archer_dash_end_time_by_peer.clear()
@@ -1824,6 +2137,8 @@ func _reset_match_records() -> void:
 	archer_strength_token_by_peer.clear()
 	active_archer_arrow_damage_by_id.clear()
 	next_archer_arrow_id = 0
+	active_skeleton_arrow_damage_by_id.clear()
+	next_skeleton_arrow_id = 0
 	next_mage_action_time_by_key.clear()
 	active_mage_fireball_config_by_id.clear()
 	mage_fireball_impact_token_by_id.clear()
@@ -1832,6 +2147,7 @@ func _reset_match_records() -> void:
 	priest_invulnerable_by_peer.clear()
 	next_priest_invulnerability_time_by_peer.clear()
 	priest_invulnerability_token_by_peer.clear()
+	next_lan_summon_effect_id = 0
 
 
 func _on_leave_pressed() -> void:

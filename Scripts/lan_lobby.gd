@@ -29,7 +29,9 @@ extends Control
 @onready var mage_state_label := get_node_or_null(^"selection_panel/mage_state_label") as Label
 @onready var priest_state_label := get_node_or_null(^"selection_panel/priest_state_label") as Label
 @onready var host_roster_label := get_node_or_null(^"selection_panel/roster_panel/host_roster_label") as Label
-@onready var joiner_roster_label := get_node_or_null(^"selection_panel/roster_panel/joiner_roster_label") as Label
+@onready var player_2_roster_label := get_node_or_null(^"selection_panel/roster_panel/player_2_roster_label") as Label
+@onready var player_3_roster_label := get_node_or_null(^"selection_panel/roster_panel/player_3_roster_label") as Label
+@onready var player_4_roster_label := get_node_or_null(^"selection_panel/roster_panel/player_4_roster_label") as Label
 @onready var selection_status_label := get_node_or_null(^"selection_panel/status_label") as Label
 
 
@@ -87,12 +89,12 @@ func _on_back_pressed() -> void:
 
 
 func _refresh_lobby() -> void:
-	var connected_players := LanSession.get_connected_peer_ids().size()
-	var is_active := LanSession.is_active()
-	var is_host := LanSession.is_host()
-	# Host/Join stays visible while waiting. Once both peers are connected, the
-	# same lobby becomes the synchronized character-select and ready-up screen.
-	var show_selection := is_active and LanSession.is_in_lobby() and connected_players == 2
+	var connected_players: int = LanSession.get_connected_peer_ids().size()
+	var is_active: bool = LanSession.is_active()
+	var is_host: bool = LanSession.is_host()
+	# Host/Join stays visible until a pair has connected. From two players onward,
+	# the same lobby becomes the synchronized character-select and ready-up screen.
+	var show_selection: bool = is_active and LanSession.is_in_lobby() and connected_players >= LanSession.MIN_PLAYERS
 
 	if lobby_card != null:
 		lobby_card.visible = not show_selection
@@ -114,7 +116,7 @@ func _refresh_lobby() -> void:
 	if host_ip_label != null:
 		host_ip_label.text = _get_host_address_hint(is_host)
 	if players_label != null:
-		players_label.text = "Players connected: %d / 2" % connected_players
+		players_label.text = "Players connected: %d / %d" % [connected_players, LanSession.MAX_PLAYERS]
 
 	if not show_selection:
 		return
@@ -160,10 +162,7 @@ func _refresh_lobby() -> void:
 		selection_start_button.visible = is_host
 		selection_start_button.disabled = not LanSession.can_start_match()
 
-	if host_roster_label != null:
-		host_roster_label.text = _get_roster_line("HOST", 1)
-	if joiner_roster_label != null:
-		joiner_roster_label.text = _get_roster_line("PLAYER 2", _get_joiner_peer_id())
+	_refresh_roster()
 
 
 func _get_host_address_hint(is_host: bool) -> String:
@@ -174,7 +173,7 @@ func _get_host_address_hint(is_host: bool) -> String:
 	if ip_options.is_empty():
 		return "No LAN IPv4 found. Connect to Wi-Fi/Ethernet, then Host again."
 
-	return "Share with Player 2: %s (port %d)" % [ip_options[0], LanSession.PORT]
+	return "Share with up to %d other players: %s (port %d)" % [LanSession.MAX_PLAYERS - 1, ip_options[0], LanSession.PORT]
 
 
 func _on_session_status_changed(message: String) -> void:
@@ -212,11 +211,25 @@ func _on_selection_leave_pressed() -> void:
 	LanSession.leave_session("Left the LAN character lobby.")
 
 
-func _get_joiner_peer_id() -> int:
-	for peer_id in LanSession.get_connected_peer_ids():
-		if peer_id != 1:
-			return peer_id
-	return 0
+func _refresh_roster() -> void:
+	# The host's peer ID is always first, while sorting gives joining players a
+	# stable Player 2, Player 3, and Player 4 slot on every computer.
+	var peer_ids: PackedInt32Array = LanSession.get_connected_peer_ids()
+	var roster_labels: Array[Label] = [
+		host_roster_label,
+		player_2_roster_label,
+		player_3_roster_label,
+		player_4_roster_label,
+	]
+
+	for slot_index: int in range(roster_labels.size()):
+		var roster_label: Label = roster_labels[slot_index]
+		if roster_label == null:
+			continue
+
+		var peer_id: int = int(peer_ids[slot_index]) if slot_index < peer_ids.size() else 0
+		var player_name: String = "HOST" if slot_index == 0 else "PLAYER %d" % (slot_index + 1)
+		roster_label.text = _get_roster_line(player_name, peer_id)
 
 
 func _get_roster_line(player_name: String, peer_id: int) -> String:

@@ -1,0 +1,298 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Scenes/dungeon.tscn" id="1_dungeon"]
+[ext_resource type="Script" path="res://Scripts/lan_dungeon.gd" id="2_lan_dungeon_script"]
+[ext_resource type="PackedScene" path="res://Scenes/network_knight_player.tscn" id="3_network_knight"]
+[ext_resource type="PackedScene" path="res://Scenes/network_archer_player.tscn" id="4_network_archer"]
+[ext_resource type="PackedScene" path="res://Scenes/network_archer_arrow.tscn" id="5_network_archer_arrow"]
+[ext_resource type="PackedScene" path="res://Scenes/network_mage_player.tscn" id="6_network_mage"]
+[ext_resource type="PackedScene" path="res://Scenes/network_mage_fireball.tscn" id="7_network_mage_fireball"]
+[ext_resource type="PackedScene" path="res://Scenes/network_mage_freeze_effect.tscn" id="8_network_mage_freeze_effect"]
+[ext_resource type="PackedScene" path="res://Scenes/network_priest_player.tscn" id="9_network_priest"]
+[ext_resource type="PackedScene" path="res://Scenes/network_priest_auraplosion_effect.tscn" id="10_network_priest_aura"]
+[ext_resource type="PackedScene" path="res://Scenes/network_priest_heal_effect.tscn" id="11_network_priest_heal"]
+[ext_resource type="Script" path="res://Scripts/network_enemy.gd" id="12_network_enemy"]
+[ext_resource type="PackedScene" path="res://Scenes/skeleton.tscn" id="13_skeleton"]
+[ext_resource type="PackedScene" path="res://Scenes/skeleton_archer.tscn" id="14_skeleton_archer"]
+[ext_resource type="PackedScene" path="res://Scenes/armored_skeleton.tscn" id="15_armored_skeleton"]
+[ext_resource type="PackedScene" path="res://Scenes/greatsword_skeleton.tscn" id="16_greatsword_skeleton"]
+[ext_resource type="PackedScene" path="res://Scenes/necromancer.tscn" id="17_necromancer"]
+[ext_resource type="Script" path="res://Scripts/lan_enemy_spawner.gd" id="18_spawner"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lan_graveyard"]
+size = Vector2(160, 110)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boss_background"]
+bg_color = Color(0.1, 0.02, 0.05, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.65, 0.1, 0.25, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boss_fill"]
+bg_color = Color(0.82, 0.12, 0.2, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="dungeon" instance=ExtResource("1_dungeon") groups=["lan_knight_test"]]
+script = ExtResource("2_lan_dungeon_script")
+network_knight_player_scene = ExtResource("3_network_knight")
+network_archer_player_scene = ExtResource("4_network_archer")
+network_archer_arrow_scene = ExtResource("5_network_archer_arrow")
+network_mage_player_scene = ExtResource("6_network_mage")
+network_mage_fireball_scene = ExtResource("7_network_mage_fireball")
+network_mage_freeze_effect_scene = ExtResource("8_network_mage_freeze_effect")
+network_priest_player_scene = ExtResource("9_network_priest")
+network_priest_auraplosion_effect_scene = ExtResource("10_network_priest_aura")
+network_priest_heal_effect_scene = ExtResource("11_network_priest_heal")
+
+[node name="lan_player_1_spawn" type="Marker2D" parent="."]
+position = Vector2(9, 308)
+
+[node name="lan_player_2_spawn" type="Marker2D" parent="."]
+position = Vector2(45, 308)
+
+[node name="lan_player_3_spawn" type="Marker2D" parent="."]
+position = Vector2(9, 344)
+
+[node name="lan_player_4_spawn" type="Marker2D" parent="."]
+position = Vector2(45, 344)
+
+[node name="players" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="projectiles" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="dynamic_enemies" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="lan_graveyard_spawner" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitoring = true
+script = ExtResource("18_spawner")
+profiles = PackedStringArray("skeleton", "skeleton_archer", "armored_skeleton", "greatsword_skeleton")
+choose_random_profiles = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="lan_graveyard_spawner"]
+position = Vector2(895, 110)
+shape = SubResource("RectangleShape2D_lan_graveyard")
+
+[node name="spawn_point_1" type="Marker2D" parent="lan_graveyard_spawner"]
+position = Vector2(863, 114)
+
+[node name="spawn_point_2" type="Marker2D" parent="lan_graveyard_spawner"]
+position = Vector2(899, 83)
+
+[node name="spawn_point_3" type="Marker2D" parent="lan_graveyard_spawner"]
+position = Vector2(867, 78)
+
+[node name="spawn_point_4" type="Marker2D" parent="lan_graveyard_spawner"]
+position = Vector2(932, 77)
+
+[node name="spawn_point_5" type="Marker2D" parent="lan_graveyard_spawner"]
+position = Vector2(937, 141)
+
+[node name="spawn_point_6" type="Marker2D" parent="lan_graveyard_spawner"]
+position = Vector2(947, 106)
+
+[node name="spawn_point_7" type="Marker2D" parent="lan_graveyard_spawner"]
+position = Vector2(898, 132)
+
+[node name="lan_skeleton_1" parent="." instance=ExtResource("13_skeleton")]
+position = Vector2(201, 307)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"skeleton"
+
+[node name="lan_skeleton_2" parent="." instance=ExtResource("13_skeleton")]
+position = Vector2(205, 334)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"skeleton"
+
+[node name="lan_skeleton_3" parent="." instance=ExtResource("13_skeleton")]
+position = Vector2(248, 292)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"skeleton"
+
+[node name="lan_skeleton_4" parent="." instance=ExtResource("13_skeleton")]
+position = Vector2(448, 256)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"skeleton"
+
+[node name="lan_skeleton_5" parent="." instance=ExtResource("13_skeleton")]
+position = Vector2(422, 213)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"skeleton"
+
+[node name="lan_skeleton_6" parent="." instance=ExtResource("13_skeleton")]
+position = Vector2(462, 215)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"skeleton"
+
+[node name="lan_skeleton_7" parent="." instance=ExtResource("13_skeleton")]
+position = Vector2(485, 242)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"skeleton"
+
+[node name="lan_skeleton_archer_1" parent="." instance=ExtResource("14_skeleton_archer")]
+position = Vector2(281, 253)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"skeleton_archer"
+
+[node name="lan_skeleton_archer_2" parent="." instance=ExtResource("14_skeleton_archer")]
+position = Vector2(284, 221)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"skeleton_archer"
+
+[node name="lan_skeleton_archer_3" parent="." instance=ExtResource("14_skeleton_archer")]
+position = Vector2(568, 430)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"skeleton_archer"
+
+[node name="lan_skeleton_archer_4" parent="." instance=ExtResource("14_skeleton_archer")]
+position = Vector2(570, 477)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"skeleton_archer"
+
+[node name="lan_skeleton_archer_5" parent="." instance=ExtResource("14_skeleton_archer")]
+position = Vector2(752, 240)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"skeleton_archer"
+
+[node name="lan_skeleton_archer_6" parent="." instance=ExtResource("14_skeleton_archer")]
+position = Vector2(760, 163)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"skeleton_archer"
+
+[node name="lan_armored_skeleton_1" parent="." instance=ExtResource("15_armored_skeleton")]
+position = Vector2(706, 429)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"armored_skeleton"
+
+[node name="lan_armored_skeleton_2" parent="." instance=ExtResource("15_armored_skeleton")]
+position = Vector2(708, 473)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"armored_skeleton"
+
+[node name="lan_armored_skeleton_3" parent="." instance=ExtResource("15_armored_skeleton")]
+position = Vector2(670, 258)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"armored_skeleton"
+
+[node name="lan_armored_skeleton_4" parent="." instance=ExtResource("15_armored_skeleton")]
+position = Vector2(691, 148)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"armored_skeleton"
+
+[node name="lan_armored_skeleton_5" parent="." instance=ExtResource("15_armored_skeleton")]
+position = Vector2(677, 215)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"armored_skeleton"
+
+[node name="lan_greatsword_skeleton_1" parent="." instance=ExtResource("16_greatsword_skeleton")]
+position = Vector2(687, 427)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"greatsword_skeleton"
+
+[node name="lan_greatsword_skeleton_2" parent="." instance=ExtResource("16_greatsword_skeleton")]
+position = Vector2(691, 476)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"greatsword_skeleton"
+
+[node name="lan_greatsword_skeleton_3" parent="." instance=ExtResource("16_greatsword_skeleton")]
+position = Vector2(732, 201)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"greatsword_skeleton"
+
+[node name="lan_greatsword_skeleton_4" parent="." instance=ExtResource("16_greatsword_skeleton")]
+position = Vector2(420, 400)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"greatsword_skeleton"
+
+[node name="lan_necromancer" parent="." instance=ExtResource("17_necromancer")]
+position = Vector2(921, 446)
+script = ExtResource("12_network_enemy")
+enemy_profile = &"necromancer"
+
+[node name="interface" type="CanvasLayer" parent="."]
+
+[node name="panel" type="ColorRect" parent="interface"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 655.0
+offset_bottom = 162.0
+mouse_filter = 2
+color = Color(0.03, 0.06, 0.11, 0.9)
+
+[node name="title" type="Label" parent="interface/panel"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 600.0
+offset_bottom = 40.0
+theme_override_colors/font_color = Color(0.7, 0.58, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "LAN Dungeon — 2-4 Player Raid"
+
+[node name="status_label" type="Label" parent="interface/panel"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 50.0
+offset_right = 610.0
+offset_bottom = 88.0
+theme_override_colors/font_color = Color(0.86, 0.9, 0.96, 1)
+autowrap_mode = 2
+text = "Waiting for all LAN players to finish loading..."
+
+[node name="leave_button" type="Button" parent="interface/panel"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 102.0
+offset_right = 190.0
+offset_bottom = 130.0
+text = "Leave LAN Dungeon"
+
+[node name="boss_panel" type="ColorRect" parent="interface"]
+offset_left = 420.0
+offset_top = 20.0
+offset_right = 930.0
+offset_bottom = 86.0
+mouse_filter = 2
+color = Color(0.03, 0.02, 0.06, 0.9)
+
+[node name="boss_label" type="Label" parent="interface/boss_panel"]
+offset_left = 14.0
+offset_top = 7.0
+offset_right = 496.0
+offset_bottom = 30.0
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(1, 0.78, 0.84, 1)
+theme_override_font_sizes/font_size = 16
+text = "Necromancer: 35 / 35"
+
+[node name="boss_bar" type="ProgressBar" parent="interface/boss_panel"]
+offset_left = 14.0
+offset_top = 35.0
+offset_right = 496.0
+offset_bottom = 55.0
+theme_override_styles/background = SubResource("StyleBoxFlat_boss_background")
+theme_override_styles/fill = SubResource("StyleBoxFlat_boss_fill")
+max_value = 35.0
+value = 35.0
+show_percentage = false
+
+[node name="instructions" type="Label" parent="interface"]
+offset_left = 20.0
+offset_top = 178.0
+offset_right = 1220.0
+offset_bottom = 208.0
+theme_override_colors/font_color = Color(0.78, 0.82, 0.92, 1)
+text = "The host controls every skeleton variant, random graveyard spawn, Necromancer shield, summon waves, and boss damage."

@@ -10,13 +10,19 @@ signal match_loading(match_id: int)
 signal match_started(match_id: int)
 
 const PORT := 7001
-const MAX_CLIENTS := 1
+# A LAN match needs at least a pair, while the host plus three joining
+# computers remains the four-player maximum.
+# ENet's server limit counts clients only, so it is one less than MAX_PLAYERS.
+const MIN_PLAYERS: int = 2
+const MAX_PLAYERS: int = 4
+const MAX_CLIENTS: int = MAX_PLAYERS - 1
 const KNIGHT_CHARACTER_ID := "knight"
 const ARCHER_CHARACTER_ID := "archer"
 const MAGE_CHARACTER_ID := "mage"
 const PRIEST_CHARACTER_ID := "priest"
 const LOBBY_SCENE_PATH := "res://Scenes/lan_lobby.tscn"
 const MATCH_SCENE_PATH := "res://Scenes/lan_world.tscn"
+const LAN_DUNGEON_SCENE_PATH := "res://Scenes/lan_dungeon.tscn"
 
 # Only this script creates or closes the peer. Gameplay scenes use the peer
 # through Godot's MultiplayerAPI, but never take ownership of it.
@@ -27,6 +33,7 @@ var current_status := "Choose Host, or enter the host IP and choose Join."
 # A transition number prevents an old delayed RPC from opening a later match.
 var active_match_id := -1
 var scene_change_scheduled := false
+var active_scene_path := ""
 
 # The host is the source of truth for these dictionaries. Clients receive a
 # read-only roster for their lobby display.
@@ -52,7 +59,7 @@ func _ready() -> void:
 		multiplayer.server_disconnected.connect(_on_server_disconnected)
 
 
-# Starts a two-player LAN server on this computer.
+# Starts a two-to-four-player LAN server on this computer.
 func host_session() -> int:
 	if is_active():
 		_set_status("Leave the current LAN session before hosting another one.")
@@ -77,9 +84,10 @@ func host_session() -> int:
 	expected_match_peers.clear()
 	loaded_match_peers.clear()
 	active_match_id = -1
+	active_scene_path = ""
 	var host_ip: String = get_lan_ip()
 	var host_address: String = "%s:%d" % [host_ip, PORT] if not host_ip.is_empty() else "no LAN IPv4 address"
-	_set_status("Hosting at %s. Waiting for one player." % host_address)
+	_set_status("Hosting at %s. %s" % [host_address, _get_lobby_waiting_text()])
 	lobby_changed.emit()
 	return OK
 
@@ -111,6 +119,7 @@ func join_session(address: String) -> int:
 	expected_match_peers.clear()
 	loaded_match_peers.clear()
 	active_match_id = -1
+	active_scene_path = ""
 	_set_status("Connecting to %s:%d..." % [cleaned_address, PORT])
 	lobby_changed.emit()
 	return OK
@@ -127,6 +136,7 @@ func leave_session(final_message: String = "Session closed.") -> void:
 	session_phase = "idle"
 	active_match_id = -1
 	scene_change_scheduled = false
+	active_scene_path = ""
 	lobby_peers.clear()
 	selected_character_by_peer.clear()
 	ready_by_peer.clear()
@@ -152,11 +162,14 @@ func is_match_active() -> bool:
 	return session_phase == "match"
 
 
-# The host may start only after both players selected a LAN-ready character
-# and explicitly pressed Ready. This is host-owned, so a client cannot invent
-# a class that has no network controller yet.
+# The host may start with two, three, or four players after every connected
+# player selects a LAN-ready character and explicitly presses Ready. This is
+# host-owned, so a client cannot invent a class with no network controller.
 func can_start_match() -> bool:
-	if not is_host() or session_phase != "lobby" or lobby_peers.size() != MAX_CLIENTS + 1:
+	var connected_player_count: int = lobby_peers.size()
+	if not is_host() or session_phase != "lobby":
+		return false
+	if connected_player_count < MIN_PLAYERS or connected_player_count > MAX_PLAYERS:
 		return false
 
 	for peer_id in lobby_peers:
@@ -166,6 +179,20 @@ func can_start_match() -> bool:
 			return false
 
 	return true
+
+
+# These helpers let the lobby show the same player limits everywhere instead
+# of keeping separate, easy-to-forget player-count text in each screen.
+func get_min_players() -> int:
+	return MIN_PLAYERS
+
+
+func get_max_players() -> int:
+	return MAX_PLAYERS
+
+
+func get_open_player_slots() -> int:
+	return maxi(0, MAX_PLAYERS - lobby_peers.size())
 
 
 func get_connected_peer_ids() -> PackedInt32Array:
@@ -317,8 +344,27 @@ func start_match() -> void:
 	if not is_host():
 		_set_status("Only the host can start the match.")
 		return
+	if lobby_peers.size() < MIN_PLAYERS:
+		_set_status("At least %d players must connect before the LAN match can start." % MIN_PLAYERS)
+		return
 	if not can_start_match():
-		_set_status("Both players must select a LAN-ready character and press Ready first.")
+		_set_status("Every connected player must select a LAN-ready character and press Ready first.")
+		return
+
+	_begin_lan_scene_transition(MATCH_SCENE_PATH)
+
+
+# The Elite Orc gate asks the host to transition the whole party together.
+# It reuses the same load handshake as the first lobby-to-world transition,
+# so no player can end up alone in the dungeon scene.
+func request_dungeon_transition() -> void:
+	if not is_host() or session_phase != "match":
+		return
+	_begin_lan_scene_transition(LAN_DUNGEON_SCENE_PATH)
+
+
+func _begin_lan_scene_transition(scene_path: String) -> void:
+	if not is_host() or not _is_allowed_lan_scene(scene_path):
 		return
 
 	active_match_id += 1
@@ -327,39 +373,49 @@ func start_match() -> void:
 	for peer_id in lobby_peers:
 		expected_match_peers[int(peer_id)] = true
 
+	active_scene_path = scene_path
 	session_phase = "loading"
 	_broadcast_lobby_state()
-	load_match.rpc(MATCH_SCENE_PATH, active_match_id)
+	load_match.rpc(scene_path, active_match_id)
 
 
 # This server-authority RPC runs from an Autoload path that exists on both
 # computers before, during, and after the scene transition.
 @rpc("authority", "call_local", "reliable")
 func load_match(scene_path: String, requested_match_id: int) -> void:
-	if not is_active() or scene_path != MATCH_SCENE_PATH:
+	if not is_active() or not _is_allowed_lan_scene(scene_path):
 		return
 	if requested_match_id < active_match_id:
 		return
 
 	active_match_id = requested_match_id
+	active_scene_path = scene_path
 	session_phase = "loading"
 	scene_change_scheduled = true
-	_set_status("Loading the shared LAN match...")
+	_set_status("Loading the shared LAN area...")
 	lobby_changed.emit()
 	match_loading.emit(active_match_id)
-	call_deferred("_change_to_match_scene", requested_match_id)
+	call_deferred("_change_to_match_scene", scene_path, requested_match_id)
 
 
 # Deferring prevents the current lobby scene from being freed while this RPC
 # callback is still running.
-func _change_to_match_scene(requested_match_id: int) -> void:
-	if not scene_change_scheduled or requested_match_id != active_match_id:
+func _change_to_match_scene(scene_path: String, requested_match_id: int) -> void:
+	if (
+		not scene_change_scheduled
+		or requested_match_id != active_match_id
+		or scene_path != active_scene_path
+	):
 		return
 
 	scene_change_scheduled = false
-	var error := get_tree().change_scene_to_file(MATCH_SCENE_PATH)
+	var error := get_tree().change_scene_to_file(scene_path)
 	if error != OK:
-		_set_status("Could not load the LAN match. Error code: %d" % error)
+		_set_status("Could not load the shared LAN area. Error code: %d" % error)
+
+
+func _is_allowed_lan_scene(scene_path: String) -> bool:
+	return scene_path == MATCH_SCENE_PATH or scene_path == LAN_DUNGEON_SCENE_PATH
 
 
 # Called by lan_knight_match.gd only after that scene's _ready has run. The
@@ -467,7 +523,10 @@ func _on_peer_connected(peer_id: int) -> void:
 	lobby_peers[peer_id] = true
 	selected_character_by_peer[peer_id] = ""
 	ready_by_peer[peer_id] = false
-	_set_status("Player %d joined. Both players can now choose Knight, Archer, Mage, or Priest." % peer_id)
+	if lobby_peers.size() >= MAX_PLAYERS:
+		_set_status("The lobby is full. Choose Knight, Archer, Mage, or Priest, then Ready Up.")
+	else:
+		_set_status("Player %d joined. %d / %d connected. %s" % [peer_id, lobby_peers.size(), MAX_PLAYERS, _get_lobby_waiting_text()])
 	_broadcast_lobby_state()
 
 
@@ -479,11 +538,11 @@ func _on_peer_disconnected(peer_id: int) -> void:
 	selected_character_by_peer.erase(peer_id)
 	ready_by_peer.erase(peer_id)
 	if session_phase == "lobby":
-		_set_status("Player %d left. Waiting for one player." % peer_id)
+		_set_status("Player %d left. %d / %d connected. %s" % [peer_id, lobby_peers.size(), MAX_PLAYERS, _get_lobby_waiting_text()])
 		_broadcast_lobby_state()
 		return
 
-	# A match transition without both peers would leave gameplay in an unknown
+	# A match transition without every peer would leave gameplay in an unknown
 	# state, so close this small test session and return the host to the lobby.
 	call_deferred("_end_match_after_disconnect", peer_id)
 
@@ -534,6 +593,23 @@ func _return_to_lobby_after_disconnect() -> void:
 func _set_status(message: String) -> void:
 	current_status = message
 	status_changed.emit(message)
+
+
+# Gives natural wording for the host's connection status. Two players unlock
+# character selection; remaining slots are optional until the lobby fills.
+func _get_lobby_waiting_text() -> String:
+	var connected_players: int = lobby_peers.size()
+	if connected_players < MIN_PLAYERS:
+		var needed_players: int = MIN_PLAYERS - connected_players
+		var needed_suffix: String = "" if needed_players == 1 else "s"
+		return "Waiting for %d more player%s to reach the %d-player minimum." % [needed_players, needed_suffix, MIN_PLAYERS]
+
+	var open_slots: int = get_open_player_slots()
+	if open_slots <= 0:
+		return "The lobby is full."
+
+	var slot_suffix: String = "" if open_slots == 1 else "s"
+	return "You can start now or wait for up to %d more player%s." % [open_slots, slot_suffix]
 
 
 func _get_lan_ipv4_candidates() -> Array[Dictionary]:

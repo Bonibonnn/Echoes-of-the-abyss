@@ -26,6 +26,8 @@ extends CharacterBody2D
 
 @export_category("Skill 1 - Heal")
 @export var heal_amount := 3
+# Q heals the Priest and every living LAN teammate inside this circle.
+@export_range(1.0, 500.0, 1.0, "suffix:px") var heal_radius := 110.0
 @export var heal_cooldown := 5.0
 @export var heal_cast_duration := 1.2
 @export var heal_release_time := 1.0
@@ -117,6 +119,7 @@ func get_network_priest_action_config(action_id: String) -> Dictionary:
 				"cast_duration": heal_cast_duration,
 				"release_time": heal_release_time,
 				"heal_amount": heal_amount,
+				"heal_radius": heal_radius,
 			}
 		"skill2":
 			return {
