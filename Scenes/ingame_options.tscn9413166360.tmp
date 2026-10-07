@@ -26,27 +26,6 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xw4dx"]
-bg_color = Color(0.078431375, 0.32156864, 0.61960787, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hwiog"]
-bg_color = Color(0.08, 0.32, 0.62, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xgbwg"]
-bg_color = Color(0.078431375, 0.32156864, 0.61960787, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
 [node name="ingame_options" type="CanvasLayer" unique_id=1936455288]
 process_mode = 3
 layer = 20
@@ -57,8 +36,7 @@ offset_left = 16.0
 offset_top = 48.0
 offset_right = 126.0
 offset_bottom = 86.0
-theme_override_fonts/font = ExtResource("2_hwiog")
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 text = "Options"
 
@@ -86,16 +64,14 @@ theme_override_constants/separation = 14
 
 [node name="Title" type="Label" parent="Panel/Content" unique_id=1569434346]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_hwiog")
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 28
 text = "Options"
 horizontal_alignment = 1
 
 [node name="Resume" type="Button" parent="Panel/Content" unique_id=708585182]
 custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_hwiog")
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 text = "Resume"
 
@@ -106,8 +82,7 @@ theme_override_constants/separation = 10
 [node name="Label" type="Label" parent="Panel/Content/ResolutionRow" unique_id=1509772886]
 custom_minimum_size = Vector2(105, 0)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_hwiog")
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 18
 text = "Resolution"
 vertical_alignment = 1
 
@@ -123,8 +98,7 @@ theme_override_constants/separation = 10
 [node name="Label" type="Label" parent="Panel/Content/MusicRow" unique_id=1723571550]
 custom_minimum_size = Vector2(105, 0)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_hwiog")
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 18
 text = "Music"
 vertical_alignment = 1
 
@@ -135,48 +109,47 @@ max_value = 1.0
 step = 0.05
 value = 1.0
 
-[node name="Instructions" type="Button" parent="Panel/Content" unique_id=1795004797]
-custom_minimum_size = Vector2(0, 42)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2_hwiog")
-theme_override_font_sizes/font_size = 32
-theme_override_styles/normal = SubResource("StyleBoxFlat_xw4dx")
-text = "Instruction"
-
 [node name="Quit" type="Button" parent="Panel/Content" unique_id=569883716]
 custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_hwiog")
-theme_override_font_sizes/font_size = 32
-theme_override_styles/normal = SubResource("StyleBoxFlat_hwiog")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 text = "Quit Game"
 
-[node name="Panel1" type="Panel" parent="." unique_id=291447521]
-offset_left = 264.0
-offset_top = 114.0
-offset_right = 855.0
-offset_bottom = 544.0
+[node name="Instructions" type="Button" parent="Panel/Content" unique_id=1173727851]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+text = "Instructions"
 
-[node name="Label" type="Label" parent="Panel1" unique_id=2111185022]
+[node name="Panel" type="Panel" parent="Panel/Content/Instructions" unique_id=1494520620]
 layout_mode = 0
-offset_left = 208.0
-offset_top = 28.0
-offset_right = 363.0
-offset_bottom = 68.0
+offset_left = -252.0
+offset_top = -380.0
+offset_right = 577.0
+offset_bottom = 197.0
+
+[node name="Label" type="Label" parent="Panel/Content/Instructions/Panel" unique_id=710212298]
+layout_mode = 0
+offset_left = 253.0
+offset_top = 38.0
+offset_right = 553.0
+offset_bottom = 98.0
 theme_override_fonts/font = ExtResource("2_hwiog")
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 48
 text = "How to Play"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label2" type="Label" parent="Panel1" unique_id=918391926]
+[node name="Label2" type="Label" parent="Panel/Content/Instructions/Panel" unique_id=528309455]
 layout_mode = 0
-offset_left = -2.0
-offset_top = 101.0
-offset_right = 607.0
-offset_bottom = 320.0
+offset_left = 23.0
+offset_top = 133.0
+offset_right = 802.0
+offset_bottom = 420.0
 theme_override_fonts/font = ExtResource("2_hwiog")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 32
 text = "•	Movement: W, A, S, D keys to move Up, Left, Down, and Right
 •	Basic Attack: Left Mouse Click
 •	Second Attack: Right Mouse Click
@@ -186,13 +159,15 @@ text = "•	Movement: W, A, S, D keys to move Up, Left, Down, and Right
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Back" type="Button" parent="Panel1" unique_id=488978393]
+[node name="Back" type="Button" parent="Panel/Content/Instructions/Panel" unique_id=1345579958]
+custom_minimum_size = Vector2(0, 42)
 layout_mode = 0
-offset_left = 245.0
-offset_top = 317.0
-offset_right = 376.0
-offset_bottom = 353.0
-theme_override_fonts/font = ExtResource("2_hwiog")
+offset_left = 249.0
+offset_top = 479.0
+offset_right = 581.0
+offset_bottom = 521.0
 theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxFlat_xgbwg")
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 text = "Back"
+
+[connection signal="pressed" from="Panel/Content/Instructions" to="." method="_on_instructions_pressed"]
